@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:veganic_foods_app/constants.dart';
 
-class BackGround extends StatelessWidget {
+class BackGround extends StatefulWidget {
   const BackGround({Key? key}) : super(key: key);
+
+  @override
+  State<BackGround> createState() => _BackGroundState();
+}
+
+class _BackGroundState extends State<BackGround> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -15,7 +21,7 @@ class BackGround extends StatelessWidget {
             child: Stack(
               alignment: Alignment.center,
               children: <Widget>[
-                Positioned(top: 45, left: 130, child: Paymenttext()),
+                Positioned(top: 45, left: 145, child: Paymenttext()),
                 Positioned(
                     top: 20,
                     left: -5,
@@ -44,7 +50,9 @@ class BackGround extends StatelessWidget {
               ],
             ),
           ),
-        ]));
+        ]),
+
+        );
   }
 }
 
@@ -63,19 +71,20 @@ class CustomAppBar extends StatelessWidget {
       ),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         GestureDetector(
-          onTap: leftcallback != null ? () => leftcallback!() : null,
-          child: Container(
-            padding: EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: bGcolor,
-            ),
-            child: Icon(leftIcon),
-          ),
-        ),
+            onTap: leftcallback != null ? () => leftcallback!() : null,
+            child: _buildIcon(Icons.arrow_back_ios_outlined)),
       ]),
     );
   }
+
+  Container _buildIcon(IconData icon) => Container(
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: bGcolor,
+        ),
+        child: Icon(icon),
+      );
 }
 
 class Paymenttext extends StatelessWidget {
@@ -93,3 +102,4 @@ class Paymenttext extends StatelessWidget {
     );
   }
 }
+

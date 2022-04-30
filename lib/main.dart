@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:veganic_foods_app/paymentPage/components/background.dart';
 import 'package:veganic_foods_app/paymentPage/paymentPage.dart';
 
+import 'landingPage/components/LandingPage.dart';
+
 void main() {
   runApp(const MyApp());
 }
