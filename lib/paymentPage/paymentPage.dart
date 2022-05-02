@@ -37,38 +37,44 @@ class _PaymentListState extends State<PaymentList> {
 
     return Scaffold(
         backgroundColor: bGcolor,
-        appBar: AppBar(
-          title: SafeArea(
-            child: Container(
-              child:
-                Text(
-                  'Checkout',
-                  style: TextStyle(color: Colors.black),
-                ),
-                Positioned(
-                    top: -11,
-                    left: 0,
-                    child: Image.asset(
-                      'assets/images/Ellipse_3.png',
-                      fit: BoxFit.cover,
-                    )),
-            ),
-          ),
-          centerTitle: true,
-          backgroundColor: bGcolor,
-          elevation: 0,
-        ),
         body: Column(
           children: [
             SizedBox(
-              height: 70,
+              child: Container(
+                child: Stack(
+                  children: [
+                    Positioned(
+                        top: -5,
+                        left: -14,
+                        child: Image.asset('assets/images/Ellipse 3 (1).png')),
+                    Positioned(
+                        top: 70,
+                        left: 374,
+                        child: Image.asset('assets/images/Ellipse 4 (1).png')),
+                    Positioned(
+                        top: 50,
+                        left: 100,
+                        child: Image.asset('assets/images/Ellipse_5.png')),
+                    Positioned(
+                      top: 90,
+                      left: 30,
+                      child: Text(
+                        'Payment',
+                        style: TextStyle(
+                            fontSize: 30, fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              height: 130,
             ),
             SafeArea(
-              // minimum: EdgeInsets.all(15),
+              minimum: EdgeInsets.all(0),
               child: Column(children: [
-                SizedBox(
-                  height: 20,
-                ),
+                // SizedBox(
+                //   height:,
+                // ),
                 Container(
                   width: size.width,
                   padding: EdgeInsets.all(0),
@@ -301,7 +307,7 @@ class _PaymentListState extends State<PaymentList> {
                         selected: false,
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 40,
                       ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -311,8 +317,8 @@ class _PaymentListState extends State<PaymentList> {
                             primary: Colors.black,
                             onPrimary: Colors.white,
                             textStyle: TextStyle(
-                                fontSize: 30, fontWeight: FontWeight.bold),
-                            minimumSize: Size(280, 50)),
+                                fontSize: 20, fontWeight: FontWeight.normal),
+                            minimumSize: Size(280, 40)),
                         child: Text('Proceed'),
                         onPressed: () {},
                       ),
