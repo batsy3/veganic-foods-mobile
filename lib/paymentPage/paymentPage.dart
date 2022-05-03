@@ -4,6 +4,7 @@ import 'package:veganic_foods_app/landingPage/components/backgroundFunc.dart';
 import 'package:veganic_foods_app/paymentPage/components/background.dart';
 
 import 'components/CardPage.dart';
+import 'components/backgroundBubble.dart';
 import 'components/defaultAppBar.dart';
 import 'components/defaultBackButton.dart';
 
@@ -39,36 +40,7 @@ class _PaymentListState extends State<PaymentList> {
         backgroundColor: bGcolor,
         body: Column(
           children: [
-            SizedBox(
-              child: Container(
-                child: Stack(
-                  children: [
-                    Positioned(
-                        top: -5,
-                        left: -14,
-                        child: Image.asset('assets/images/Ellipse 3 (1).png')),
-                    Positioned(
-                        top: 70,
-                        left: 374,
-                        child: Image.asset('assets/images/Ellipse 4 (1).png')),
-                    Positioned(
-                        top: 50,
-                        left: 100,
-                        child: Image.asset('assets/images/Ellipse_5.png')),
-                    Positioned(
-                      top: 90,
-                      left: 30,
-                      child: Text(
-                        'Payment',
-                        style: TextStyle(
-                            fontSize: 30, fontWeight: FontWeight.bold),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              height: 130,
-            ),
+            backgroundbubbles(),
             SafeArea(
               minimum: EdgeInsets.all(0),
               child: Column(children: [
@@ -334,3 +306,4 @@ class _PaymentListState extends State<PaymentList> {
         ));
   }
 }
+
