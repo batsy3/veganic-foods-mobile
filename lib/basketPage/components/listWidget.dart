@@ -1,44 +1,61 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_number_picker/flutter_number_picker.dart';
 import 'Listitem.dart';
 
-class ListWidget extends StatelessWidget {
+class ListWidget extends StatefulWidget {
   final Listitem item;
   final Animation<double> animation;
-  final VoidCallback? onClicked;
-  const ListWidget(
-      {Key? key,
-      required this.item,
-      required this.animation,
-      required this.onClicked})
-      : super(key: key);
+  const ListWidget({
+    Key? key,
+    required this.item,
+    required this.animation,
+  }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) =>
-      SizeTransition(sizeFactor: animation, child: buildItem());
-      
+  State<ListWidget> createState() => _ListWidgetState();
+}
+
+class _ListWidgetState extends State<ListWidget> {
+  @override
+  Widget build(BuildContext context) => SizeTransition(
+      key: ValueKey(widget.item.image), sizeFactor: widget.animation, child: buildItem());
+
   Widget buildItem() {
-    return Container(
-        margin: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: Colors.white38,
-        ),
-        child: ListTile(
-          contentPadding: EdgeInsets.all(10),
-          leading: CircleAvatar(radius: 32),
-          title: Text(
-            item.title,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          subtitle: Text(
-            item.price,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
-          ),
-          trailing: IconButton(
-            icon: Icon(Icons.delete),
-            onPressed: onClicked,
-          ),
-        ));
+    int currValue;
+    return Column(
+      children: [
+        Container(
+            margin: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: Colors.white,
+            ),
+            child: ListTile(
+                contentPadding: EdgeInsets.all(10),
+                leading: CircleAvatar(radius: 32),
+                title: Text(
+                  widget.item.title,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                subtitle: Text(
+                  widget.item.price,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
+                ),
+                trailing: CustomNumberPicker(
+                  initialValue: 1,
+                  maxValue: 10,
+                  minValue: 1,
+                  onValue: (newvalue)=>{
+                    setState((){})
+                  },
+                  step: 1,
+                ))),
+        Divider(
+          indent: 30,
+          endIndent: 30,
+          thickness: 2,
+        )
+      ],
+    );
   }
 }

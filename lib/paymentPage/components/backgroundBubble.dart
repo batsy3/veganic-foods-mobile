@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 
 class backgroundbubbles extends StatelessWidget {
+  final String name;
   const backgroundbubbles({
     Key? key,
+    required this.name,
   }) : super(key: key);
 
   @override
@@ -24,13 +26,12 @@ class backgroundbubbles extends StatelessWidget {
                 left: 100,
                 child: Image.asset('assets/images/Ellipse_5.png')),
             Positioned(
-              top: 90,
-              left: 30,
-              child: Text(
-                'Payment',
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-              ),
-            )
+                top: 90,
+                left: 30,
+                child: Text(
+                  name,
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                )),
           ],
         ),
       ),

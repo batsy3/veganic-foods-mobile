@@ -9,7 +9,6 @@ import 'components/defaultAppBar.dart';
 import 'components/defaultBackButton.dart';
 
 enum Payment_methods { card, mtn, airtel, zanaco, fnb }
-
 class PaymentPage extends StatelessWidget {
   const PaymentPage({Key? key}) : super(key: key);
   @override
@@ -40,7 +39,9 @@ class _PaymentListState extends State<PaymentList> {
         backgroundColor: bGcolor,
         body: Column(
           children: [
-            backgroundbubbles(),
+            backgroundbubbles(
+              name: 'Payment',
+            ),
             SafeArea(
               minimum: EdgeInsets.all(0),
               child: Column(children: [
@@ -76,7 +77,13 @@ class _PaymentListState extends State<PaymentList> {
                           ],
                         ),
                       ),
+                      // ListView.separated(
+                      //   itemCount: Payment_methods.values.length,
+                      //   itemBuilder:,
+                      //    separatorBuilder: ,
+                      // ),
                       RadioListTile<Payment_methods>(
+              
                         contentPadding: EdgeInsets.only(left: 40, top: 10),
                         value: Payment_methods.card,
                         groupValue: _character,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:veganic_foods_app/basketPage/basketPage.dart';
 import 'package:veganic_foods_app/screens/home/landing_page.dart';
 import 'package:veganic_foods_app/utils/routes.dart';
 
@@ -24,9 +25,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      // home: Basketpage(),
       home: const LandingPage(),
     routes: {
         Routes.home : (context) => const LandingPage(),
+        Routes.home : (context) => const S
     },
     //  Define routes to other pages
     );
