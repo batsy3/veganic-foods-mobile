@@ -1,4 +1,4 @@
-import 'Listitem.dart';
+import 'list_items.dart';
 
 final List<Listitem> listitems = [
   Listitem(image: 'assets/icons/zanaco.png', price: '200', title: 'title'),

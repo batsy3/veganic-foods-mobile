@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:veganic_foods_app/constants.dart';
-import 'package:veganic_foods_app/paymentPage/components/backgroundBubble.dart';
-import 'package:veganic_foods_app/paymentPage/components/defaultBackButton.dart';
-
-import '../utils/routes.dart';
-import 'components/Listitem.dart';
-import 'components/foodDict.dart';
-import 'components/listWidget.dart';
+import 'package:veganic_foods_app/widgets/custom_button.dart';
+import '../../utils/routes.dart';
+import '../../widgets/default_back_button.dart';
+import '../payment_page/components/background_eclipses.dart';
+import 'components/list_items.dart';
+import 'components/food_dict.dart';
+import 'components/list_widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class Basketpage extends StatelessWidget {
@@ -57,6 +57,7 @@ class Basketpage extends StatelessWidget {
                             onDismissed: () => removeitem(index),
                           ),
                           children: [
+                            //make a button
                             SlidableAction(
                               autoClose: true,
                               flex: 2,
@@ -77,21 +78,17 @@ class Basketpage extends StatelessWidget {
                   height: 30,
                 ),
                 //change to app button
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                      shadowColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      primary: Color.fromARGB(255, 0, 0, 0),
-                      onPrimary: Color.fromARGB(255, 255, 255, 255),
-                      textStyle:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                      minimumSize: Size(300, 50)),
-                  child: Text('Proceed'),
-                  onPressed: () {
-                    Navigator.pushNamed(context, Routes.payment);
-                  },
-                ),
+                AppButton(
+                    text: 'Proceed',
+                    fontSize: 20,
+                    textColor: Colors.white,
+                    bgColor: Colors.black,
+                    onTap: () {
+                      Navigator.pushNamed(context, Routes.payment);
+                    },
+                    fontWeight: FontWeight.bold,
+                    borderRadius: 30,
+                    height: 10)
               ],
             ),
           ),

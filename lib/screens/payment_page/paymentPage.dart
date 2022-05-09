@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:veganic_foods_app/constants.dart';
 import 'package:veganic_foods_app/utils/routes.dart';
 import 'package:veganic_foods_app/widgets/custom_button.dart';
-import 'components/backgroundBubble.dart';
-import 'components/defaultBackButton.dart';
+import 'components/background_eclipses.dart';
+import 'components/default_back_button.dart';
 
 class PaymentPage extends StatefulWidget {
   const PaymentPage({Key? key}) : super(key: key);
@@ -81,7 +81,7 @@ class _PaymentListState extends State<PaymentList> {
                   ),
                   RadioListTile<Paymentmethod>(
                     contentPadding: const EdgeInsets.only(left: 40),
-                    value: Paymentmethod.airtel,
+                    value: Paymentmethod.mtn,
                     groupValue: _init,
                     onChanged: (Paymentmethod? value) =>
                         setState(() => {_init = value}),
@@ -95,7 +95,7 @@ class _PaymentListState extends State<PaymentList> {
                   const divider(),
                   RadioListTile<Paymentmethod>(
                     contentPadding: const EdgeInsets.only(left: 40),
-                    value: Paymentmethod.mtn,
+                    value: Paymentmethod.airtel,
                     groupValue: _init,
                     onChanged: (Paymentmethod? value) =>
                         setState(() => {_init = value}),

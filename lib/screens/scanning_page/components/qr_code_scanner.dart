@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:veganic_foods_app/constants/colors.dart';
+import 'package:veganic_foods_app/constants.dart';
 import 'package:veganic_foods_app/utils/routes.dart';
 import 'package:veganic_foods_app/widgets/custom_button.dart';
 import 'package:veganic_foods_app/widgets/custom_page_header.dart';
@@ -35,7 +35,7 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-        backgroundColor: kBackgroundColor,
+        backgroundColor: bGcolor,
         body: Column(
           children: [
             const SizedBox(
@@ -92,7 +92,7 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
                           onTap: () {
                             Navigator.pushNamed(context, Routes.cart);
                           },
-                          height: 24,
+                          height: 10,
                         )
                       ],
                     ),
@@ -125,7 +125,7 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
       overlay: QrScannerOverlayShape(
-          borderColor: kBackgroundColor,
+          borderColor: Colors.white,
           borderRadius: 10,
           borderLength: 30,
           borderWidth: 10,

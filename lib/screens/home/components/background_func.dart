@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:veganic_foods_app/constants/colors.dart';
 import 'package:veganic_foods_app/utils/routes.dart';
 import 'package:veganic_foods_app/widgets/custom_button.dart';
-import 'backgroundUtils.dart';
+import 'background_utils.dart';
 
 class Components extends StatelessWidget {
   const Components({Key? key}) : super(key: key);
@@ -18,7 +17,7 @@ class Components extends StatelessWidget {
               margin: const EdgeInsets.all(10),
               child: AppButton(
                 text: "Get Started",
-                bgColor: kPrimaryColor,
+                bgColor: Colors.white,
                 textColor: Colors.purple,
                 borderRadius: 30,
                 fontSize: 25,
