@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:veganic_foods_app/basketPage/basketPage.dart';
 import 'package:veganic_foods_app/paymentPage/paymentPage.dart';
 import 'package:veganic_foods_app/screens/home/landing_page.dart';
+import 'package:veganic_foods_app/screens/scanning/scanning_page.dart';
 import 'package:veganic_foods_app/utils/routes.dart';
 
 void main() {
@@ -19,21 +20,19 @@ class MyApp extends StatelessWidget {
     ));
     return MaterialApp(
       title: 'Veganic App',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'SF Pro Rounded',
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Basketpage(),
-      // home: const LandingPage(),
-      routes: {
-        // ignore: prefer_const_constructors
-        Routes.home: (context) => const LandingPage(),
-        Routes.cart: (context) => Basketpage(),
-        // ignore: prefer_const_constructors
-        Routes.payment: (context) => PaymentPage()
-      },
-      //  Define routes to other pages
+      home: const LandingPage(),
+    routes: {
+        Routes.home : (context) => const LandingPage(),
+        Routes.scan : (context) => const ScanningPage(),
+        Routes.payment: (context) => const PaymentPage()
+    },
+    //  Define routes to other pages
     );
   }
 }

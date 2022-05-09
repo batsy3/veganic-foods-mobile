@@ -21,6 +21,7 @@ class AppButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+
       onTap: onTap,
       child: Container(
         width: MediaQuery.of(context).size.width * 0.8,
