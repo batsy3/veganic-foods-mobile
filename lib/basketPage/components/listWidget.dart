@@ -18,10 +18,11 @@ class ListWidget extends StatefulWidget {
 class _ListWidgetState extends State<ListWidget> {
   @override
   Widget build(BuildContext context) => SizeTransition(
-      key: ValueKey(widget.item.image), sizeFactor: widget.animation, child: buildItem());
+      key: ValueKey(widget.item.image),
+      sizeFactor: widget.animation,
+      child: buildItem());
 
   Widget buildItem() {
-    int currValue;
     return Column(
       children: [
         Container(
@@ -32,7 +33,10 @@ class _ListWidgetState extends State<ListWidget> {
             ),
             child: ListTile(
                 contentPadding: EdgeInsets.all(10),
-                leading: CircleAvatar(radius: 32),
+                leading: CircleAvatar(
+                  radius: 32,
+                  backgroundImage: AssetImage(widget.item.image),
+                ),
                 title: Text(
                   widget.item.title,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -45,9 +49,7 @@ class _ListWidgetState extends State<ListWidget> {
                   initialValue: 1,
                   maxValue: 10,
                   minValue: 1,
-                  onValue: (newvalue)=>{
-                    setState((){})
-                  },
+                  onValue: (newvalue) => {setState(() {})},
                   step: 1,
                 ))),
         Divider(

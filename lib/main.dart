@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:veganic_foods_app/basketPage/basketPage.dart';
+import 'package:veganic_foods_app/paymentPage/paymentPage.dart';
 import 'package:veganic_foods_app/screens/home/landing_page.dart';
 import 'package:veganic_foods_app/utils/routes.dart';
 
@@ -13,11 +14,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-        )
-    );
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+    ));
     return MaterialApp(
       title: 'Veganic App',
       theme: ThemeData(
@@ -25,14 +24,16 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      // home: Basketpage(),
-      home: const LandingPage(),
-    routes: {
-        Routes.home : (context) => const LandingPage(),
-        Routes.home : (context) => const S
-    },
-    //  Define routes to other pages
+      home: Basketpage(),
+      // home: const LandingPage(),
+      routes: {
+        // ignore: prefer_const_constructors
+        Routes.home: (context) => const LandingPage(),
+        Routes.cart: (context) => Basketpage(),
+        // ignore: prefer_const_constructors
+        Routes.payment: (context) => PaymentPage()
+      },
+      //  Define routes to other pages
     );
   }
 }
-

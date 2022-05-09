@@ -10,7 +10,8 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 class Basketpage extends StatelessWidget {
   final listKey = GlobalKey<AnimatedListState>();
   final List<Listitem> items = List.from(listitems);
-  // const Basketpage({Key? key}) : super(key: key);
+
+  Basketpage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,16 +21,18 @@ class Basketpage extends StatelessWidget {
       body: Column(
         children: [
           SizedBox(
-            height: 130,
+            height: 160,
             child: backgroundbubbles(
               name: 'Basket',
             ),
           ),
           Container(
             padding: EdgeInsets.all(8),
-            height: size.height * 0.68,
+            height: size.height * 0.72,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(40)),
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40)),
                 color: Colors.white),
             child: Column(
               children: [
@@ -46,6 +49,7 @@ class Basketpage extends StatelessWidget {
                             Animation<double> animation) =>
                         Slidable(
                       endActionPane: ActionPane(
+                        key: ValueKey(items[index]),
                           motion: const ScrollMotion(),
                           dismissible: DismissiblePane(
                             onDismissed: () => removeitem(index),
@@ -59,13 +63,6 @@ class Basketpage extends StatelessWidget {
                               icon: Icons.delete,
                               label: 'delete',
                             ),
-                            SlidableAction(
-                                autoClose: true,
-                                flex: 2,
-                                onPressed: (context) {},
-                                backgroundColor: Color(0xFF7E57C2),
-                                icon: Icons.add,
-                                label: 'Add item'),
                           ]),
                       child: ListWidget(
                         animation: animation,
@@ -74,23 +71,24 @@ class Basketpage extends StatelessWidget {
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: 30,
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shadowColor: Colors.black,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      primary: Color.fromARGB(255, 0, 0, 0),
+                      onPrimary: Color.fromARGB(255, 255, 255, 255),
+                      textStyle:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      minimumSize: Size(300, 50)),
+                  child: Text('Proceed'),
+                  onPressed: () {},
+                ),
               ],
             ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                shadowColor: Colors.black,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                primary: Colors.white,
-                onPrimary: Colors.deepPurple[400],
-                textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                minimumSize: Size(300, 50)),
-            child: Text('Proceed'),
-            onPressed: () {},
           ),
         ],
       ),
