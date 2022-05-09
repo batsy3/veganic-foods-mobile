@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: PaymentPage(),
+      home: Basketpage(),
       // routes: {
       //   Routes.home: (context) => const LandingPage(),
       //   Routes.scan: (context) => const ScanningPage(),
