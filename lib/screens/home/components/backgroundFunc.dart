@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:veganic_foods_app/constants/colors.dart';
+import 'package:veganic_foods_app/utils/routes.dart';
 import 'package:veganic_foods_app/widgets/custom_button.dart';
 import 'backgroundUtils.dart';
 
@@ -8,13 +9,8 @@ class Components extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    const color = Color.fromARGB(255, 81, 43, 170);
-
-    //total height and width of screen
     return Background(
       child: Column(
-        // crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Container(
@@ -28,6 +24,7 @@ class Components extends StatelessWidget {
               fontSize: 25,
               fontWeight: FontWeight.w600,
               onTap: (){
+                Navigator.pushNamed(context, Routes.scan);
               },
             )
           ),
