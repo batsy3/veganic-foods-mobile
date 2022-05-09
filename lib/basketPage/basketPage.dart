@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:veganic_foods_app/constants.dart';
 import 'package:veganic_foods_app/paymentPage/components/backgroundBubble.dart';
+import 'package:veganic_foods_app/paymentPage/components/defaultBackButton.dart';
 
+import '../utils/routes.dart';
 import 'components/Listitem.dart';
 import 'components/foodDict.dart';
 import 'components/listWidget.dart';
@@ -36,9 +38,9 @@ class Basketpage extends StatelessWidget {
                 color: Colors.white),
             child: Column(
               children: [
-                SizedBox(
-                  height: 15,
-                ),
+                Container(
+                    margin: EdgeInsets.only(top: 5, right: 290),
+                    child: DefaultBackButton()),
                 Expanded(
                   child: AnimatedList(
                     physics: ClampingScrollPhysics(),
@@ -49,7 +51,7 @@ class Basketpage extends StatelessWidget {
                             Animation<double> animation) =>
                         Slidable(
                       endActionPane: ActionPane(
-                        key: ValueKey(items[index]),
+                          key: ValueKey(items[index]),
                           motion: const ScrollMotion(),
                           dismissible: DismissiblePane(
                             onDismissed: () => removeitem(index),
@@ -85,7 +87,9 @@ class Basketpage extends StatelessWidget {
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       minimumSize: Size(300, 50)),
                   child: Text('Proceed'),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, Routes.payment);
+                  },
                 ),
               ],
             ),

@@ -35,63 +35,76 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: kBackgroundColor,
-      body: Column(
-        children: [
-          const SizedBox(height: 150,
-            child: PagesBackground(),),
-          SafeArea(
-            child: Column(
-              children: [
-                Container(
-                  width: size.width,
-                    height: size.height*0.7,
-                  padding: const EdgeInsets.only(left: 0, top: 8, right: 0, bottom: 0),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(40), topRight: Radius.circular(40))
-                  ),
-                  child: Column(
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: const [
-                          SizedBox(width: 9,),
-                          DefaultBackButton(),
-                          SizedBox(width: 70,),
-                          Text('Scan QR Code', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),)
-                        ],
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: SafeArea(
-                          minimum: const EdgeInsets.only(top:10,),
-                        child: _buildQrView(context)),
-                      ),
-                      AppButton(
+        backgroundColor: kBackgroundColor,
+        body: Column(
+          children: [
+            const SizedBox(
+              height: 150,
+              child: PagesBackground(),
+            ),
+            SafeArea(
+              child: Column(
+                children: [
+                  Container(
+                    width: size.width,
+                    height: size.height * 0.7,
+                    padding: const EdgeInsets.only(
+                        left: 0, top: 8, right: 0, bottom: 0),
+                    decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(40),
+                            topRight: Radius.circular(40))),
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: const [
+                            SizedBox(
+                              width: 9,
+                            ),
+                            DefaultBackButton(),
+                            SizedBox(
+                              width: 70,
+                            ),
+                            Text(
+                              'Scan QR Code',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600, fontSize: 20),
+                            )
+                          ],
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: SafeArea(
+                              minimum: const EdgeInsets.only(
+                                top: 10,
+                              ),
+                              child: _buildQrView(context)),
+                        ),
+                        AppButton(
                           text: "Proceed",
                           bgColor: Colors.black,
                           textColor: Colors.white,
                           borderRadius: 30,
                           fontSize: 25,
                           fontWeight: FontWeight.w600,
-                          onTap: (){
-                            Navigator.pushNamed(context, Routes.payment);
-                          }
-                      )
-
-                    ],
+                          onTap: () {
+                            Navigator.pushNamed(context, Routes.cart);
+                          },
+                          height: 24,
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
-      )
-    );
+          ],
+        ));
   }
 
-  void _onQRViewCreated(QRViewController controller){
+  void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
       setState(() {
@@ -99,10 +112,11 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
       });
     });
   }
+
   Widget _buildQrView(BuildContext context) {
     // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
     var scanArea = (MediaQuery.of(context).size.width < 300 ||
-        MediaQuery.of(context).size.height < 300)
+            MediaQuery.of(context).size.height < 300)
         ? 150.0
         : 300.0;
     // To ensure the Scanner view is properly sizes after rotation
@@ -134,6 +148,4 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
     controller?.dispose();
     super.dispose();
   }
-
 }
-

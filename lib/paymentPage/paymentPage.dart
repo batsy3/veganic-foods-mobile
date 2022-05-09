@@ -1,6 +1,8 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:veganic_foods_app/constants.dart';
+import 'package:veganic_foods_app/utils/routes.dart';
+import 'package:veganic_foods_app/widgets/custom_button.dart';
 import 'components/backgroundBubble.dart';
 import 'components/defaultBackButton.dart';
 
@@ -136,22 +138,34 @@ class _PaymentListState extends State<PaymentList> {
                   const divider(),
 
                   const SizedBox(
-                    height: 40,
+                    height: 10,
                   ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        shadowColor: Colors.black,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        primary: Colors.black,
-                        onPrimary: Colors.white,
-                        // ignore: prefer_const_constructors
-                        textStyle: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.normal),
-                        minimumSize: const Size(280, 40)),
-                    child: const Text('Proceed'),
-                    onPressed: () {},
+                  AppButton(
+                    text: 'Proceed',
+                    fontSize: 20,
+                    textColor: Colors.white,
+                    bgColor: Colors.black,
+                    onTap: () {
+                      Navigator.pushNamed(context, Routes.home);
+                    },
+                    fontWeight: FontWeight.bold,
+                    borderRadius: 30,
+                    height: 10,
                   ),
+                  // ElevatedButton(
+                  //   style: ElevatedButton.styleFrom(
+                  //       shadowColor: Colors.black,
+                  //       shape: RoundedRectangleBorder(
+                  //           borderRadius: BorderRadius.circular(20)),
+                  //       primary: Colors.black,
+                  //       onPrimary: Colors.white,
+                  //       // ignore: prefer_const_constructors
+                  //       textStyle: TextStyle(
+                  //           fontSize: 20, fontWeight: FontWeight.normal),
+                  //       minimumSize: const Size(280, 40)),
+                  //   child: const Text('Proceed'),
+                  //   onPressed: () {},
+                  // ),
                   // ignore: prefer_const_constructors
                   SizedBox(
                     height: 20,

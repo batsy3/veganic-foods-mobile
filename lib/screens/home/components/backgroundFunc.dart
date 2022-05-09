@@ -14,20 +14,20 @@ class Components extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Container(
-            alignment: Alignment.center,
-            margin: const EdgeInsets.all(10),
-            child: AppButton(
-              text: "Get Started",
-              bgColor: kPrimaryColor,
-              textColor: Colors.purple,
-              borderRadius: 30,
-              fontSize: 25,
-              fontWeight: FontWeight.w600,
-              onTap: (){
-                Navigator.pushNamed(context, Routes.scan);
-              },
-            )
-          ),
+              alignment: Alignment.center,
+              margin: const EdgeInsets.all(10),
+              child: AppButton(
+                text: "Get Started",
+                bgColor: kPrimaryColor,
+                textColor: Colors.purple,
+                borderRadius: 30,
+                fontSize: 25,
+                fontWeight: FontWeight.w600,
+                onTap: () {
+                  Navigator.pushNamed(context, Routes.scan);
+                },
+                height: 24,
+              )),
         ],
       ),
     );
