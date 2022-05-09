@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:veganic_foods_app/screens/basket_page/basket_page.dart';
-import 'package:veganic_foods_app/screens/home/landing_page.dart';
-import 'package:veganic_foods_app/screens/payment_page/paymentPage.dart';
-import 'package:veganic_foods_app/screens/scanning_page/scanning_page.dart';
+import 'package:veganic_foods_app/screens/basket_page/basket.dart';
+import 'package:veganic_foods_app/screens/home/home.dart';
+import 'package:veganic_foods_app/screens/payment_page/payment.dart';
+import 'package:veganic_foods_app/screens/scanning_page/scan.dart';
 import 'package:veganic_foods_app/utils/routes.dart';
 
 void main() {
