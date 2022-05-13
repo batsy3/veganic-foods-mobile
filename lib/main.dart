@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:veganic_foods_app/screens/basket_page/basket.dart';
+import 'package:veganic_foods_app/screens/details_page/details.dart';
 import 'package:veganic_foods_app/screens/home/home.dart';
 import 'package:veganic_foods_app/screens/payment_page/payment.dart';
 import 'package:veganic_foods_app/screens/scanning_page/scan.dart';
@@ -26,13 +27,13 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: LandingPage(),
-      routes: {
-        Routes.home: (context) => const LandingPage(),
-        Routes.scan: (context) => const ScanningPage(),
-        Routes.cart: (context) => Basketpage(),
-        Routes.payment: (context) => const PaymentPage()
-      },
+      home: Details(),
+      // routes: {
+      //   Routes.home: (context) => const LandingPage(),
+      //   Routes.scan: (context) => const ScanningPage(),
+      //   Routes.cart: (context) => Basketpage(),
+      //   Routes.payment: (context) => const PaymentPage()
+      // },
       //  Define routes to other pages
     );
   }
