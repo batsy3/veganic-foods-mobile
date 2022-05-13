@@ -5,6 +5,7 @@ import 'package:http/http.dart';
 import 'package:veganic_foods_app/constants.dart';
 import 'package:veganic_foods_app/screens/basket_page/components/list_items.dart';
 import 'package:veganic_foods_app/screens/payment_page/payment.dart';
+import 'package:veganic_foods_app/utils/routes.dart';
 import 'package:veganic_foods_app/widgets/custom_button.dart';
 import 'package:veganic_foods_app/widgets/default_back_button.dart';
 
@@ -25,11 +26,11 @@ class Httpservice {
 }
 
 class Details extends StatefulWidget {
-  // final Future item;
-  //  required this.item
+  final Future<Product> item;
+  
   int? price = 0;
   Details({
-    Key? key,
+    Key? key, required this.item,
   }) : super(key: key);
 
   @override
@@ -66,7 +67,11 @@ class _DetailsState extends State<Details> {
                       padding: EdgeInsets.only(top: 30, left: 20),
                       child: Row(
                         children: [
-                          DefaultBackButton(),
+                          IconButton(icon: Icon(Icons.arrow_back_ios),  onPressed: () {
+                            Navigator.pushNamed(context, Routes.scan);
+                          },
+                            
+                          ),
                           SizedBox(
                             width: 200,
                           ),
@@ -270,17 +275,12 @@ class _DetailsState extends State<Details> {
                   borderRadius: BorderRadius.all(Radius.circular(50))),
               width: size.width * 0.5,
               height: size.height * 0.07,
-              child: const Center(
-                  child: const Text(
-                'cheese',
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              child: Center(
+                  child:Text(''),
               )),
             ),
-          ),
-        ]),
-      ),
-    );
+          ]),
+    ));
   }
 
   // Multipleselect() {}

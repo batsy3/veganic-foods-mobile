@@ -27,13 +27,13 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Details(),
-      // routes: {
-      //   Routes.home: (context) => const LandingPage(),
-      //   Routes.scan: (context) => const ScanningPage(),
-      //   Routes.cart: (context) => Basketpage(),
-      //   Routes.payment: (context) => const PaymentPage()
-      // },
+      home: LandingPage(),
+      routes: {
+        Routes.home: (context) => const LandingPage(),
+        Routes.scan: (context) => const ScanningPage(),
+        Routes.cart: (context) => Basketpage(),
+        Routes.payment: (context) => const PaymentPage()
+      },
       //  Define routes to other pages
     );
   }

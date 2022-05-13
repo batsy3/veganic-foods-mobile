@@ -17,7 +17,7 @@ import 'package:veganic_foods_app/widgets/page_background.dart';
 class Httpservice {
   final String postUrl = "http://192.168.40.100:8000/products";
   Future<Product> getProductbyid(String? id) async {
-    String url = postUrl + "/$id";
+    String url = postUrl +'$id';
     Response res = await get(Uri.parse(url));
 
     if (res.statusCode == 200) {
@@ -81,11 +81,13 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
                       children: <Widget>[
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
-                          children: const [
+                          children: [
                             SizedBox(
                               width: 9,
                             ),
-                            DefaultBackButton(),
+                            IconButton(onPressed:() {
+                              Navigator.pushNamed(context, Routes.home);
+                            }, icon: Icon(Icons.arrow_back_ios)),
                             SizedBox(
                               width: 70,
                             ),
@@ -136,11 +138,11 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
           if (result?.format == BarcodeFormat.qrcode) {
             _future = _httpservice.getProductbyid(result!.code);
             print(_future);
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //       builder: (context) => Details(item: _future),
-            //     ));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Details(item: _future),
+                ));
           }
         }));
   }
@@ -182,5 +184,5 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
   }
 
   Widget buildResult() =>
-      Text(result != null ? 'Result : ${result!.code}' : 'scan');
+      Text(result != null ? 'Result : ${result!.code}, $_future' : 'scan');
 }
