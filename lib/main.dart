@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:veganic_foods_app/screens/basket_page/basket.dart';
-import 'package:veganic_foods_app/screens/details_page/details.dart';
 import 'package:veganic_foods_app/screens/home/home.dart';
 import 'package:veganic_foods_app/screens/payment_page/payment.dart';
 import 'package:veganic_foods_app/screens/scanning_page/scan.dart';

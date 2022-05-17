@@ -1,32 +1,13 @@
-import 'dart:collection';
-import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'dart:io';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:veganic_foods_app/constants.dart';
-import 'package:veganic_foods_app/screens/details_page/components/product_class.dart';
-import 'package:veganic_foods_app/screens/details_page/details.dart';
 import 'package:veganic_foods_app/utils/routes.dart';
 import 'package:veganic_foods_app/widgets/custom_button.dart';
-import 'package:veganic_foods_app/widgets/custom_page_header.dart';
-import 'package:veganic_foods_app/widgets/default_back_button.dart';
 import 'package:veganic_foods_app/widgets/page_background.dart';
-//192.168.40.100
-class Httpservice {
-  final String postUrl = "http://192.168.40.100:8000/products";
-  Future<Product> getProductbyid(String? id) async {
-    String url = postUrl +'$id';
-    Response res = await get(Uri.parse(url));
 
-    if (res.statusCode == 200) {
-      return productfromjson(res.body);
-    } else {
-      throw "not in";
-    }
-  }
-}
+import 'https_service.dart';
 
 class QRCodeScanner extends StatefulWidget {
   const QRCodeScanner({Key? key}) : super(key: key);
@@ -37,9 +18,7 @@ class QRCodeScanner extends StatefulWidget {
 
 class _QRCodeScannerState extends State<QRCodeScanner> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-  final Httpservice _httpservice = Httpservice();
-
-  Barcode? result;
+   Barcode? result;
   QRViewController? controller;
 
   @override
@@ -85,9 +64,11 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
                             SizedBox(
                               width: 9,
                             ),
-                            IconButton(onPressed:() {
-                              Navigator.pushNamed(context, Routes.home);
-                            }, icon: Icon(Icons.arrow_back_ios)),
+                            IconButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(context, Routes.home);
+                                },
+                                icon: Icon(Icons.arrow_back_ios)),
                             SizedBox(
                               width: 70,
                             ),
@@ -128,23 +109,17 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
         ));
   }
 
-  late Future<Product> _future;
-
-  String? _onQRViewCreated(QRViewController controller) {
+  _onQRViewCreated(QRViewController controller) {
     setState(() => this.controller = controller);
-
-    controller.scannedDataStream.listen((scanData) => setState(() {
-          result = scanData;
-          if (result?.format == BarcodeFormat.qrcode) {
-            _future = _httpservice.getProductbyid(result!.code);
-            print(_future);
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Details(item: _future),
-                ));
-          }
-        }));
+    bool scanned = false;
+    controller.scannedDataStream.listen((scanData) {
+      if (!scanned) {
+        scanned = true;
+        controller.pauseCamera();
+        setState(() => result = scanData);
+        Navigator.push(context, MaterialPageRoute(builder: ((context) => Httpp(id: result!.code))));
+      }
+    });
   }
 
   Widget _buildQrView(BuildContext context) {
@@ -184,5 +159,5 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
   }
 
   Widget buildResult() =>
-      Text(result != null ? 'Result : ${result!.code}, $_future' : 'scan');
+      Text(result != null ? 'Result : ${result!.code},' : 'scan');
 }
