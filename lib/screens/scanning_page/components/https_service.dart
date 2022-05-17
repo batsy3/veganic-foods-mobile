@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:http/http.dart' as http;
 import 'package:veganic_foods_app/screens/details_page/details.dart';
 
@@ -14,42 +15,35 @@ class Httpp extends StatefulWidget {
 }
 
 class _HttppState extends State<Httpp> {
-   late final Future<Product> _future = _getdata(widget.id);
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _future = _getdata(widget.id);
-  // }
+  late final Future<Product> _future = _getdata(widget.id);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
           future: _future,
-          // future: _getdata(widget.id),
           builder: (context, AsyncSnapshot<Product> snapshot) {
             switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
               case ConnectionState.done:
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Details(
-                              name: snapshot.data!.name,
-                              description: snapshot.data!.description,
-                              imgsrc: snapshot.data!.imgsrc,
-                            )));
+                SchedulerBinding.instance?.addPostFrameCallback((_) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Details(
+                                name: snapshot.data!.name,
+                                description: snapshot.data!.description,
+                                imgsrc: snapshot.data!.imgsrc,
+                              )));
+                });
                 break;
               case ConnectionState.none:
                 throw Exception('couldnt get item');
               default:
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
             }
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           }),
     );
   }

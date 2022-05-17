@@ -1,16 +1,9 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_number_picker/flutter_number_picker.dart';
-import 'package:http/http.dart';
 import 'package:veganic_foods_app/constants.dart';
-import 'package:veganic_foods_app/screens/basket_page/components/list_items.dart';
-import 'package:veganic_foods_app/screens/payment_page/payment.dart';
-import 'package:veganic_foods_app/screens/scanning_page/components/qr_code_scanner.dart';
 import 'package:veganic_foods_app/utils/routes.dart';
 import 'package:veganic_foods_app/widgets/custom_button.dart';
-import 'package:veganic_foods_app/widgets/default_back_button.dart';
 
-import 'components/product_class.dart';
 
 class Details extends StatefulWidget {
   // final Future<Product>? item;
@@ -18,7 +11,7 @@ class Details extends StatefulWidget {
   final String name;
   final String description;
   final String imgsrc;
-  Details({
+  const Details({
     Key? key,
     required this.name,
     required this.description,
@@ -39,7 +32,7 @@ class _DetailsState extends State<Details> {
         backgroundColor: bGcolor,
         //get background image from api object ima
         body: Container(
-          decoration: BoxDecoration(),
+          decoration: const BoxDecoration(),
           child: Stack(children: [
             Column(
               children: [
@@ -51,23 +44,23 @@ class _DetailsState extends State<Details> {
                   height: size.height * 0.7,
                   decoration: const BoxDecoration(
                       color: Colors.white,
-                      borderRadius: const BorderRadius.only(
-                          topLeft: const Radius.circular(40),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(40),
                           topRight: Radius.circular(40))),
                   child: Column(
                     // ignore: prefer_const_literals_to_create_immutables
                     children: [
                       Container(
-                        padding: EdgeInsets.only(top: 30, left: 20),
+                        padding: const EdgeInsets.only(top: 30, left: 20),
                         child: Row(
                           children: [
                             IconButton(
-                              icon: Icon(Icons.arrow_back_ios),
+                              icon: const Icon(Icons.arrow_back_ios),
                               onPressed: () {
-                                Navigator.pop(context, Routes.scan);
+                                Navigator.pushNamed(context, Routes.scan);
                               },
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 200,
                             ),
                           ],
@@ -80,7 +73,7 @@ class _DetailsState extends State<Details> {
                               child: Center(
                             child: Column(
                               children: [
-                                Text(
+                                const Text(
                                   'Description',
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -89,134 +82,132 @@ class _DetailsState extends State<Details> {
                               ],
                             ),
                           )),
-                          VerticalDivider(
+                        const  VerticalDivider(
                             width: 1,
                           ),
                           // ignore: prefer_const_constructors
                           Expanded(
-                              child: Center(
-                            child: Text(
+                              child: const Center(
+                            child:  Text(
                               ' Nutritional value',
-                              style: TextStyle(
+                              style:  TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 15),
                             ),
                           )),
                         ],
                       ),
-                      Divider(
+                      const Divider(
+                        indent: 220,
+                        endIndent: 20,
+                        thickness: 1,
+                        color: Colors.black,
+                      ),
+                     Row(
+                       children: [
+                         Expanded(
+                           flex: 1,
+                           child: Container(
+                             padding: const EdgeInsets.only(
+                                 left: 50, right: 10, top: 0, bottom: 40),
+                             child: Center(
+                               child: Expanded(
+                                 child: Text(
+                                   widget.description,
+                                 ),
+                               ),
+                             ),
+                           ),
+                         ),
+                         const VerticalDivider(
+                           width: 1.0,
+                         ),
+                         Expanded(
+                             child: Container(
+                           padding: const EdgeInsets.only(left: 30, right: 10),
+                           child: Center(
+                               child: Column(
+                             children: [
+                               const Text(
+                                 'omg cheese cheese cheese why cheese ahhhhhhhhh cheeseeee echeeeeeeeessseeeeee ',
+                                 textWidthBasis: TextWidthBasis.parent,
+                               ),
+                             ],
+                           )),
+                         ))
+                       ],
+                     ),
+                      const Divider(
                         indent: 220,
                         endIndent: 20,
                         thickness: 1,
                         color: Colors.black,
                       ),
                       Container(
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
-                              child: Container(
-                                padding: EdgeInsets.only(
-                                    left: 50, right: 10, top: 0, bottom: 40),
-                                child: Center(
-                                  child: Expanded(
-                                    child: Text(
-                                      widget.description,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            VerticalDivider(
-                              width: 1.0,
-                            ),
-                            Expanded(
-                                child: Container(
-                              padding: EdgeInsets.only(left: 30, right: 10),
-                              child: Center(
-                                  child: Column(
-                                children: [
-                                  Text(
-                                    'omg cheese cheese cheese why cheese ahhhhhhhhh cheeseeee echeeeeeeeessseeeeee ',
-                                    textWidthBasis: TextWidthBasis.parent,
-                                  ),
-                                ],
-                              )),
-                            ))
-                          ],
-                        ),
-                      ),
-                      Divider(
-                        indent: 220,
-                        endIndent: 20,
-                        thickness: 1,
-                        color: Colors.black,
-                      ),
-                      Container(
-                          padding: EdgeInsets.only(left: 220),
+                          padding: const EdgeInsets.only(left: 220),
                           child: Row(
-                            children: [
-                              Icon(Icons.check),
-                              SizedBox(
+                            children: const [
+                               Icon(Icons.check),
+                               SizedBox(
                                 width: 10,
                               ),
-                              Text('15 cals'),
-                              SizedBox(
+                               Text('15 cals'),
+                               SizedBox(
                                 width: 30,
                               ),
-                              Text(
+                               Text(
                                 '*daily value',
-                                style: TextStyle(fontSize: 10),
+                                style:  TextStyle(fontSize: 10),
                               )
                             ],
                           )),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Container(
                         width: size.width * 0.85,
                         height: size.height * 0.13,
                         alignment: Alignment.center,
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 249, 253, 255),
+                        padding: const EdgeInsets.all(10),
+                        decoration: const BoxDecoration(
+                            color: const Color.fromARGB(255, 249, 253, 255),
                             boxShadow: [
-                              BoxShadow(
+                              const BoxShadow(
                                   blurRadius: 3,
                                   spreadRadius: -3,
                                   offset: Offset(0.84, 5))
                             ],
                             borderRadius:
-                                BorderRadius.all(Radius.circular(40))),
+                                const BorderRadius.all(const Radius.circular(40))),
                         child: Column(
                           children: [
                             Container(
-                              padding: EdgeInsets.only(right: 180),
-                              child: Text(
+                              padding: const EdgeInsets.only(right: 180),
+                              child: const Text(
                                 'Ingredients',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 15, fontWeight: FontWeight.bold),
                               ),
                             ),
-                            Expanded(
-                              child: ingredient_images(),
+                            const Expanded(
+                              child: const ingredient_images(),
                             )
                           ],
                         ),
                       ),
                       // Multipleselect(),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       Row(
                         children: [
                           Container(
-                              padding: EdgeInsets.only(left: 30),
+                              padding: const EdgeInsets.only(left: 30),
                               child: Text(
                                 'K' ' ' + price.toString(),
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 25),
                               )),
-                          SizedBox(
+                          const SizedBox(
                             width: 95,
                           ),
                           CustomNumberPicker(
@@ -229,13 +220,13 @@ class _DetailsState extends State<Details> {
                               maxValue: 20,
                               minValue: 1,
                               step: 1),
-                          SizedBox(
+                          const SizedBox(
                             width: 70,
                           ),
                           FloatingActionButton(
                             backgroundColor: bGcolor,
                             onPressed: () {},
-                            child: Icon(Icons.shopping_basket_outlined),
+                            child: const Icon(Icons.shopping_basket_outlined),
                           )
                         ],
                       ),
@@ -314,7 +305,7 @@ class ingredient_images extends StatelessWidget {
                 height: 90,
                 fit: BoxFit.fitHeight,
               ),
-              VerticalDivider(
+              const VerticalDivider(
                 width: 8,
                 thickness: 0,
               )
