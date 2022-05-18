@@ -63,6 +63,7 @@ class _DetailsState extends State<Details> {
                             const SizedBox(
                               width: 200,
                             ),
+                            //price
                           ],
                         ),
                       ),

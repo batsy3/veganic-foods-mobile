@@ -5,9 +5,9 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:veganic_foods_app/constants.dart';
 import 'package:veganic_foods_app/utils/routes.dart';
 import 'package:veganic_foods_app/widgets/custom_button.dart';
+import 'package:veganic_foods_app/widgets/custom_page_header.dart';
+import 'package:veganic_foods_app/widgets/default_back_button.dart';
 import 'package:veganic_foods_app/widgets/page_background.dart';
-
-import 'https_service.dart';
 
 class QRCodeScanner extends StatefulWidget {
   const QRCodeScanner({Key? key}) : super(key: key);
@@ -18,7 +18,7 @@ class QRCodeScanner extends StatefulWidget {
 
 class _QRCodeScannerState extends State<QRCodeScanner> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-   Barcode? result;
+  Barcode? result;
   QRViewController? controller;
 
   @override
@@ -45,7 +45,6 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
             SafeArea(
               child: Column(
                 children: [
-                  buildResult(),
                   Container(
                     width: size.width,
                     height: size.height * 0.7,
@@ -60,15 +59,11 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
                       children: <Widget>[
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
+                          children: const [
                             SizedBox(
                               width: 9,
                             ),
-                            IconButton(
-                                onPressed: () {
-                                  Navigator.pushNamed(context, Routes.home);
-                                },
-                                icon: Icon(Icons.arrow_back_ios)),
+                            DefaultBackButton(),
                             SizedBox(
                               width: 70,
                             ),
@@ -109,16 +104,12 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
         ));
   }
 
-  _onQRViewCreated(QRViewController controller) {
-    setState(() => this.controller = controller);
-    bool scanned = false;
+  void _onQRViewCreated(QRViewController controller) {
+    this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
-      if (!scanned) {
-        scanned = true;
-        controller.pauseCamera();
-        setState(() => result = scanData);
-        Navigator.push(context, MaterialPageRoute(builder: ((context) => Httpp(id: result!.code))));
-      }
+      setState(() {
+        result = scanData;
+      });
     });
   }
 
@@ -157,7 +148,4 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
     controller?.dispose();
     super.dispose();
   }
-
-  Widget buildResult() =>
-      Text(result != null ? 'Result : ${result!.code},' : 'scan');
 }
