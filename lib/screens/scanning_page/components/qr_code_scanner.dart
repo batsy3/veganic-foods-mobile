@@ -5,7 +5,6 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:veganic_foods_app/constants.dart';
 import 'package:veganic_foods_app/utils/routes.dart';
 import 'package:veganic_foods_app/widgets/custom_button.dart';
-import 'package:veganic_foods_app/widgets/custom_page_header.dart';
 import 'package:veganic_foods_app/widgets/default_back_button.dart';
 import 'package:veganic_foods_app/widgets/page_background.dart';
 
