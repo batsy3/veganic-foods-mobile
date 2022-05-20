@@ -9,6 +9,8 @@ import 'package:veganic_foods_app/widgets/custom_page_header.dart';
 import 'package:veganic_foods_app/widgets/default_back_button.dart';
 import 'package:veganic_foods_app/widgets/page_background.dart';
 
+import 'https_service.dart';
+
 class QRCodeScanner extends StatefulWidget {
   const QRCodeScanner({Key? key}) : super(key: key);
 
@@ -106,11 +108,20 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
 
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
-    controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        result = scanData;
-      });
+        ///
+        bool scanned = false;
+        controller.scannedDataStream.listen((scanData) {
+        if (!scanned) {
+        scanned = true;
+        controller.pauseCamera();
+        setState(() => result = scanData);
+        print(result!.code);
+
+        Navigator.push(context, MaterialPageRoute(builder: ((context) => Httpp(id: result!.code))));
+      }
     });
+      
+    ;
   }
 
   Widget _buildQrView(BuildContext context) {

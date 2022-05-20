@@ -10,12 +10,18 @@ class Details extends StatefulWidget {
   // late Future<Product>? item = [] as Future<Product>?;
   final String name;
   final String description;
-  final String imgsrc;
+  final String price;
+  final int quantity;
+  final String image;
+  final int category;
   const Details({
     Key? key,
     required this.name,
-    required this.description,
-    required this.imgsrc,
+      required this.description,
+      required this.price,
+      required this.quantity,
+      required this.image,
+      required this.category,
     // required this.item,
   }) : super(key: key);
 
@@ -24,9 +30,9 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> {
-  int? price = 0;
   @override
   Widget build(BuildContext context) {
+  String price = widget.price;
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: bGcolor,
@@ -204,7 +210,7 @@ class _DetailsState extends State<Details> {
                           Container(
                               padding: const EdgeInsets.only(left: 30),
                               child: Text(
-                                'K' ' ' + price.toString(),
+                                'K' ' ' + price,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 25),
                               )),
@@ -212,9 +218,9 @@ class _DetailsState extends State<Details> {
                             width: 95,
                           ),
                           CustomNumberPicker(
-                              onValue: (newvalue) => {
+                              onValue: (dynamic newvalue) => {
                                     setState(() {
-                                      price = newvalue as int?;
+                                      price = newvalue;
                                     })
                                   },
                               initialValue: 1,
