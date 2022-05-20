@@ -7,17 +7,20 @@ import 'package:veganic_foods_app/widgets/custom_button.dart';
 import 'package:badges/badges.dart';
 
 class Details extends StatefulWidget {
-  // final Future<Product>? item;
-  // late Future<Product>? item = [] as Future<Product>?;
   final String name;
   final String description;
-  final String imgsrc;
+  final String price;
+  final int quantity;
+  final String image;
+  final int category;
   const Details({
     Key? key,
     required this.name,
     required this.description,
-    required this.imgsrc,
-    // required this.item,
+    required this.price,
+    required this.quantity,
+    required this.image,
+    required this.category,
   }) : super(key: key);
 
   @override
@@ -25,11 +28,11 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> {
-  var additions = ['tomatoes', 'vegan cheese', 'blue cheese'];
-  String? val = 'tomatoes';
   @override
   Widget build(BuildContext context) {
-    int price = 600;
+    var additions = ['blue cheese', 'mushroom'];
+    String val = 'blue cheese';
+    String price = widget.price;
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -38,7 +41,7 @@ class _DetailsState extends State<Details> {
       decoration: BoxDecoration(
           color: bGcolor,
           image: DecorationImage(
-              image: NetworkImage(widget.imgsrc), fit: BoxFit.fitHeight)),
+              image: NetworkImage(widget.image), fit: BoxFit.fitHeight)),
       child: Stack(children: [
         Column(
           children: [
@@ -258,7 +261,7 @@ class _DetailsState extends State<Details> {
                             CustomNumberPicker(
                                 onValue: (dynamic newvalue) => {
                                       setState(() {
-                                        price = (price * newvalue) as int;
+                                        price = (price * newvalue);
                                       })
                                     },
                                 initialValue: 0,

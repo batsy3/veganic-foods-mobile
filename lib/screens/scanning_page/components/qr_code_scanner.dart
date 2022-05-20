@@ -60,18 +60,18 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            SizedBox(
+                            const SizedBox(
                               width: 9,
                             ),
                             IconButton(
                                 onPressed: () {
                                   Navigator.pushNamed(context, Routes.home);
                                 },
-                                icon: Icon(Icons.arrow_back_ios)),
-                            SizedBox(
+                                icon: const Icon(Icons.arrow_back_ios)),
+                            const SizedBox(
                               width: 70,
                             ),
-                            Text(
+                            const Text(
                               'Scan QR Code',
                               style: TextStyle(
                                   fontWeight: FontWeight.w600, fontSize: 20),
