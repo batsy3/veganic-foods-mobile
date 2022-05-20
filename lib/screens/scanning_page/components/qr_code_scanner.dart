@@ -45,7 +45,6 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
             SafeArea(
               child: Column(
                 children: [
-                  buildResult(),
                   Container(
                     width: size.width,
                     height: size.height * 0.7,
@@ -158,6 +157,6 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
     super.dispose();
   }
 
-  Widget buildResult() =>
-      Text(result != null ? 'Result : ${result!.code},' : 'scan');
+  // Widget buildResult() =>
+  //     Text(result != null ? 'Result : ${result!.code},' : 'scan');
 }
