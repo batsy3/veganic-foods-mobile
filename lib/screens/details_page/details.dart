@@ -30,13 +30,12 @@ class Details extends StatefulWidget {
 class _DetailsState extends State<Details> {
   @override
   Widget build(BuildContext context) {
-    var additions = ['blue cheese', 'mushroom'];
-    String val = 'blue cheese';
+    var additions = <String>[];
+    String val = additions[0].toString();
     String price = widget.price;
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-        //get background image from api object ima
         body: Container(
       decoration: BoxDecoration(
           color: bGcolor,
@@ -135,7 +134,7 @@ class _DetailsState extends State<Details> {
                             child: Column(
                           children: [
                             const Text(
-                              'omg cheese cheese cheese why cheese ahhhhhhhhh cheeseeee echeeeeeeeessseeeeee ',
+                              '',
                               textWidthBasis: TextWidthBasis.parent,
                             ),
                           ],
@@ -287,7 +286,8 @@ class _DetailsState extends State<Details> {
                                   Icons.shopping_basket,
                                   size: 30,
                                 ),
-                                badgeContent: Text('4'),
+                                //cart item count
+                                badgeContent: Text('0'),
                               ),
                             )
                           ],
@@ -333,7 +333,6 @@ class _DetailsState extends State<Details> {
       ]),
     ));
   }
-  // Multipleselect() {}
 }
 
 List images = [];
