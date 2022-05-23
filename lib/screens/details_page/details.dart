@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cart/flutter_cart.dart';
+import 'package:flutter_cart/model/cart_model.dart';
 import 'package:flutter_number_picker/flutter_number_picker.dart';
 import 'package:veganic_foods_app/constants.dart';
 import 'package:veganic_foods_app/utils/routes.dart';
 import 'package:veganic_foods_app/widgets/custom_button.dart';
 
-
 class Details extends StatefulWidget {
   // final Future<Product>? item;
   // late Future<Product>? item = [] as Future<Product>?;
+  final int product_id;
   final String name;
   final String description;
   final String price;
@@ -16,12 +18,14 @@ class Details extends StatefulWidget {
   final int category;
   const Details({
     Key? key,
+    // ignore: non_constant_identifier_names
+    required this.product_id,
     required this.name,
-      required this.description,
-      required this.price,
-      required this.quantity,
-      required this.image,
-      required this.category,
+    required this.description,
+    required this.price,
+    required this.quantity,
+    required this.image,
+    required this.category,
     // required this.item,
   }) : super(key: key);
 
@@ -32,7 +36,7 @@ class Details extends StatefulWidget {
 class _DetailsState extends State<Details> {
   @override
   Widget build(BuildContext context) {
-  String price = widget.price;
+    String price = widget.price;
     Size size = MediaQuery.of(context).size;
     return Scaffold(
         backgroundColor: bGcolor,
@@ -89,15 +93,15 @@ class _DetailsState extends State<Details> {
                               ],
                             ),
                           )),
-                        const  VerticalDivider(
+                          const VerticalDivider(
                             width: 1,
                           ),
                           // ignore: prefer_const_constructors
                           Expanded(
                               child: const Center(
-                            child:  Text(
+                            child: Text(
                               ' Nutritional value',
-                              style:  TextStyle(
+                              style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 15),
                             ),
                           )),
@@ -109,40 +113,40 @@ class _DetailsState extends State<Details> {
                         thickness: 1,
                         color: Colors.black,
                       ),
-                     Row(
-                       children: [
-                         Expanded(
-                           flex: 1,
-                           child: Container(
-                             padding: const EdgeInsets.only(
-                                 left: 50, right: 10, top: 0, bottom: 40),
-                             child: Center(
-                               child: Expanded(
-                                 child: Text(
-                                   widget.description,
-                                 ),
-                               ),
-                             ),
-                           ),
-                         ),
-                         const VerticalDivider(
-                           width: 1.0,
-                         ),
-                         Expanded(
-                             child: Container(
-                           padding: const EdgeInsets.only(left: 30, right: 10),
-                           child: Center(
-                               child: Column(
-                             children: [
-                               const Text(
-                                 'omg cheese cheese cheese why cheese ahhhhhhhhh cheeseeee echeeeeeeeessseeeeee ',
-                                 textWidthBasis: TextWidthBasis.parent,
-                               ),
-                             ],
-                           )),
-                         ))
-                       ],
-                     ),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              padding: const EdgeInsets.only(
+                                  left: 50, right: 10, top: 0, bottom: 40),
+                              child: Center(
+                                child: Expanded(
+                                  child: Text(
+                                    widget.description,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const VerticalDivider(
+                            width: 1.0,
+                          ),
+                          Expanded(
+                              child: Container(
+                            padding: const EdgeInsets.only(left: 30, right: 10),
+                            child: Center(
+                                child: Column(
+                              children: [
+                                const Text(
+                                  'omg cheese cheese cheese why cheese ahhhhhhhhh cheeseeee echeeeeeeeessseeeeee ',
+                                  textWidthBasis: TextWidthBasis.parent,
+                                ),
+                              ],
+                            )),
+                          ))
+                        ],
+                      ),
                       const Divider(
                         indent: 220,
                         endIndent: 20,
@@ -153,17 +157,17 @@ class _DetailsState extends State<Details> {
                           padding: const EdgeInsets.only(left: 220),
                           child: Row(
                             children: const [
-                               Icon(Icons.check),
-                               SizedBox(
+                              Icon(Icons.check),
+                              SizedBox(
                                 width: 10,
                               ),
-                               Text('15 cals'),
-                               SizedBox(
+                              Text('15 cals'),
+                              SizedBox(
                                 width: 30,
                               ),
-                               Text(
+                              Text(
                                 '*daily value',
-                                style:  TextStyle(fontSize: 10),
+                                style: TextStyle(fontSize: 10),
                               )
                             ],
                           )),
@@ -183,8 +187,8 @@ class _DetailsState extends State<Details> {
                                   spreadRadius: -3,
                                   offset: Offset(0.84, 5))
                             ],
-                            borderRadius:
-                                const BorderRadius.all(const Radius.circular(40))),
+                            borderRadius: const BorderRadius.all(
+                                const Radius.circular(40))),
                         child: Column(
                           children: [
                             Container(
@@ -274,7 +278,6 @@ class _DetailsState extends State<Details> {
           ]),
         ));
   }
-  // Multipleselect() {}
 }
 
 List images = [];

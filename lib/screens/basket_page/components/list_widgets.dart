@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_number_picker/flutter_number_picker.dart';
-import 'list_items.dart';
+import 'package:veganic_foods_app/screens/details_page/components/product_class.dart';
 
 class ListWidget extends StatefulWidget {
-  final Listitem item;
+  final Product item;
   final Animation<double> animation;
   const ListWidget({
     Key? key,
@@ -18,7 +18,7 @@ class ListWidget extends StatefulWidget {
 class _ListWidgetState extends State<ListWidget> {
   @override
   Widget build(BuildContext context) => SizeTransition(
-      key: ValueKey(widget.item.image),
+      key: ValueKey(widget.item.product_id),
       sizeFactor: widget.animation,
       child: buildItem());
 
@@ -38,7 +38,7 @@ class _ListWidgetState extends State<ListWidget> {
                   backgroundImage: AssetImage(widget.item.image),
                 ),
                 title: Text(
-                  widget.item.title,
+                  widget.item.name,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 subtitle: Text(

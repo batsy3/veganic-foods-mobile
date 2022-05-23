@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:http/http.dart' as http;
-import 'package:qr_code_scanner/src/types/barcode.dart';
 import 'package:veganic_foods_app/screens/details_page/details.dart';
 
 import '../../details_page/components/product_class.dart';
@@ -37,8 +36,8 @@ class _HttppState extends State<Httpp> {
                       context,
                       MaterialPageRoute(
                           builder: (context) => Details(category: snapshot.data!.category, description: snapshot.data!.description
-                          , image: '', name: snapshot.data!.name, 
-                          price: snapshot.data!.price, quantity: snapshot.data!.quantity,
+                          , image:snapshot.data!.image, name: snapshot.data!.name, 
+                          price: snapshot.data!.price, quantity: snapshot.data!.quantity, product_id: snapshot.data!.product_id,
                               )));
                 });
                 break;
