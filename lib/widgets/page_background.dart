@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:veganic_foods_app/widgets/custom_page_header.dart';
 class PagesBackground extends StatelessWidget {
   const PagesBackground({
     Key? key,

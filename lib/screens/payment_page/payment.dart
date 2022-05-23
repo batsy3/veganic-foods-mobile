@@ -152,20 +152,6 @@ class _PaymentListState extends State<PaymentList> {
                     borderRadius: 30,
                     height: 10,
                   ),
-                  // ElevatedButton(
-                  //   style: ElevatedButton.styleFrom(
-                  //       shadowColor: Colors.black,
-                  //       shape: RoundedRectangleBorder(
-                  //           borderRadius: BorderRadius.circular(20)),
-                  //       primary: Colors.black,
-                  //       onPrimary: Colors.white,
-                  //       // ignore: prefer_const_constructors
-                  //       textStyle: TextStyle(
-                  //           fontSize: 20, fontWeight: FontWeight.normal),
-                  //       minimumSize: const Size(280, 40)),
-                  //   child: const Text('Proceed'),
-                  //   onPressed: () {},
-                  // ),
                   // ignore: prefer_const_constructors
                   SizedBox(
                     height: 20,
@@ -227,8 +213,3 @@ class RadiotileCSS extends StatelessWidget {
     ]);
   }
 } 
-//                 ),
-//               ]),
-//             ),
-//           ],
-//         ));

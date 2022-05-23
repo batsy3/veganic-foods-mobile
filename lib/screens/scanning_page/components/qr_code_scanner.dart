@@ -5,8 +5,6 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:veganic_foods_app/constants.dart';
 import 'package:veganic_foods_app/utils/routes.dart';
 import 'package:veganic_foods_app/widgets/custom_button.dart';
-import 'package:veganic_foods_app/widgets/custom_page_header.dart';
-import 'package:veganic_foods_app/widgets/default_back_button.dart';
 import 'package:veganic_foods_app/widgets/page_background.dart';
 
 import 'https_service.dart';
@@ -20,7 +18,7 @@ class QRCodeScanner extends StatefulWidget {
 
 class _QRCodeScannerState extends State<QRCodeScanner> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-  Barcode? result;
+   Barcode? result;
   QRViewController? controller;
 
   @override
@@ -61,15 +59,19 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
                       children: <Widget>[
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
-                          children: const [
-                            SizedBox(
+                          children: [
+                            const SizedBox(
                               width: 9,
                             ),
-                            DefaultBackButton(),
-                            SizedBox(
+                            IconButton(
+                                onPressed: () {
+                                  Navigator.pushNamed(context, Routes.home);
+                                },
+                                icon: const Icon(Icons.arrow_back_ios)),
+                            const SizedBox(
                               width: 70,
                             ),
-                            Text(
+                            const Text(
                               'Scan QR Code',
                               style: TextStyle(
                                   fontWeight: FontWeight.w600, fontSize: 20),
@@ -106,32 +108,24 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
         ));
   }
 
-  void _onQRViewCreated(QRViewController controller) {
-    this.controller = controller;
-        ///
-        bool scanned = false;
-        controller.scannedDataStream.listen((scanData) {
-        if (!scanned) {
+  _onQRViewCreated(QRViewController controller) {
+    setState(() => this.controller = controller);
+    bool scanned = false;
+    controller.scannedDataStream.listen((scanData) {
+      if (!scanned) {
         scanned = true;
         controller.pauseCamera();
         setState(() => result = scanData);
-        print(result!.code);
-
         Navigator.push(context, MaterialPageRoute(builder: ((context) => Httpp(id: result!.code))));
       }
     });
-      
-    ;
   }
 
   Widget _buildQrView(BuildContext context) {
-    // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
     var scanArea = (MediaQuery.of(context).size.width < 300 ||
             MediaQuery.of(context).size.height < 300)
         ? 150.0
         : 300.0;
-    // To ensure the Scanner view is properly sizes after rotation
-    // we need to listen for Flutter SizeChanged notification and update controller
     return QRView(
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
