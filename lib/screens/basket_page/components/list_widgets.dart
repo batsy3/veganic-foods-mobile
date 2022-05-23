@@ -42,7 +42,7 @@ class _ListWidgetState extends State<ListWidget> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 subtitle: Text(
-                  widget.item.price,
+                  '${widget.item.price}',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
                 ),
                 trailing: CustomNumberPicker(

@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_cart/model/cart_model.dart';
 import 'package:flutter_number_picker/flutter_number_picker.dart';
+import 'package:get/get.dart';
 import 'package:veganic_foods_app/constants.dart';
+import 'package:veganic_foods_app/utils/controller.dart';
 import 'package:veganic_foods_app/utils/routes.dart';
 import 'package:veganic_foods_app/widgets/custom_button.dart';
 
@@ -14,7 +16,7 @@ class Details extends StatefulWidget {
   final int product_id;
   final String name;
   final String description;
-  final String price;
+  final double price;
   final int quantity;
   final String image;
   final int category;
@@ -35,19 +37,25 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> {
+  var price;
+  @override
+  void initState() {
+    // super.initState();
+    price = widget.price;
+  }
+  final Controller controller = Get.put(Controller());
   @override
   Widget build(BuildContext context) {
-    var additions = <String>[];
+    var additions = <String>['addition'];
     String val = additions[0].toString();
-    String price = widget.price;
     Size size = MediaQuery.of(context).size;
-
+    var init_price = widget.price;
     return Scaffold(
         body: Container(
-      decoration: BoxDecoration(
-          color: bGcolor,
-          image: DecorationImage(
-              image: NetworkImage(widget.image), fit: BoxFit.fitHeight)),
+      // decoration: BoxDecoration(
+      //     color: bGcolor,
+      //     image: DecorationImage(
+      //         image: NetworkImage(widget.image), fit: BoxFit.fitHeight)),
       child: Stack(children: [
         Column(
           children: [
@@ -78,7 +86,7 @@ class _DetailsState extends State<Details> {
                           width: 180,
                         ),
                         Text(
-                          'K $price',
+                          'K ${widget.price}',
                           style: TextStyle(
                               fontSize: 35, fontWeight: FontWeight.bold),
                         )
@@ -184,23 +192,27 @@ class _DetailsState extends State<Details> {
                           TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  Container(
-                    width: size.width * 0.85,
-                    height: size.height * 0.1,
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                        color: Color.fromARGB(255, 249, 253, 255),
-                        boxShadow: [
-                          BoxShadow(
-                              blurRadius: 3,
-                              spreadRadius: -3,
-                              offset: Offset(0.84, 5))
-                        ],
-                        borderRadius: BorderRadius.all(Radius.circular(40))),
-                    child: const Expanded(
-                      child: ingredient_images(),
-                    ),
+                  Flex(
+                    direction: Axis.horizontal,
+                    children: [
+                      Container(
+                        width: size.width * 0.85,
+                        height: size.height * 0.1,
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.all(10),
+                        decoration: const BoxDecoration(
+                            color: Color.fromARGB(255, 249, 253, 255),
+                            boxShadow: [
+                              BoxShadow(
+                                  blurRadius: 3,
+                                  spreadRadius: -3,
+                                  offset: Offset(0.84, 5))
+                            ],
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(40))),
+                        child: ingredient_images(),
+                      ),
+                    ],
                   ),
                   // Multipleselect(),
                   const SizedBox(
@@ -265,12 +277,13 @@ class _DetailsState extends State<Details> {
                           direction: Axis.horizontal,
                           children: [
                             CustomNumberPicker(
-                                onValue: (dynamic newvalue) => {
-                                      setState(() {
-                                        price = (price * newvalue);
-                                      })
-                                    },
-                                initialValue: 0,
+                                onValue: (newvalue) {
+                                  setState(() {
+                                    price = (price + init_price);
+                                  });
+                                  print(price);
+                                },
+                                initialValue: 1,
                                 maxValue: 20,
                                 minValue: 1,
                                 step: 1),
@@ -294,9 +307,10 @@ class _DetailsState extends State<Details> {
                                   size: 30,
                                 ),
                                 //cart item count
-                                badgeContent: Text('0'),
+                                badgeContent: Text(
+                                    '${controller.cart.getCartItemCount()}'),
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -308,6 +322,7 @@ class _DetailsState extends State<Details> {
                       textColor: Colors.white,
                       bgColor: Colors.black,
                       onTap: () {
+                        controller.addtocart(widget.product_id, price);
                         Navigator.pushNamed(context, Routes.cart);
                       },
                       fontWeight: FontWeight.normal,

@@ -5,7 +5,7 @@ class Product {
   final int product_id;
   final String name;
   final String description;
-  final String price;
+  final double price;
   final int quantity;
   final String image;
   final int category;
