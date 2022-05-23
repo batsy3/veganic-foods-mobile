@@ -8,7 +8,7 @@ import '../../details_page/components/product_class.dart';
 
 class Httpp extends StatefulWidget {
   final String? id;
-  const Httpp({Key? key, required this.id}) : super(key: key);
+  const Httpp( {Key? key, required this.id}) : super(key: key);
 
   @override
   State<Httpp> createState() => _HttppState();
@@ -23,16 +23,16 @@ class _HttppState extends State<Httpp> {
       body: FutureBuilder(
           future: _future,
           builder: (context, AsyncSnapshot<Product> snapshot) {
+            
             switch (snapshot.connectionState) {
               case ConnectionState.done:
                 SchedulerBinding.instance?.addPostFrameCallback((_) {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Details(
-                                name: snapshot.data!.name,
-                                description: snapshot.data!.description,
-                                imgsrc: snapshot.data!.imgsrc,
+                          builder: (context) => Details(category: snapshot.data!.category, description: snapshot.data!.description
+                          , image: snapshot.data!.image, name: snapshot.data!.name, 
+                          price: snapshot.data!.price, quantity: snapshot.data!.quantity,
                               )));
                 });
                 break;
@@ -49,7 +49,7 @@ class _HttppState extends State<Httpp> {
   }
 }
 
-const String postUrl = "http://192.168.40.148:8000/products";
+const String postUrl = "http://127.0.0.1:8007/api/product";
 Future<Product> _getdata(String? id) async {
   String url = postUrl + '/$id';
   var res = await http.get(Uri.parse(url));
