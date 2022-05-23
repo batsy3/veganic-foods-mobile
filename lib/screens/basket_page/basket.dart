@@ -57,7 +57,6 @@ class Basketpage extends StatelessWidget {
                             onDismissed: () => removeitem(index),
                           ),
                           children: [
-                            //make a button
                             SlidableAction(
                               autoClose: true,
                               flex: 2,
@@ -77,7 +76,6 @@ class Basketpage extends StatelessWidget {
                 SizedBox(
                   height: 30,
                 ),
-                //change to app button
                 AppButton(
                     text: 'Proceed',
                     fontSize: 20,

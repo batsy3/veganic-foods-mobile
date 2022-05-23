@@ -6,7 +6,7 @@ class Product {
   final String description;
   final String price;
   final int quantity;
-  // final String image;
+  final String image;
   final int category;
 
 
@@ -19,21 +19,21 @@ class Product {
       required this.description,
       required this.price,
       required this.quantity,
-      // required this.image,
+      required this.image,
       required this.category});
   Product.fromJson(Map<String, dynamic> json)
       :name = json['name'] as String,
       description = json['description'] as String,
         price = json['price'] ,
         quantity = json['quantity'],
-        // image = json['image'] as String,
+        image = json['image'] as String,
         category = json['category'];
   Map<String, dynamic> toJson() => {
         "name": name,
         "description":description,
         "price":price,
         "quantity":quantity,
-        // "image":image,
+        "image":image,
         "category":category,
       };
 }
