@@ -1,12 +1,11 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cart/flutter_cart.dart';
-import 'package:flutter_cart/model/cart_model.dart';
 import 'package:flutter_number_picker/flutter_number_picker.dart';
-import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:veganic_foods_app/constants.dart';
-import 'package:veganic_foods_app/utils/controller.dart';
+import 'package:veganic_foods_app/providers/cart_provider.dart';
+import 'package:veganic_foods_app/screens/details_page/components/product_class.dart';
 import 'package:veganic_foods_app/utils/routes.dart';
 import 'package:veganic_foods_app/widgets/custom_button.dart';
 
@@ -39,13 +38,22 @@ class Details extends StatefulWidget {
 class _DetailsState extends State<Details> {
   var price;
   @override
+  // ignore: must_call_super
   void initState() {
-    // super.initState();
     price = widget.price;
   }
-  final Controller controller = Get.put(Controller());
+
   @override
   Widget build(BuildContext context) {
+    Product item = Product(
+        name: widget.name,
+        product_id: widget.product_id,
+        description: widget.description,
+        price: widget.price,
+        quantity: widget.quantity,
+        image: widget.image,
+        category: widget.category);
+
     var additions = <String>['addition'];
     String val = additions[0].toString();
     Size size = MediaQuery.of(context).size;
@@ -299,17 +307,16 @@ class _DetailsState extends State<Details> {
                                     offset: Offset(0.84, 5)),
                               ], color: Colors.white, shape: BoxShape.circle),
                               child: Badge(
-                                padding: EdgeInsets.all(3),
-                                shape: BadgeShape.circle,
-                                badgeColor: bGcolor,
-                                child: Icon(
-                                  Icons.shopping_basket,
-                                  size: 30,
-                                ),
-                                //cart item count
-                                badgeContent: Text(
-                                    '${controller.cart.getCartItemCount()}'),
-                              ),
+                                  padding: EdgeInsets.all(3),
+                                  shape: BadgeShape.circle,
+                                  badgeColor: bGcolor,
+                                  child: Icon(
+                                    Icons.shopping_basket,
+                                    size: 30,
+                                  ),
+                                  //cart item count
+                                  badgeContent:
+                                      Text('${context.watch<Cart>().count}')),
                             ),
                           ],
                         ),
@@ -322,7 +329,7 @@ class _DetailsState extends State<Details> {
                       textColor: Colors.white,
                       bgColor: Colors.black,
                       onTap: () {
-                        controller.addtocart(widget.product_id, price);
+                        context.read<Cart>().addtoCart(item);
                         Navigator.pushNamed(context, Routes.cart);
                       },
                       fontWeight: FontWeight.normal,

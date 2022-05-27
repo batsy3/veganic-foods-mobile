@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+import 'package:veganic_foods_app/providers/cart_provider.dart';
 import 'package:veganic_foods_app/screens/basket_page/basket.dart';
 import 'package:veganic_foods_app/screens/details_page/details.dart';
 import 'package:veganic_foods_app/screens/home/home.dart';
 import 'package:veganic_foods_app/screens/payment_page/payment.dart';
 import 'package:veganic_foods_app/screens/scanning_page/scan.dart';
+import 'package:veganic_foods_app/utils/globals.dart';
 import 'package:veganic_foods_app/utils/routes.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [ChangeNotifierProvider(create: (_) => Cart())],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -21,6 +27,7 @@ class MyApp extends StatelessWidget {
       statusBarColor: Colors.transparent,
     ));
     return GetMaterialApp(
+      scaffoldMessengerKey: snackbarKey,
       title: 'Veganic App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -28,7 +35,15 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Details(category: 1, description: 'dog food', image: '', name: 'rice', price: 10.00, quantity: 0, product_id: 1,),
+      home: Details(
+        category: 1,
+        description: 'dog food',
+        image: '',
+        name: 'rice',
+        price: 10.00,
+        quantity: 0,
+        product_id: 1,
+      ),
       routes: {
         Routes.home: (context) => const LandingPage(),
         Routes.scan: (context) => const ScanningPage(),

@@ -3,12 +3,16 @@ import 'package:flutter_number_picker/flutter_number_picker.dart';
 import 'package:veganic_foods_app/screens/details_page/components/product_class.dart';
 
 class ListWidget extends StatefulWidget {
-  final Product item;
+  final Product product;
   final Animation<double> animation;
+  // final int quantity;
+  final int index;
   const ListWidget({
     Key? key,
-    required this.item,
+    required this.product,
     required this.animation,
+    // required this.quantity,
+    required this.index,
   }) : super(key: key);
 
   @override
@@ -16,9 +20,10 @@ class ListWidget extends StatefulWidget {
 }
 
 class _ListWidgetState extends State<ListWidget> {
+
   @override
   Widget build(BuildContext context) => SizeTransition(
-      key: ValueKey(widget.item.product_id),
+      key: ValueKey(widget.product.product_id),
       sizeFactor: widget.animation,
       child: buildItem());
 
@@ -35,15 +40,15 @@ class _ListWidgetState extends State<ListWidget> {
                 contentPadding: EdgeInsets.all(10),
                 leading: CircleAvatar(
                   radius: 32,
-                  backgroundImage: AssetImage(widget.item.image),
+                  backgroundImage: AssetImage(widget.product.image),
                 ),
                 title: Text(
-                  widget.item.name,
+                  widget.product.name,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 subtitle: Text(
-                  '${widget.item.price}',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
+                  '${widget.product.price}',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
                 trailing: CustomNumberPicker(
                   initialValue: 1,
