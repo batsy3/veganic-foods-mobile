@@ -6,13 +6,13 @@ class ListWidget extends StatefulWidget {
   final Product product;
   final Animation<double> animation;
   // final int quantity;
-  final int index;
+  // final int index;
   const ListWidget({
     Key? key,
     required this.product,
     required this.animation,
     // required this.quantity,
-    required this.index,
+    // required this.index,
   }) : super(key: key);
 
   @override
@@ -47,7 +47,7 @@ class _ListWidgetState extends State<ListWidget> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 subtitle: Text(
-                  '${widget.product.price}',
+                  'k ${widget.product.price}',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
                 trailing: CustomNumberPicker(

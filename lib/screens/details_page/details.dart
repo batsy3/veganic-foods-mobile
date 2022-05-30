@@ -36,16 +36,13 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> {
-  var price;
+  late Product prod;
+  late double price;
+  late int _count;
   @override
   // ignore: must_call_super
   void initState() {
-    price = widget.price;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    Product item = Product(
+    prod = Product(
         name: widget.name,
         product_id: widget.product_id,
         description: widget.description,
@@ -53,17 +50,24 @@ class _DetailsState extends State<Details> {
         quantity: widget.quantity,
         image: widget.image,
         category: widget.category);
+    ;
+    price = prod.price;
+    _count = 1;
+  }
 
+  @override
+  Widget build(BuildContext context) {
     var additions = <String>['addition'];
     String val = additions[0].toString();
     Size size = MediaQuery.of(context).size;
     var init_price = widget.price;
     return Scaffold(
         body: Container(
-      // decoration: BoxDecoration(
-      //     color: bGcolor,
-      //     image: DecorationImage(
-      //         image: NetworkImage(widget.image), fit: BoxFit.fitHeight)),
+      decoration: BoxDecoration(
+        color: bGcolor,
+      ),
+      // image: DecorationImage(
+      //     image: NetworkImage(widget.image), fit: BoxFit.fitHeight)),
       child: Stack(children: [
         Column(
           children: [
@@ -72,7 +76,7 @@ class _DetailsState extends State<Details> {
             ),
             Container(
               width: size.width,
-              height: size.height * 0.715,
+              height: size.height * 0.721,
               decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
@@ -266,15 +270,18 @@ class _DetailsState extends State<Details> {
 
                   Row(
                     children: [
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.only(left: 40),
-                          child: Text(
-                            'K $price',
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 25),
+                      Flex(
+                        direction: Axis.horizontal,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.only(left: 40),
+                            child: Text(
+                              'K ${price}',
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 25),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                       SizedBox(
                         width: 40,
@@ -284,19 +291,39 @@ class _DetailsState extends State<Details> {
                         child: Flex(
                           direction: Axis.horizontal,
                           children: [
-                            CustomNumberPicker(
-                                onValue: (newvalue) {
-                                  setState(() {
-                                    price = (price + init_price);
-                                  });
-                                  print(price);
-                                },
-                                initialValue: 1,
-                                maxValue: 20,
-                                minValue: 1,
-                                step: 1),
+                            Row(
+                              children: [
+                                IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        _count--;
+                                        price -= init_price;
+                                        prod.price = price;
+                                      });
+                                    },
+                                    icon: Icon(
+                                      Icons.remove,
+                                      size: 15,
+                                      color: Colors.black,
+                                    )),
+                                Text(_count.toString()),
+                                IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        _count++;
+                                        price += init_price;
+                                        prod.price = price;
+                                      });
+                                    },
+                                    icon: Icon(
+                                      Icons.add,
+                                      size: 15,
+                                      color: Colors.black,
+                                    )),
+                              ],
+                            ),
                             const SizedBox(
-                              width: 80,
+                              width: 50,
                             ),
                             Container(
                               padding: EdgeInsets.all(4),
@@ -329,7 +356,8 @@ class _DetailsState extends State<Details> {
                       textColor: Colors.white,
                       bgColor: Colors.black,
                       onTap: () {
-                        context.read<Cart>().addtoCart(item);
+                        context.read<Cart>().addtoCart(prod);
+                        print(prod.price);
                         Navigator.pushNamed(context, Routes.cart);
                       },
                       fontWeight: FontWeight.normal,
@@ -397,3 +425,40 @@ class ingredient_images extends StatelessWidget {
     );
   }
 }
+                            // CustomNumberPicker(
+                            //   shape: Border.all(
+                            //     width: 0
+                            //       ),
+                            //     customAddButton: IconButton(
+                            //       icon: Icon(
+                            //         Icons.add,
+                            //         size: 13,
+                            //         color: Colors.black,
+                            //       ),
+                            //       onPressed: () {
+                            //         setState(() {
+                            //           price += init_price;
+                            //           prod.price = price;
+                            //         });
+                            //       },
+                            //     ),
+                            //     customMinusButton: IconButton(
+                            //       icon: Icon(
+                            //         Icons.remove,
+                            //         size: 13,
+                            //         color: Colors.black,
+                            //       ),
+                            //       onPressed: () {
+                            //         setState(() {
+                            //           price -= init_price;
+                            //           prod.price = price;
+                            //         });
+                            //       },
+                            //     ),
+                            //     onValue: (newvalue) {
+                                  
+                            //     },
+                            //     initialValue: 1,
+                            //     maxValue: 20,
+                            //     minValue: 1,
+                            //     step: 1),

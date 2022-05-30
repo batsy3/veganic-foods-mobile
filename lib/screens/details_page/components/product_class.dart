@@ -5,13 +5,13 @@ class Product {
   final int product_id;
   final String name;
   final String description;
-  final double price;
-   final int quantity;
+  double  price;
+  int quantity;
   final String image;
   final int category;
 
   // ignore: non_constant_identifier_names
-  const Product(
+   Product(
       // ignore: non_constant_identifier_names
       {required this.name,
       required this.product_id,

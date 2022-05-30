@@ -81,7 +81,7 @@ class _BasketpageState extends State<Basketpage> {
                           ]),
                       child: ListWidget(
                         animation: animation,
-                        index: index,
+                        // index: index,
                         product: context.read<Cart>().cart[index],
                         // quantity: context.read<Cart>().cart[index].quantity,
                       ),
@@ -97,10 +97,23 @@ class _BasketpageState extends State<Basketpage> {
                         style: TextStyle(
                             fontSize: 25, fontWeight: FontWeight.bold),
                       ),
-                      Text(
-                        '${context.watch<Cart>().carttotal()}',
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.bold),
+                      Column(
+                        children: [
+                          if (context.read<Cart>().cart.isNotEmpty)
+                            Text(
+                              'k ${context.watch<Cart>().carttotal()}',
+                              style: TextStyle(
+                                  fontSize: 25, fontWeight: FontWeight.bold),
+                            )
+                          else
+                            Text(
+                              'k 0.0',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 25),
+
+                                  
+                            ),
+                        ],
                       )
                     ],
                   ),
@@ -132,7 +145,7 @@ class _BasketpageState extends State<Basketpage> {
         index,
         (context, animation) => ListWidget(
               animation: animation,
-              index: index,
+              // index: index,
               product: removeItem,
             ));
   }
