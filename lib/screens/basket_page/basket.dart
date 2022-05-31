@@ -19,12 +19,8 @@ class Basketpage extends StatefulWidget {
 }
 
 class _BasketpageState extends State<Basketpage> {
+
   final listKey = GlobalKey<AnimatedListState>();
-  late List<Product> productCart;
-  @override
-  void initState() {
-    productCart = Cart().cart;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,43 +77,10 @@ class _BasketpageState extends State<Basketpage> {
                           ]),
                       child: ListWidget(
                         animation: animation,
-                        // index: index,
                         product: context.read<Cart>().cart[index],
-                        // quantity: context.read<Cart>().cart[index].quantity,
                       ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text(
-                        'Total',
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.bold),
-                      ),
-                      Column(
-                        children: [
-                          if (context.read<Cart>().cart.isNotEmpty)
-                            Text(
-                              'k ${context.watch<Cart>().carttotal()}',
-                              style: TextStyle(
-                                  fontSize: 25, fontWeight: FontWeight.bold),
-                            )
-                          else
-                            Text(
-                              'k 0.0',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 25),
-
-                                  
-                            ),
-                        ],
-                      )
-                    ],
-                  ),
-                  height: 30,
                 ),
                 AppButton(
                     text: 'Proceed',
@@ -140,12 +103,10 @@ class _BasketpageState extends State<Basketpage> {
 
   removeitem(int index) {
     final removeItem = context.read<Cart>().cart[index];
-    // productCart.removeAt(index);
     listKey.currentState!.removeItem(
         index,
         (context, animation) => ListWidget(
               animation: animation,
-              // index: index,
               product: removeItem,
             ));
   }

@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         image: '',
         name: 'rice',
         price: 10.00,
-        quantity: 0,
+        quantity: 1,
         product_id: 1,
       ),
       routes: {

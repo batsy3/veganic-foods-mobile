@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_number_picker/flutter_number_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:veganic_foods_app/constants.dart';
 import 'package:veganic_foods_app/providers/cart_provider.dart';
@@ -15,11 +14,11 @@ class Details extends StatefulWidget {
   final int product_id;
   final String name;
   final String description;
-  final double price;
+   double price;
   final int quantity;
   final String image;
   final int category;
-  const Details({
+   Details({
     Key? key,
     // ignore: non_constant_identifier_names
     required this.product_id,
@@ -297,6 +296,7 @@ class _DetailsState extends State<Details> {
                                     onPressed: () {
                                       setState(() {
                                         _count--;
+                                        prod.quantity = _count;
                                         price -= init_price;
                                         prod.price = price;
                                       });
@@ -311,6 +311,7 @@ class _DetailsState extends State<Details> {
                                     onPressed: () {
                                       setState(() {
                                         _count++;
+                                        prod.quantity = _count;
                                         price += init_price;
                                         prod.price = price;
                                       });

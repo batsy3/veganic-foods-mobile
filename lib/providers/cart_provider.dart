@@ -4,23 +4,27 @@ import 'package:veganic_foods_app/utils/globals.dart';
 
 class Cart with ChangeNotifier {
   List<Product> _cart = [];
+  double get total {
+    double total = 0;
+    for(Product i in _cart){
+      total += i.price;
+    }
+    return total;
+  }
   int get count => _cart.length;
   List<Product> get cart => _cart;
 
-  itemtotal(index) {
-    _cart[index].price;
+  carttotal() {
+    double total = 0;
+    _cart.forEach((element) {
+      total += element.price;
+    });
+    print('cart total = $total}');
+    return total;
   }
 
-  carttotal() {
-    double total = 0.0;
-    for (Product item in _cart) {
-      if (_cart.isNotEmpty == true) {
-        total = total + item.price;
-        return total;
-      } else {
-        return total;
-      }
-    }
+  quantity(index) {
+    _cart[index].quantity;
   }
 
   deletefromcart(index) {
@@ -38,10 +42,12 @@ class Cart with ChangeNotifier {
     } else {
       _cart.add(product);
       print(_cart.isNotEmpty);
+      print('product price = ${product.price}');
       notifyListeners();
       final SnackBar snackbar = SnackBar(content: Text('item added'));
       snackbarKey.currentState?.showSnackBar(snackbar);
       return snackbar;
     }
   }
+
 }
