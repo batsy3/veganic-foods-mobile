@@ -35,15 +35,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Details(
-        category: 1,
-        description: 'dog food',
-        image: '',
-        name: 'rice',
-        price: 10.00,
-        quantity: 1,
-        product_id: 1,
-      ),
+      home: LandingPage(),
       routes: {
         Routes.home: (context) => const LandingPage(),
         Routes.scan: (context) => const ScanningPage(),

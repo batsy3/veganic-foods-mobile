@@ -6,11 +6,12 @@ class Cart with ChangeNotifier {
   List<Product> _cart = [];
   double get total {
     double total = 0;
-    for(Product i in _cart){
+    for (Product i in _cart) {
       total += i.price;
     }
     return total;
   }
+
   int get count => _cart.length;
   List<Product> get cart => _cart;
 
@@ -50,4 +51,7 @@ class Cart with ChangeNotifier {
     }
   }
 
+  clearall() {
+    _cart.clear();
+  }
 }
