@@ -14,11 +14,11 @@ class Details extends StatefulWidget {
   final int product_id;
   final String name;
   final String description;
-   double price;
-  final int quantity;
+  double price;
+  int quantity;
   final String image;
   final int category;
-   Details({
+  Details({
     Key? key,
     // ignore: non_constant_identifier_names
     required this.product_id,
@@ -38,6 +38,8 @@ class _DetailsState extends State<Details> {
   late Product prod;
   late double price;
   late int _count;
+  late List<DropdownMenuItem<dynamic>> additions;
+  late DropdownMenuItem val;
   @override
   // ignore: must_call_super
   void initState() {
@@ -49,24 +51,47 @@ class _DetailsState extends State<Details> {
         quantity: widget.quantity,
         image: widget.image,
         category: widget.category);
-    ;
     price = prod.price;
     _count = 1;
+    additions = [
+      DropdownMenuItem(
+        child: Text('select'),
+        value: 'Select',
+      ),
+      DropdownMenuItem(
+        child: Text('Add 1'),
+        value: 'Add 1',
+      ),
+      DropdownMenuItem(
+        child: Text('Add 2'),
+        value: 'Add 2',
+      ),
+      DropdownMenuItem(
+        child: Text('Add 3'),
+        value: 'Add 3',
+      ),
+      DropdownMenuItem(
+        child: Text('Add 4'),
+        value: 'Add 4',
+      ),
+      DropdownMenuItem(
+        child: Text('Add 5'),
+        value: 'Add 5',
+      ),
+    ];
+    val = additions[0];
   }
 
   @override
   Widget build(BuildContext context) {
-    var additions = <String>['addition'];
-    String val = additions[0].toString();
     Size size = MediaQuery.of(context).size;
     var init_price = widget.price;
     return Scaffold(
         body: Container(
       decoration: BoxDecoration(
-        color: bGcolor,
-      ),
-      // image: DecorationImage(
-      //     image: NetworkImage(widget.image), fit: BoxFit.fitHeight)),
+          color: bGcolor,
+          image: DecorationImage(
+              image: NetworkImage(widget.image), fit: BoxFit.fitHeight)),
       child: Stack(children: [
         Column(
           children: [
@@ -205,6 +230,7 @@ class _DetailsState extends State<Details> {
                   ),
                   Flex(
                     direction: Axis.horizontal,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
                         width: size.width * 0.85,
@@ -242,25 +268,22 @@ class _DetailsState extends State<Details> {
                       SizedBox(
                         height: size.height * 0.05,
                         width: size.width * 0.7,
-                        child: DropdownButton(
+                        child: DropdownButton<dynamic>(
                             underline: Container(
                               height: 1,
                               color: Colors.deepPurple,
                             ),
                             elevation: 9,
-                            value: val,
+                            value: additions[0].value,
                             isExpanded: true,
                             hint: Text(
                               'pick an addition',
                             ),
                             icon: Icon(Icons.keyboard_arrow_down_sharp),
-                            items: additions
-                                .map((String e) =>
-                                    DropdownMenuItem(value: e, child: Text(e)))
-                                .toList(),
-                            onChanged: (String? newVal) {
+                            items: additions,
+                            onChanged: (value) {
                               setState(() {
-                                val = newVal!;
+                                val = value;
                               });
                             }),
                       )

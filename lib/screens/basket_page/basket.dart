@@ -47,7 +47,7 @@ class _BasketpageState extends State<Basketpage> {
               children: [
                 Container(
                     margin: EdgeInsets.only(top: 5, right: 290),
-                    child: DefaultBackButton()),
+                    child: IconButton(onPressed: () => Navigator.pushNamed(context, Routes.scan), icon: Icon(Icons.arrow_back_ios_new_sharp),)),
                 Expanded(
                   child: AnimatedList(
                     physics: ClampingScrollPhysics(),

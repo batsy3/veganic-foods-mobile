@@ -3,6 +3,7 @@ import 'dart:convert';
 class Product {
   // ignore: non_constant_identifier_names
   final int product_id;
+  
   final String name;
   final String description;
   double  price;
@@ -26,7 +27,7 @@ class Product {
         price = json['price'],
         product_id = json['product_id'],
         quantity = json['quantity'],
-        image = json['image'] as String,
+        image = json['imgsrc'] as String,
         category = json['category'];
   Map<String, dynamic> toJson() => {
         "name": name,
@@ -34,7 +35,7 @@ class Product {
         "price": price,
         "quantity": quantity,
         "product_id":product_id,
-        "image": image,
+        "imgsrc": image,
         "category": category,
       };
 }

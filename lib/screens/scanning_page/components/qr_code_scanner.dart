@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:veganic_foods_app/constants.dart';
+import 'package:veganic_foods_app/screens/details_page/details.dart';
 import 'package:veganic_foods_app/utils/routes.dart';
 import 'package:veganic_foods_app/widgets/custom_button.dart';
 import 'package:veganic_foods_app/widgets/page_background.dart';
@@ -18,7 +19,7 @@ class QRCodeScanner extends StatefulWidget {
 
 class _QRCodeScannerState extends State<QRCodeScanner> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-   Barcode? result;
+  Barcode? result;
   QRViewController? controller;
 
   @override
@@ -86,18 +87,28 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
                               ),
                               child: _buildQrView(context)),
                         ),
-                        AppButton(
-                          text: "Proceed",
-                          bgColor: Colors.black,
-                          textColor: Colors.white,
-                          borderRadius: 30,
-                          fontSize: 25,
-                          fontWeight: FontWeight.w600,
-                          onTap: () {
-                            Navigator.pushNamed(context, Routes.cart);
-                          },
-                          height: 10,
-                        )
+                        // AppButton(
+                        //   text: "Proceed",
+                        //   bgColor: Colors.black,
+                        //   textColor: Colors.white,
+                        //   borderRadius: 30,
+                        //   fontSize: 25,
+                        //   fontWeight: FontWeight.w600,
+                        //   onTap: () {
+                        //     Navigator.push(
+                        //         context,
+                        //         MaterialPageRoute(
+                        //             builder: ((context) => Details(
+                        //                 product_id: 1,
+                        //                 name: 'teryaki',
+                        //                 description: 'soup and that',
+                        //                 price: 40,
+                        //                 quantity: 1,
+                        //                 image: '',
+                        //                 category: 2))));
+                        //   },
+                        //   height: 10,
+                        // )
                       ],
                     ),
                   ),
@@ -114,9 +125,11 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
     controller.scannedDataStream.listen((scanData) {
       if (!scanned) {
         scanned = true;
-        controller.pauseCamera();
         setState(() => result = scanData);
-        Navigator.push(context, MaterialPageRoute(builder: ((context) => Httpp(id: result!.code))));
+        print(result!.code);
+        Navigator.push(context,
+            MaterialPageRoute(builder: ((context) => Httpp(id: result!.code))));
+        controller.pauseCamera();
       }
     });
   }

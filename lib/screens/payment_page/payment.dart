@@ -175,6 +175,7 @@ class _PaymentListState extends State<PaymentList> {
                     textColor: Colors.white,
                     bgColor: Colors.black,
                     onTap: () {
+                      context.read<Cart>().clearall();
                       Navigator.pushNamed(context, Routes.home);
                     },
                     fontWeight: FontWeight.bold,
