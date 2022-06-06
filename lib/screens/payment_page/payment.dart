@@ -1,8 +1,10 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:veganic_foods_app/constants.dart';
 import 'package:veganic_foods_app/utils/routes.dart';
 import 'package:veganic_foods_app/widgets/custom_button.dart';
+import '../../providers/cart_provider.dart';
 import '../../widgets/default_back_button.dart';
 import 'components/background_eclipses.dart';
 
@@ -77,7 +79,7 @@ class _PaymentListState extends State<PaymentList> {
                     ),
                   ),
                   SizedBox(
-                    height: 30,
+                    height: 10,
                   ),
                   RadioListTile<Paymentmethod>(
                     contentPadding: const EdgeInsets.only(left: 40),
@@ -136,16 +138,44 @@ class _PaymentListState extends State<PaymentList> {
                     selected: false,
                   ),
                   const divider(),
-
-                  const SizedBox(
-                    height: 10,
+                  SizedBox(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          'Total',
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.bold),
+                        ),
+                        Column(
+                          children: [
+                            if (context.read<Cart>().cart.isNotEmpty)
+                              Text(
+                                // '${context.watch<Cart>().total}',
+                                '${Provider.of<Cart>(context, listen: false).total.toStringAsFixed(2)}',
+                                style: TextStyle(
+                                    fontSize: 25, fontWeight: FontWeight.bold),
+                              )
+                            else
+                              Text(
+                                'k 0.0',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 25),
+                              ),
+                          ],
+                        )
+                      ],
+                    ),
+                    height: 30,
                   ),
+
                   AppButton(
                     text: 'Proceed',
                     fontSize: 20,
                     textColor: Colors.white,
                     bgColor: Colors.black,
                     onTap: () {
+                      context.read<Cart>().clearall();
                       Navigator.pushNamed(context, Routes.home);
                     },
                     fontWeight: FontWeight.bold,
@@ -155,7 +185,7 @@ class _PaymentListState extends State<PaymentList> {
                   // ignore: prefer_const_constructors
                   SizedBox(
                     height: 20,
-                  )
+                  ),
                 ]))
           ])
         ]));
@@ -212,4 +242,4 @@ class RadiotileCSS extends StatelessWidget {
           )),
     ]);
   }
-} 
+}

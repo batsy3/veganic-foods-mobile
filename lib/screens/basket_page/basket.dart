@@ -1,19 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:veganic_foods_app/constants.dart';
+import 'package:veganic_foods_app/providers/cart_provider.dart';
 import 'package:veganic_foods_app/widgets/custom_button.dart';
 import '../../utils/routes.dart';
-import '../../widgets/default_back_button.dart';
 import '../payment_page/components/background_eclipses.dart';
-import 'components/list_items.dart';
-import 'components/food_dict.dart';
 import 'components/list_widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-class Basketpage extends StatelessWidget {
-  final listKey = GlobalKey<AnimatedListState>();
-  final List<Listitem> items = List.from(listitems);
-
+// ignore: must_be_immutable
+class Basketpage extends StatefulWidget {
   Basketpage({Key? key}) : super(key: key);
+
+  @override
+  State<Basketpage> createState() => _BasketpageState();
+}
+
+class _BasketpageState extends State<Basketpage> {
+
+  final listKey = GlobalKey<AnimatedListState>();
 
   @override
   Widget build(BuildContext context) {
@@ -40,27 +45,29 @@ class Basketpage extends StatelessWidget {
               children: [
                 Container(
                     margin: EdgeInsets.only(top: 5, right: 290),
-                    child: DefaultBackButton()),
+                    child: IconButton(onPressed: () => Navigator.pushNamed(context, Routes.scan), icon: Icon(Icons.arrow_back_ios_new_sharp),)),
                 Expanded(
                   child: AnimatedList(
                     physics: ClampingScrollPhysics(),
                     shrinkWrap: true,
                     key: listKey,
-                    initialItemCount: items.length,
+                    initialItemCount: context.read<Cart>().cart.length,
                     itemBuilder: (BuildContext context, int index,
                             Animation<double> animation) =>
                         Slidable(
                       endActionPane: ActionPane(
-                          key: ValueKey(items[index]),
+                          key: ValueKey(context.read<Cart>().cart[index]),
                           motion: const ScrollMotion(),
-                          dismissible: DismissiblePane(
-                            onDismissed: () => removeitem(index),
-                          ),
                           children: [
                             SlidableAction(
+                              key: ValueKey(
+                                  context.read<Cart>().cart[index].product_id),
                               autoClose: true,
                               flex: 2,
-                              onPressed: (context) => removeitem(index),
+                              onPressed: (context) => {
+                                removeitem(index),
+                                context.read<Cart>().deletefromcart(index),
+                              },
                               backgroundColor: Color(0xFFEF5350),
                               icon: Icons.delete,
                               label: 'delete',
@@ -68,25 +75,22 @@ class Basketpage extends StatelessWidget {
                           ]),
                       child: ListWidget(
                         animation: animation,
-                        item: items[index],
+                        product: context.read<Cart>().cart[index],
                       ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 30,
                 ),
                 AppButton(
                     text: 'Proceed',
                     fontSize: 20,
                     textColor: Colors.white,
                     bgColor: Colors.black,
-                    onTap: () {
-                      Navigator.pushNamed(context, Routes.payment);
-                    },
                     fontWeight: FontWeight.bold,
                     borderRadius: 30,
-                    height: 10)
+                    height: 10,
+                    onTap: () {
+                      Navigator.pushNamed(context, Routes.payment);
+                    }),    
               ],
             ),
           ),
@@ -96,11 +100,12 @@ class Basketpage extends StatelessWidget {
   }
 
   removeitem(int index) {
-    final removeItem = items[index];
-    items.removeAt(index);
+    final removeItem = context.read<Cart>().cart[index];
     listKey.currentState!.removeItem(
         index,
-        (context, animation) =>
-            ListWidget(item: removeItem, animation: animation));
+        (context, animation) => ListWidget(
+              animation: animation,
+              product: removeItem,
+            ));
   }
 }

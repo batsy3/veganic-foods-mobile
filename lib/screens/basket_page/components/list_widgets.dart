@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_number_picker/flutter_number_picker.dart';
-import 'list_items.dart';
+import 'package:veganic_foods_app/providers/cart_provider.dart';
+import 'package:veganic_foods_app/screens/details_page/components/product_class.dart';
 
+// ignore: must_be_immutable
 class ListWidget extends StatefulWidget {
-  final Listitem item;
+  
+  Product product;
   final Animation<double> animation;
-  const ListWidget({
+  ListWidget({
     Key? key,
-    required this.item,
+    required this.product,
     required this.animation,
   }) : super(key: key);
 
@@ -16,9 +18,22 @@ class ListWidget extends StatefulWidget {
 }
 
 class _ListWidgetState extends State<ListWidget> {
+  late Product prod;
+  late double price;
+  late double initialPrice;
+  late int quantity;
+  @override
+  void initState() {
+    prod = this.widget.product;
+    quantity = this.widget.product.quantity;
+    initialPrice = this.widget.product.price / quantity;
+    this.widget.product.price = prod.price;
+    Cart().carttotal();
+  }
+
   @override
   Widget build(BuildContext context) => SizeTransition(
-      key: ValueKey(widget.item.image),
+      key: ValueKey(widget.product.product_id),
       sizeFactor: widget.animation,
       child: buildItem());
 
@@ -35,22 +50,52 @@ class _ListWidgetState extends State<ListWidget> {
                 contentPadding: EdgeInsets.all(10),
                 leading: CircleAvatar(
                   radius: 32,
-                  backgroundImage: AssetImage(widget.item.image),
+                  backgroundImage: AssetImage(widget.product.image),
                 ),
                 title: Text(
-                  widget.item.title,
+                  widget.product.name,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 subtitle: Text(
-                  widget.item.price,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
+                  'k ${prod.price}',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
-                trailing: CustomNumberPicker(
-                  initialValue: 1,
-                  maxValue: 10,
-                  minValue: 1,
-                  onValue: (newvalue) => {setState(() {})},
-                  step: 1,
+                trailing: Container(
+                  width: 120,
+                  padding: EdgeInsets.only(right: 0),
+                  child: Row(children: [
+                    IconButton(
+                        onPressed: () {
+                          setState(() {
+                            if (quantity >= 1) {
+                              quantity--;
+                              price = initialPrice * quantity;
+                              prod.price = price;
+                            }
+                          });
+                        },
+                        icon: Icon(
+                          Icons.remove,
+                          size: 15,
+                        )),
+                    Text(
+                      quantity.toString(),
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          setState(() {
+                            quantity++;
+                            price = initialPrice * quantity;
+                            prod.price = price;
+
+                          });
+                        },
+                        icon: Icon(
+                          Icons.add,
+                          size: 15,
+                        ))
+                  ]),
                 ))),
         Divider(
           indent: 30,

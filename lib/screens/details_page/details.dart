@@ -1,20 +1,26 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_number_picker/flutter_number_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:veganic_foods_app/constants.dart';
+import 'package:veganic_foods_app/providers/cart_provider.dart';
+import 'package:veganic_foods_app/screens/details_page/components/product_class.dart';
 import 'package:veganic_foods_app/utils/routes.dart';
 import 'package:veganic_foods_app/widgets/custom_button.dart';
-import 'package:badges/badges.dart';
 
+// ignore: must_be_immutable
 class Details extends StatefulWidget {
+  final int product_id;
   final String name;
   final String description;
-  final String price;
-  final int quantity;
+  double price;
+  int quantity;
   final String image;
   final int category;
-  const Details({
+  Details({
     Key? key,
+    // ignore: non_constant_identifier_names
+    required this.product_id,
     required this.name,
     required this.description,
     required this.price,
@@ -28,13 +34,57 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> {
+  late Product prod;
+  late double price;
+  late int _count;
+  late List<DropdownMenuItem<dynamic>> additions;
+  late String _selectedAddition;
+  @override
+  // ignore: must_call_super
+  void initState() {
+    prod = Product(
+        name: widget.name,
+        product_id: widget.product_id,
+        description: widget.description,
+        price: widget.price,
+        quantity: widget.quantity,
+        image: widget.image,
+        category: widget.category);
+    price = prod.price;
+    _count = 1;
+    additions = [
+      DropdownMenuItem(
+        child: Text('select'),
+        value: 'Select',
+      ),
+      DropdownMenuItem(
+        child: Text('Add 1'),
+        value: 'Add 1',
+      ),
+      DropdownMenuItem(
+        child: Text('Add 2'),
+        value: 'Add 2',
+      ),
+      DropdownMenuItem(
+        child: Text('Add 3'),
+        value: 'Add 3',
+      ),
+      DropdownMenuItem(
+        child: Text('Add 4'),
+        value: 'Add 4',
+      ),
+      DropdownMenuItem(
+        child: Text('Add 5'),
+        value: 'Add 5',
+      ),
+    ];
+    _selectedAddition = additions[0].value;
+  }
+
   @override
   Widget build(BuildContext context) {
-    var additions = <String>[];
-    String val = additions[0].toString();
-    String price = widget.price;
     Size size = MediaQuery.of(context).size;
-
+    var init_price = widget.price;
     return Scaffold(
         body: Container(
       decoration: BoxDecoration(
@@ -49,7 +99,7 @@ class _DetailsState extends State<Details> {
             ),
             Container(
               width: size.width,
-              height: size.height * 0.715,
+              height: size.height * 0.721,
               decoration: const BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
@@ -71,7 +121,7 @@ class _DetailsState extends State<Details> {
                           width: 180,
                         ),
                         Text(
-                          'K $price',
+                          'K ${widget.price}',
                           style: TextStyle(
                               fontSize: 35, fontWeight: FontWeight.bold),
                         )
@@ -177,23 +227,28 @@ class _DetailsState extends State<Details> {
                           TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  Container(
-                    width: size.width * 0.85,
-                    height: size.height * 0.1,
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(10),
-                    decoration: const BoxDecoration(
-                        color: Color.fromARGB(255, 249, 253, 255),
-                        boxShadow: [
-                          BoxShadow(
-                              blurRadius: 3,
-                              spreadRadius: -3,
-                              offset: Offset(0.84, 5))
-                        ],
-                        borderRadius: BorderRadius.all(Radius.circular(40))),
-                    child: const Expanded(
-                      child: ingredient_images(),
-                    ),
+                  Flex(
+                    direction: Axis.horizontal,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: size.width * 0.85,
+                        height: size.height * 0.1,
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.all(10),
+                        decoration: const BoxDecoration(
+                            color: Color.fromARGB(255, 249, 253, 255),
+                            boxShadow: [
+                              BoxShadow(
+                                  blurRadius: 3,
+                                  spreadRadius: -3,
+                                  offset: Offset(0.84, 5))
+                            ],
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(40))),
+                        child: ingredient_images(),
+                      ),
+                    ],
                   ),
                   // Multipleselect(),
                   const SizedBox(
@@ -212,25 +267,22 @@ class _DetailsState extends State<Details> {
                       SizedBox(
                         height: size.height * 0.05,
                         width: size.width * 0.7,
-                        child: DropdownButton(
+                        child: DropdownButton<dynamic>(
                             underline: Container(
                               height: 1,
                               color: Colors.deepPurple,
                             ),
                             elevation: 9,
-                            value: val,
+                            value: _selectedAddition,
                             isExpanded: true,
                             hint: Text(
                               'pick an addition',
                             ),
                             icon: Icon(Icons.keyboard_arrow_down_sharp),
-                            items: additions
-                                .map((String e) =>
-                                    DropdownMenuItem(value: e, child: Text(e)))
-                                .toList(),
-                            onChanged: (String? newVal) {
+                            items: additions,
+                            onChanged: (value) {
                               setState(() {
-                                val = newVal!;
+                                _selectedAddition = value;
                               });
                             }),
                       )
@@ -239,15 +291,18 @@ class _DetailsState extends State<Details> {
 
                   Row(
                     children: [
-                      Expanded(
-                        child: Container(
-                          padding: EdgeInsets.only(left: 40),
-                          child: Text(
-                            'K $price',
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 25),
+                      Flex(
+                        direction: Axis.horizontal,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.only(left: 40),
+                            child: Text(
+                              'K ${price}',
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 25),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                       SizedBox(
                         width: 40,
@@ -257,18 +312,41 @@ class _DetailsState extends State<Details> {
                         child: Flex(
                           direction: Axis.horizontal,
                           children: [
-                            CustomNumberPicker(
-                                onValue: (dynamic newvalue) => {
+                            Row(
+                              children: [
+                                IconButton(
+                                    onPressed: () {
                                       setState(() {
-                                        price = (price * newvalue);
-                                      })
+                                        _count--;
+                                        prod.quantity = _count;
+                                        price -= init_price;
+                                        prod.price = price;
+                                      });
                                     },
-                                initialValue: 0,
-                                maxValue: 20,
-                                minValue: 1,
-                                step: 1),
+                                    icon: Icon(
+                                      Icons.remove,
+                                      size: 15,
+                                      color: Colors.black,
+                                    )),
+                                Text(_count.toString()),
+                                IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        _count++;
+                                        prod.quantity = _count;
+                                        price += init_price;
+                                        prod.price = price;
+                                      });
+                                    },
+                                    icon: Icon(
+                                      Icons.add,
+                                      size: 15,
+                                      color: Colors.black,
+                                    )),
+                              ],
+                            ),
                             const SizedBox(
-                              width: 80,
+                              width: 50,
                             ),
                             Container(
                               padding: EdgeInsets.all(4),
@@ -279,17 +357,17 @@ class _DetailsState extends State<Details> {
                                     offset: Offset(0.84, 5)),
                               ], color: Colors.white, shape: BoxShape.circle),
                               child: Badge(
-                                padding: EdgeInsets.all(3),
-                                shape: BadgeShape.circle,
-                                badgeColor: bGcolor,
-                                child: Icon(
-                                  Icons.shopping_basket,
-                                  size: 30,
-                                ),
-                                //cart item count
-                                badgeContent: Text('0'),
-                              ),
-                            )
+                                  padding: EdgeInsets.all(3),
+                                  shape: BadgeShape.circle,
+                                  badgeColor: bGcolor,
+                                  child: Icon(
+                                    Icons.shopping_basket,
+                                    size: 30,
+                                  ),
+                                  //cart item count
+                                  badgeContent:
+                                      Text('${context.watch<Cart>().count}')),
+                            ),
                           ],
                         ),
                       ),
@@ -301,6 +379,8 @@ class _DetailsState extends State<Details> {
                       textColor: Colors.white,
                       bgColor: Colors.black,
                       onTap: () {
+                        context.read<Cart>().addtoCart(prod);
+                        print(prod.price);
                         Navigator.pushNamed(context, Routes.cart);
                       },
                       fontWeight: FontWeight.normal,
@@ -368,3 +448,40 @@ class ingredient_images extends StatelessWidget {
     );
   }
 }
+                            // CustomNumberPicker(
+                            //   shape: Border.all(
+                            //     width: 0
+                            //       ),
+                            //     customAddButton: IconButton(
+                            //       icon: Icon(
+                            //         Icons.add,
+                            //         size: 13,
+                            //         color: Colors.black,
+                            //       ),
+                            //       onPressed: () {
+                            //         setState(() {
+                            //           price += init_price;
+                            //           prod.price = price;
+                            //         });
+                            //       },
+                            //     ),
+                            //     customMinusButton: IconButton(
+                            //       icon: Icon(
+                            //         Icons.remove,
+                            //         size: 13,
+                            //         color: Colors.black,
+                            //       ),
+                            //       onPressed: () {
+                            //         setState(() {
+                            //           price -= init_price;
+                            //           prod.price = price;
+                            //         });
+                            //       },
+                            //     ),
+                            //     onValue: (newvalue) {
+                                  
+                            //     },
+                            //     initialValue: 1,
+                            //     maxValue: 20,
+                            //     minValue: 1,
+                            //     step: 1),
