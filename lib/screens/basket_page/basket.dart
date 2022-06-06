@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:veganic_foods_app/constants.dart';
 import 'package:veganic_foods_app/providers/cart_provider.dart';
-import 'package:veganic_foods_app/screens/details_page/components/product_class.dart';
 import 'package:veganic_foods_app/widgets/custom_button.dart';
 import '../../utils/routes.dart';
-import '../../widgets/default_back_button.dart';
 import '../payment_page/components/background_eclipses.dart';
 import 'components/list_widgets.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -87,12 +85,12 @@ class _BasketpageState extends State<Basketpage> {
                     fontSize: 20,
                     textColor: Colors.white,
                     bgColor: Colors.black,
-                    onTap: () {
-                      Navigator.pushNamed(context, Routes.payment);
-                    },
                     fontWeight: FontWeight.bold,
                     borderRadius: 30,
-                    height: 10)
+                    height: 10,
+                    onTap: () {
+                      Navigator.pushNamed(context, Routes.payment);
+                    }),    
               ],
             ),
           ),
