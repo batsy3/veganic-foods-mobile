@@ -20,7 +20,6 @@ class Cart with ChangeNotifier {
     _cart.forEach((element) {
       total += element.price;
     });
-    print('cart total = $total}');
     return total;
   }
 
@@ -33,8 +32,6 @@ class Cart with ChangeNotifier {
     notifyListeners();
     final SnackBar snackbar = SnackBar(content: Text('item deleted'));
     snackbarKey.currentState?.showSnackBar(snackbar);
-    print(_cart.isNotEmpty);
-    print(_cart.length);
   }
 
   addtoCart(Product product) {
@@ -42,8 +39,6 @@ class Cart with ChangeNotifier {
       print('item exists');
     } else {
       _cart.add(product);
-      print(_cart.isNotEmpty);
-      print('product price = ${product.price}');
       notifyListeners();
       final SnackBar snackbar = SnackBar(content: Text('item added'));
       snackbarKey.currentState?.showSnackBar(snackbar);

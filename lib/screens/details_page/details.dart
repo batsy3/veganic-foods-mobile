@@ -8,9 +8,8 @@ import 'package:veganic_foods_app/screens/details_page/components/product_class.
 import 'package:veganic_foods_app/utils/routes.dart';
 import 'package:veganic_foods_app/widgets/custom_button.dart';
 
+// ignore: must_be_immutable
 class Details extends StatefulWidget {
-  // final Future<Product>? item;
-  // late Future<Product>? item = [] as Future<Product>?;
   final int product_id;
   final String name;
   final String description;
@@ -39,7 +38,7 @@ class _DetailsState extends State<Details> {
   late double price;
   late int _count;
   late List<DropdownMenuItem<dynamic>> additions;
-  late DropdownMenuItem val;
+  late String _selectedAddition;
   @override
   // ignore: must_call_super
   void initState() {
@@ -79,7 +78,7 @@ class _DetailsState extends State<Details> {
         value: 'Add 5',
       ),
     ];
-    val = additions[0];
+    _selectedAddition = additions[0].value;
   }
 
   @override
@@ -274,7 +273,7 @@ class _DetailsState extends State<Details> {
                               color: Colors.deepPurple,
                             ),
                             elevation: 9,
-                            value: additions[0].value,
+                            value: _selectedAddition,
                             isExpanded: true,
                             hint: Text(
                               'pick an addition',
@@ -283,7 +282,7 @@ class _DetailsState extends State<Details> {
                             items: additions,
                             onChanged: (value) {
                               setState(() {
-                                val = value;
+                                _selectedAddition = value;
                               });
                             }),
                       )
