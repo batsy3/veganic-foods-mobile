@@ -58,7 +58,7 @@ class _HttppState extends State<Httpp> {
   }
 }
 
-const String postUrl = "http://192.168.40.82:8000/products";
+const String postUrl = "http://localhost:8007/api/product";
 Future<Product> _getdata(String? id) async {
   String url = postUrl + '/$id';
   var res = await http.get(Uri.parse(url));

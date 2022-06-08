@@ -41,6 +41,7 @@ dependencies:
   flutter_cart: ^0.0.7
   badges: ^2.0.2
   provider: ^6.0.3
+  uuid: ^3.0.6
 
 
 dev_dependencies:
