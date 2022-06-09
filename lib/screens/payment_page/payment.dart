@@ -1,13 +1,14 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:veganic_foods_app/constants.dart';
 import 'package:veganic_foods_app/screens/payment_page/components/transaction_function.dart';
 import 'package:veganic_foods_app/utils/globals.dart';
-import 'package:veganic_foods_app/utils/routes.dart';
 import 'package:veganic_foods_app/widgets/custom_button.dart';
 import '../../providers/cart_provider.dart';
 import '../../widgets/default_back_button.dart';
+import '../scanning_page/scan.dart';
 import 'components/background_eclipses.dart';
 
 class PaymentPage extends StatefulWidget {
@@ -45,6 +46,7 @@ class _PaymentListState extends State<PaymentList> {
   Paymentmethod? _init = Paymentmethod.mobile_money;
   @override
   Widget build(BuildContext context) {
+    var method = _init;
     Size size = MediaQuery.of(context).size; //total height and width of screen
 
     return Scaffold(
@@ -77,7 +79,15 @@ class _PaymentListState extends State<PaymentList> {
                     child: Row(
                       // ignore: prefer_const_literals_to_create_immutables
                       children: [
-                        const DefaultBackButton(),
+                        IconButton(
+                          icon: Icon(
+                            Icons.arrow_back,
+                            color: Colors.black,
+                          ),
+                          onPressed: () {
+                            Get.to(ScanningPage());
+                          },
+                        ),
                         const SizedBox(
                           width: 50,
                         ),
@@ -177,106 +187,34 @@ class _PaymentListState extends State<PaymentList> {
                     bgColor: Colors.black,
                     onTap: () {
                       showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                                backgroundColor: Colors.white,
-                                title: Container(
-                                  alignment: Alignment.centerRight,
-                                  child: IconButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      icon: Icon(
-                                        Icons.close,
-                                        color: Colors.black,
-                                      )),
-                                ),
-                                content: Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.4,
-                                  padding: EdgeInsets.all(20),
-                                  alignment: Alignment.center,
-                                  child: Form(
-                                    key: _formkey,
-                                    child: Column(children: [
-                                      Text('Mobile Money',
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold)),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      TextFormField(
-                                        validator: (value) {
-                                          if (value!.isEmpty ||
-                                              value.characters.length < 10) {
-                                            return 'Please enter valid phone number';
-                                          } else {
-                                            return null;
-                                          }
-                                        },
-                                        style: TextStyle(color: Colors.black),
-                                        controller: textcontroller,
-                                        decoration: InputDecoration(
-                                          hintText: 'enter phone number',
-                                          hintStyle: TextStyle(
-                                              color: Colors.grey.shade700),
-                                          labelText: 'phone number',
-                                          labelStyle: TextStyle(
-                                              color: Colors.grey.shade700),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderSide:
-                                                BorderSide(color: bGcolor),
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              borderSide:
-                                                  BorderSide(color: bGcolor)),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      Text(
-                                        'your cart total is ${context.read<Cart>().total}',
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      AppButton(
-                                        text: 'pay',
-                                        fontSize: 25,
-                                        textColor: Colors.white,
-                                        bgColor: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        borderRadius: 30,
-                                        height: 10,
-                                        onTap: () {
-                                          context.read<Cart>().clearall();
-                                          if (_formkey.currentState!
-                                              .validate()) {
-                                            gateway(
-                                                textcontroller.text,
-                                                context
-                                                    .read<Cart>()
-                                                    .carttotal());
-                                            Navigator.of(context).pop();
-                                            final SnackBar snackBar = SnackBar(
-                                                content: Text(
-                                                    'payment in progress'));
-                                            snackbarKey.currentState
-                                                ?.showSnackBar(snackBar);
-                                          }
-                                        },
-                                      )
-                                    ]),
-                                  ),
-                                ));
-                          });
+                        context: context,
+                        builder: (BuildContext context) {
+                          if (_init == Paymentmethod.mobile_money)
+                            return TransactionAlertDalog(
+                              text: 'Mobile Money',
+                              hint: 'phone number',
+                              formkey: _formkey,
+                              textcontroller: textcontroller,
+                              validator: 'enter valid phone number',
+                            );
+                          else if (_init == Paymentmethod.visa)
+                            return TransactionAlertDalog(
+                              text: 'Visa',
+                              hint: 'card number',
+                              formkey: _formkey,
+                              textcontroller: textcontroller,
+                              validator: 'enter valid card number',
+                            );
+                          else
+                            return TransactionAlertDalog(
+                              text: 'Bank Transfer',
+                              hint: 'bank account number',
+                              formkey: _formkey,
+                              textcontroller: textcontroller,
+                              validator: 'enter valid bank account number',
+                            );
+                        },
+                      );
                     },
                   ),
                   // ignore: prefer_const_constructors
@@ -286,6 +224,117 @@ class _PaymentListState extends State<PaymentList> {
                 ]))
           ])
         ]));
+  }
+}
+
+class TransactionAlertDalog extends StatelessWidget {
+  final String text;
+  final String validator;
+  final String hint;
+  const TransactionAlertDalog({
+    Key? key,
+    required GlobalKey<FormState> formkey,
+    required this.textcontroller,
+    required this.text,
+    required this.validator,
+    required this.hint,
+  })  : _formkey = formkey,
+        super(key: key);
+
+  final GlobalKey<FormState> _formkey;
+  final TextEditingController textcontroller;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+        shape: ShapeBorder.lerp(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          0.5,
+        ),
+        backgroundColor: Colors.white,
+        title: Container(
+          alignment: Alignment.centerRight,
+          child: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(
+                Icons.close,
+                size: 30,
+                color: Colors.black,
+              )),
+        ),
+        content: Container(
+          height: MediaQuery.of(context).size.height * 0.4,
+          padding: EdgeInsets.all(20),
+          alignment: Alignment.center,
+          child: Form(
+            key: _formkey,
+            child: Column(children: [
+              Text(text,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              SizedBox(
+                height: 20,
+              ),
+              TextFormField(
+                validator: (value) {
+                  if (value!.isEmpty || value.characters.length < 10) {
+                    return '$validator';
+                  } else {
+                    return null;
+                  }
+                },
+                style: TextStyle(color: Colors.black),
+                controller: textcontroller,
+                decoration: InputDecoration(
+                  hintText: 'enter $hint',
+                  hintStyle: TextStyle(color: Colors.grey.shade700),
+                  labelText: hint,
+                  labelStyle: TextStyle(color: Colors.grey.shade700),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: bGcolor),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(color: bGcolor)),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                'your cart total is ${context.read<Cart>().total}',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              AppButton(
+                text: 'pay',
+                fontSize: 25,
+                textColor: Colors.white,
+                bgColor: Colors.black,
+                fontWeight: FontWeight.bold,
+                borderRadius: 30,
+                height: 10,
+                onTap: () {
+                  context.read<Cart>().clearall();
+                  if (_formkey.currentState!.validate()) {
+                    gateway(
+                        textcontroller.text, context.read<Cart>().carttotal());
+                    Navigator.of(context).pop();
+                    final SnackBar snackBar =
+                        SnackBar(content: Text('payment in progress'));
+                    snackbarKey.currentState?.showSnackBar(snackBar);
+                  }
+                },
+              )
+            ]),
+          ),
+        ));
   }
 }
 
