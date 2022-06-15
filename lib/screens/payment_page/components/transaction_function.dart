@@ -1,8 +1,8 @@
 import 'dart:convert';
+import 'package:short_uuids/short_uuids.dart';
 import 'package:veganic_foods_app/screens/details_page/components/product_class.dart';
 import 'package:http/http.dart' as http;
 import '../../../providers/cart_provider.dart';
-import 'package:uuid/uuid.dart';
 import 'package:flutter_sms/flutter_sms.dart';
 
 void _sendSMS(String message, String phoneNumber) async {
@@ -14,7 +14,7 @@ void _sendSMS(String message, String phoneNumber) async {
   print(_result);
 }
 
-var id = Uuid();
+var id = ShortUuid().generate();
 List<dynamic> cart = [];
 String url = 'http://192.168.137.1:8007/api/order/';
 Future<dynamic> gateway(
@@ -30,27 +30,91 @@ Future<dynamic> gateway(
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       },
-      body:jsonEncode({
+      body: jsonEncode({
         "transaction_type_id": 1,
         "msisdn": "$number",
         "amount": cart_total,
-        "reference_number": id.v4().toString(),
-        "request_id": id.v4().toString(),
+        "reference_number": id,
+        "request_id": id,
         "description": "transaction"
         // "products": cart
       }));
-  print('response is ${res.body}');
-  const status_url = 'http://192.168.137.1:8007/api/check_payment_status';
-  Future.delayed(Duration(seconds: 120), () async {
-    String post_url = status_url + '/${res.body[0]}';
+  Map<String, dynamic> temp = jsonDecode(res.body);
+  print('response is ${temp["task_id"]}');
+  const status_url = 'http://192.168.137.1:8007/api/order/check_payment_status';
+  Future<dynamic>.delayed(Duration(seconds: 120), () async {
+    String post_url = status_url + '/${temp["task_id"]}';
     var status = await http.get(Uri.parse(post_url));
-    print(status.body);
-    if (status.body.contains("success")) {
-      _sendSMS("Your payment is successfully.reference number is ${res.body}",
-          number);
-    } else {
-      print('payment failed');
-    }
+    Map<String, dynamic> temp2 = jsonDecode(status.body);
+    print('body is ${temp2["data"]}');
+    // if (temp2["task"]["status"] == 1) {
+    //   final SnackBar snackBar = SnackBar(
+    //       padding: EdgeInsets.only(top: 200, bottom: 200, left: 50, right: 50),
+    //       content: Container(
+    //         decoration: BoxDecoration(
+    //           borderRadius: BorderRadius.circular(10),
+    //           color: Colors.white,
+    //         ),
+    //         padding: EdgeInsets.all(10),
+    //         child: Center(
+    //             child: Text(
+    //           'payment failed',
+    //           style: TextStyle(
+    //               fontSize: 30,
+    //               fontWeight: FontWeight.bold,
+    //               color: Colors.black),
+    //         )),
+    //       ));
+    //   snackbarKey.currentState?.showSnackBar(snackBar);
+    // } else if (temp2[0]["status"] == 2) {
+    //   final SnackBar snackBar = SnackBar(
+    //       padding: EdgeInsets.only(top: 200, bottom: 200, left: 50, right: 50),
+    //       content: Container(
+    //         decoration: BoxDecoration(
+    //           borderRadius: BorderRadius.circular(10),
+    //           color: Colors.white,
+    //         ),
+    //         padding: EdgeInsets.all(10),
+    //         child: Center(
+    //             child: Text(
+    //           'payment failed',
+    //           style: TextStyle(
+    //               fontSize: 30,
+    //               fontWeight: FontWeight.bold,
+    //               color: Colors.black),
+    //         )),
+    //       ));
+    //   snackbarKey.currentState?.showSnackBar(snackBar);
+    // } else if (temp2[0]["status"] == 3) {
+    //   final SnackBar snackBar = SnackBar(
+    //       padding: EdgeInsets.only(top: 200, bottom: 200, left: 50, right: 50),
+    //       content: Container(
+    //         decoration: BoxDecoration(
+    //           borderRadius: BorderRadius.circular(10),
+    //           color: Colors.white,
+    //         ),
+    //         padding: EdgeInsets.all(10),
+    //         child: Center(
+    //             child: Text(
+    //           'payment failed',
+    //           style: TextStyle(
+    //               fontSize: 30,
+    //               fontWeight: FontWeight.bold,
+    //               color: Colors.black),
+    //         )),
+    //       ));
+    //   snackbarKey.currentState?.showSnackBar(snackBar);
+    // } else {
+    //   return Column(
+    //     children: [
+    //       Text('process timed out please try again'),
+    //       ElevatedButton(
+    //           onPressed: () {
+    //             Get.to(PaymentPage());
+    //           },
+    //           child: Text('try again'))
+    //     ],
+    //   );
+    // }
   });
-  return res;
 }

@@ -324,19 +324,35 @@ class TransactionAlertDalog extends StatelessWidget {
                   if (_formkey.currentState!.validate()) {
                     gateway(
                         textcontroller.text, context.read<Cart>().carttotal());
-                        print('number type is ${textcontroller.text.runtimeType}');
-                        print('cart total type is ${context.read<Cart>().carttotal().runtimeType}');
                     Navigator.of(context).pop();
                     final SnackBar snackBar = SnackBar(
-                      padding: EdgeInsets.only(top: 200, bottom: 200, left: 50, right: 50),
+                      
+                      backgroundColor: Colors.transparent,
+                        padding: EdgeInsets.only(
+                            top: 400, bottom: 400, left: 70, right: 70),
                         content: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color: Colors.white,
                           ),
-                      padding: EdgeInsets.all(10),
-                      child: Center(child: Text('payment in progress', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold,color: Colors.black),)),
-                    ));
+                          padding: EdgeInsets.only(top:700,bottom:700, left:50, right: 50),
+                          child: Column(
+                            children: [
+                              Icon(Icons.check,
+                                  color: Colors.green, size: 50),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                              Text(
+                                'payment in progress',
+                                style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        ));
                     snackbarKey.currentState?.showSnackBar(snackBar);
                   }
                 },

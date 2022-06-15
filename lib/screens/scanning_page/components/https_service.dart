@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:http/http.dart' as http;
+import 'package:veganic_foods_app/constants.dart';
 import 'package:veganic_foods_app/screens/details_page/details.dart';
+import 'package:veganic_foods_app/widgets/error_pages.dart';
 
 import '../../details_page/components/product_class.dart';
 
@@ -23,7 +25,6 @@ class _HttppState extends State<Httpp> {
       body: FutureBuilder(
           future: _future,
           builder: (context, AsyncSnapshot<Product> snapshot) {
-            print('snapshot error is ${snapshot.error}');
             if (snapshot.hasData) {
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:
@@ -53,11 +54,15 @@ class _HttppState extends State<Httpp> {
                     child: Text('error'),
                   );
               }
-            } else {
-              return Center(child: Text(snapshot.error?.toString() ?? 'error'));
             }
-            return Center(
-              child: Text('error'),
+            return Container(
+              decoration: BoxDecoration(color: bGcolor),
+              child: Center(
+                  child: CircularProgressIndicator(
+                strokeWidth: 6,
+                backgroundColor: bGcolor,
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+              )),
             );
           }),
     );
