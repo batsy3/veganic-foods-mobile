@@ -23,42 +23,48 @@ class _HttppState extends State<Httpp> {
       body: FutureBuilder(
           future: _future,
           builder: (context, AsyncSnapshot<Product> snapshot) {
-            print(snapshot.error);
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              case ConnectionState.done:
-                SchedulerBinding.instance?.addPostFrameCallback((_) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Details(
-                                product_id: snapshot.data!.product_id,
-                                category: snapshot.data!.category,
-                                name: snapshot.data!.name,
-                                quantity: snapshot.data!.quantity,
-                                price: snapshot.data!.price,
-                                description: snapshot.data!.description,
-                                image: snapshot.data!.image,
-                              )));
-                });
-                break;
-              case ConnectionState.none:
-                throw Exception('couldnt get item');
-              default:
-                return Center(
-                  child: Text('error'),
-                );
+            print('snapshot error is ${snapshot.error}');
+            if (snapshot.hasData) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                case ConnectionState.done:
+                  SchedulerBinding.instance?.addPostFrameCallback((_) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Details(
+                                  product_id: snapshot.data!.product_id,
+                                  category: snapshot.data!.category,
+                                  name: snapshot.data!.name,
+                                  quantity: snapshot.data!.quantity,
+                                  price: snapshot.data!.price,
+                                  description: snapshot.data!.description,
+                                  image: snapshot.data!.image,
+                                )));
+                  });
+                  break;
+                case ConnectionState.none:
+                  throw Exception('couldnt get item');
+                default:
+                  return Center(
+                    child: Text('error'),
+                  );
+              }
+            } else {
+              return Center(child: Text(snapshot.error?.toString() ?? 'error'));
             }
-            return const Center(child: CircularProgressIndicator());
+            return Center(
+              child: Text('error'),
+            );
           }),
     );
   }
 }
 
-const String postUrl = "http://localhost:8007/api/product";
+const String postUrl = "http://192.168.137.1:8007/api/product";
 Future<Product> _getdata(String? id) async {
   String url = postUrl + '/$id';
   var res = await http.get(Uri.parse(url));
@@ -66,11 +72,12 @@ Future<Product> _getdata(String? id) async {
 //==================================================================
     Map<String, dynamic> productMap = jsonDecode(res.body);
     var products = Product.fromJson(productMap);
+    print(products.toJson());
     return products;
 //====================================================================
   }
   if (res.statusCode == 404) {
-    throw '';
+    throw 'errror';
   } else {
     throw Exception(res.statusCode.toString());
   }

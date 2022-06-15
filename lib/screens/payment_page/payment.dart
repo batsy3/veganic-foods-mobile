@@ -321,13 +321,22 @@ class TransactionAlertDalog extends StatelessWidget {
                 borderRadius: 30,
                 height: 10,
                 onTap: () {
-                  context.read<Cart>().clearall();
                   if (_formkey.currentState!.validate()) {
                     gateway(
                         textcontroller.text, context.read<Cart>().carttotal());
+                        print('number type is ${textcontroller.text.runtimeType}');
+                        print('cart total type is ${context.read<Cart>().carttotal().runtimeType}');
                     Navigator.of(context).pop();
-                    final SnackBar snackBar =
-                        SnackBar(content: Text('payment in progress'));
+                    final SnackBar snackBar = SnackBar(
+                      padding: EdgeInsets.only(top: 200, bottom: 200, left: 50, right: 50),
+                        content: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                          ),
+                      padding: EdgeInsets.all(10),
+                      child: Center(child: Text('payment in progress', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold,color: Colors.black),)),
+                    ));
                     snackbarKey.currentState?.showSnackBar(snackBar);
                   }
                 },

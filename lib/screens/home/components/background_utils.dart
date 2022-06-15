@@ -17,8 +17,8 @@ class Background extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Positioned(
-              top: 53,
-              left: 27,
+              top: size.height * 0.3,
+              left: size.width * 0.5,
               child: Image.asset(
                 "assets/images/Ellipse_1.png",
                 fit: BoxFit.cover,
@@ -66,24 +66,20 @@ class Background extends StatelessWidget {
                 fit: BoxFit.cover,
               )),
           Positioned(
-              top: 70,
-              left: 100,
+              top: size.height * 0.2,
+              left: size.width * 0.3,
               child: Image.asset(
                 "assets/images/app_logo.png",
                 fit: BoxFit.cover,
               )),
           Positioned(
-              top: 320,
-              left: 60,
+              top: size.height * 0.5,
+              left: size.width * 0.25,
               child: Image.asset(
                 "assets/images/landing_topping.png",
                 fit: BoxFit.cover,
               )),
-          Positioned(
-              bottom: 0,
-              left: 20,
-              right: 20,
-              child: child),
+          Positioned(bottom: 0, left: 20, right: 20, child: child),
         ],
       ),
     );
