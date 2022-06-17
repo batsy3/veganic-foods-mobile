@@ -12,7 +12,7 @@ import 'package:veganic_foods_app/utils/routes.dart';
 import 'package:veganic_foods_app/widgets/error_pages.dart';
 
 void main() {
-  // ErrorWidget.builder =(details) => Notfound('$details');
+  ErrorWidget.builder =(details) => Notfound('$details');
   runApp(MultiProvider(
     providers: [ChangeNotifierProvider(create: (_) => Cart())],
     child: MyApp(),
