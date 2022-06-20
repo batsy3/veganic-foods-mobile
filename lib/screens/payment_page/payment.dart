@@ -186,35 +186,48 @@ class _PaymentListState extends State<PaymentList> {
                     textColor: Colors.white,
                     bgColor: Colors.black,
                     onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          if (_init == Paymentmethod.mobile_money)
-                            return TransactionAlertDalog(
-                              text: 'Mobile Money',
-                              hint: 'phone number',
-                              formkey: _formkey,
-                              textcontroller: textcontroller,
-                              validator: 'enter valid phone number',
-                            );
-                          else if (_init == Paymentmethod.visa)
-                            return TransactionAlertDalog(
-                              text: 'Visa',
-                              hint: 'card number',
-                              formkey: _formkey,
-                              textcontroller: textcontroller,
-                              validator: 'enter valid card number',
-                            );
-                          else
-                            return TransactionAlertDalog(
-                              text: 'Bank Transfer',
-                              hint: 'bank account number',
-                              formkey: _formkey,
-                              textcontroller: textcontroller,
-                              validator: 'enter valid bank account number',
-                            );
-                        },
-                      );
+                      if (context.read<Cart>().carttotal() == 0.0) {
+                        Get.snackbar(
+                          'opps',
+                          'please add items to cart',
+                          backgroundColor: Colors.red.shade300,
+                          colorText: Colors.black,
+                          snackPosition: SnackPosition.TOP,
+                          duration: Duration(seconds: 5),
+                          icon: Icon(Icons.alarm),
+                          snackStyle: SnackStyle.FLOATING,
+                        );
+                      } else {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            if (_init == Paymentmethod.mobile_money)
+                              return TransactionAlertDalog(
+                                text: 'Mobile Money',
+                                hint: 'phone number',
+                                formkey: _formkey,
+                                textcontroller: textcontroller,
+                                validator: 'enter valid phone number',
+                              );
+                            else if (_init == Paymentmethod.visa)
+                              return TransactionAlertDalog(
+                                text: 'Visa',
+                                hint: 'card number',
+                                formkey: _formkey,
+                                textcontroller: textcontroller,
+                                validator: 'enter valid card number',
+                              );
+                            else
+                              return TransactionAlertDalog(
+                                text: 'Bank Transfer',
+                                hint: 'bank account number',
+                                formkey: _formkey,
+                                textcontroller: textcontroller,
+                                validator: 'enter valid bank account number',
+                              );
+                          },
+                        );
+                      }
                     },
                   ),
                   // ignore: prefer_const_constructors
@@ -326,31 +339,34 @@ class TransactionAlertDalog extends StatelessWidget {
                         textcontroller.text, context.read<Cart>().carttotal());
                     Navigator.of(context).pop();
                     final SnackBar snackBar = SnackBar(
-                      
-                      backgroundColor: Colors.transparent,
-                        padding: EdgeInsets.only(
-                            top: 400, bottom: 400, left: 70, right: 70),
-                        content: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                          ),
-                          padding: EdgeInsets.only(top:700,bottom:700, left:50, right: 50),
-                          child: Column(
-                            children: [
-                              Icon(Icons.check,
-                                  color: Colors.green, size: 50),
-                                  SizedBox(
-                                    height: 10,
+                        padding: EdgeInsets.only(top: 250, bottom: 300),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        backgroundColor: Colors.transparent,
+                        content: AlertDialog(
+                          title: Text(''),
+                          content: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(70),
+                            ),
+                            alignment: Alignment.center,
+                            child: Column(
+                              children: [
+                                if (context.read<Cart>().carttotal() != 0.0)
+                                  Icon(
+                                    Icons.check,
+                                    color: Colors.green,
+                                    size: 50,
                                   ),
-                              Text(
-                                'payment in progress',
-                                style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
-                              ),
-                            ],
+                                Text(
+                                  'Transaction in progress',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
                           ),
                         ));
                     snackbarKey.currentState?.showSnackBar(snackBar);
