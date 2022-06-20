@@ -25,9 +25,9 @@ class Product {
       : name = json['name'] as String,
         description = json['description'] as String,
         price = json['price'],
-        product_id = json['product_id'],
+        product_id = json['id'],
         quantity = json['quantity'],
-        image = json['imgsrc'] as String,
+        image = json['image'] as String,
         category = json['category'];
   Map<String, dynamic> toJson() => {
         "name": name,
@@ -35,7 +35,7 @@ class Product {
         "price": price,
         "quantity": quantity,
         "product_id":product_id,
-        "imgsrc": image,
+        "image": image,
         "category": category,
       };
 }

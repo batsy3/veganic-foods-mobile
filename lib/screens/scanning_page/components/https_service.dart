@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:http/http.dart' as http;
+import 'package:veganic_foods_app/constants.dart';
 import 'package:veganic_foods_app/screens/details_page/details.dart';
+import 'package:veganic_foods_app/widgets/error_pages.dart';
 
 import '../../details_page/components/product_class.dart';
 
@@ -23,42 +25,51 @@ class _HttppState extends State<Httpp> {
       body: FutureBuilder(
           future: _future,
           builder: (context, AsyncSnapshot<Product> snapshot) {
-            print(snapshot.error);
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              case ConnectionState.done:
-                SchedulerBinding.instance?.addPostFrameCallback((_) {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Details(
-                                product_id: snapshot.data!.product_id,
-                                category: snapshot.data!.category,
-                                name: snapshot.data!.name,
-                                quantity: snapshot.data!.quantity,
-                                price: snapshot.data!.price,
-                                description: snapshot.data!.description,
-                                image: snapshot.data!.image,
-                              )));
-                });
-                break;
-              case ConnectionState.none:
-                throw Exception('couldnt get item');
-              default:
-                return Center(
-                  child: Text('error'),
-                );
+            if (snapshot.hasData) {
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                case ConnectionState.done:
+                  SchedulerBinding.instance?.addPostFrameCallback((_) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Details(
+                                  product_id: snapshot.data!.product_id,
+                                  category: snapshot.data!.category,
+                                  name: snapshot.data!.name,
+                                  quantity: snapshot.data!.quantity,
+                                  price: snapshot.data!.price,
+                                  description: snapshot.data!.description,
+                                  image: snapshot.data!.image,
+                                )));
+                  });
+                  break;
+                case ConnectionState.none:
+                  throw Exception('couldnt get item');
+                default:
+                  return Center(
+                    child: Text('error'),
+                  );
+              }
             }
-            return const Center(child: CircularProgressIndicator());
+            return Container(
+              decoration: BoxDecoration(color: bGcolor),
+              child: Center(
+                  child: CircularProgressIndicator(
+                strokeWidth: 6,
+                backgroundColor: bGcolor,
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+              )),
+            );
           }),
     );
   }
 }
 
-const String postUrl = "http://192.168.40.82:8000/products";
+const String postUrl = "http://192.168.137.1:8007/api/product";
 Future<Product> _getdata(String? id) async {
   String url = postUrl + '/$id';
   var res = await http.get(Uri.parse(url));
@@ -66,11 +77,12 @@ Future<Product> _getdata(String? id) async {
 //==================================================================
     Map<String, dynamic> productMap = jsonDecode(res.body);
     var products = Product.fromJson(productMap);
+    print(products.toJson());
     return products;
 //====================================================================
   }
   if (res.statusCode == 404) {
-    throw '';
+    throw 'errror';
   } else {
     throw Exception(res.statusCode.toString());
   }
