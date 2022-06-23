@@ -10,6 +10,8 @@ import 'package:veganic_foods_app/screens/scanning_page/scan.dart';
 import 'package:veganic_foods_app/utils/globals.dart';
 import 'package:veganic_foods_app/utils/routes.dart';
 import 'package:veganic_foods_app/widgets/error_pages.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'screens/details_page/details.dart';
 
 void main() {
   ErrorWidget.builder =(details) => Notfound('$details');
@@ -27,23 +29,36 @@ class MyApp extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
     ));
-    return GetMaterialApp(
-      scaffoldMessengerKey: snackbarKey,
-      title: 'Veganic App',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'SF Pro Rounded',
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: PaymentPage(),
-      routes: {
-        Routes.home: (context) => const LandingPage(),
-        Routes.scan: (context) => const ScanningPage(),
-        Routes.cart: (context) => Basketpage(),
-        Routes.payment: (context) => const PaymentPage()
-      },
-      //  Define routes to other pages
+    return ScreenUtilInit(
+      designSize: Size(360, 640),
+      builder:((context, child) =>  GetMaterialApp(
+        key: mainKey,
+        scaffoldMessengerKey: snackbarKey,
+        title: 'Veganic App',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          fontFamily: 'SF Pro Rounded',
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        // home: LandingPage(),
+        home: Details(
+          category: 1,
+          description: 'im hungry yo',
+          image: '',
+          name: 'dodo',
+          price: 30,
+          product_id: 1,
+          quantity: 1,
+        ),
+        routes: {
+          Routes.home: (context) => LandingPage(),
+          Routes.scan: (context) => ScanningPage(),
+          Routes.cart: (context) => Basketpage(),
+          Routes.payment: (context) => const PaymentPage()
+        },
+        //  Define routes to other pages
+      )),
     );
   }
 }

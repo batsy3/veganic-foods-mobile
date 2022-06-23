@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:veganic_foods_app/constants.dart';
-import 'package:veganic_foods_app/screens/details_page/details.dart';
 import 'package:veganic_foods_app/utils/routes.dart';
-import 'package:veganic_foods_app/widgets/custom_button.dart';
 import 'package:veganic_foods_app/widgets/page_background.dart';
-
+import '../../../widgets/bottom_nav_bar.dart';
 import 'https_service.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class QRCodeScanner extends StatefulWidget {
   const QRCodeScanner({Key? key}) : super(key: key);
@@ -36,43 +35,47 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+        bottomNavigationBar: Bottombar(),
         backgroundColor: bGcolor,
-        body: Column(
-          children: [
-            const SizedBox(
-              height: 150,
-              child: PagesBackground(),
-            ),
-            SafeArea(
-              child: Column(
+        body: SafeArea(
+          top: false,
+          // bottom: false,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              SizedBox(
+                height:size.height*0.215,
+                child: PagesBackground(),
+              ),
+              Column(
                 children: [
                   Container(
                     width: size.width,
-                    height: size.height * 0.7,
-                    padding: const EdgeInsets.only(
-                        left: 0, top: 8, right: 0, bottom: 0),
-                    decoration: const BoxDecoration(
+                    height: size.height *0.678,
+                    // padding:  EdgeInsets.symmetric(vertical: 0.h),
+                    decoration:  BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(40),
                             topRight: Radius.circular(40))),
                     child: Column(
                       children: <Widget>[
+                        SizedBox(height: size.height*0.02,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            const SizedBox(
-                              width: 9,
+                             SizedBox(
+                              width: size.width * 0.06,
                             ),
                             IconButton(
                                 onPressed: () {
                                   Navigator.pushNamed(context, Routes.home);
                                 },
-                                icon: const Icon(Icons.arrow_back_ios)),
-                            const SizedBox(
-                              width: 70,
+                                icon:  Icon(Icons.arrow_back_ios)),
+                             SizedBox(
+                              width: size.width *0.18,
                             ),
-                            const Text(
+                             Text(
                               'Scan QR Code',
                               style: TextStyle(
                                   fontWeight: FontWeight.w600, fontSize: 20),
@@ -82,40 +85,19 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
                         Expanded(
                           flex: 1,
                           child: SafeArea(
-                              minimum: const EdgeInsets.only(
+                            top: false,
+                              minimum:  EdgeInsets.only(
                                 top: 10,
                               ),
                               child: _buildQrView(context)),
                         ),
-                        // AppButton(
-                        //   text: "Proceed",
-                        //   bgColor: Colors.black,
-                        //   textColor: Colors.white,
-                        //   borderRadius: 30,
-                        //   fontSize: 25,
-                        //   fontWeight: FontWeight.w600,
-                        //   onTap: () {
-                        //     Navigator.push(
-                        //         context,
-                        //         MaterialPageRoute(
-                        //             builder: ((context) => Details(
-                        //                 product_id: 1,
-                        //                 name: 'teryaki',
-                        //                 description: 'soup and that',
-                        //                 price: 40,
-                        //                 quantity: 1,
-                        //                 image: '',
-                        //                 category: 2))));
-                        //   },
-                        //   height: 10,
-                        // )
                       ],
                     ),
                   ),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ));
   }
 

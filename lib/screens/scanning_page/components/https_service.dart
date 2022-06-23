@@ -54,15 +54,23 @@ class _HttppState extends State<Httpp> {
                     child: Text('error'),
                   );
               }
+            } else {
+              return Container(
+                  decoration: BoxDecoration(color: bGcolor),
+                  child: Center(
+                    child: Text(snapshot.error!.toString()),
+                  )
+                  //     child: ircularProgressIndicator(
+                  //   strokeWidth: 6,
+                  //   backgroundCoClor: bGcolor,
+                  //   valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                  // )),
+                  );
             }
-            return Container(
-              decoration: BoxDecoration(color: bGcolor),
-              child: Center(
-                  child: CircularProgressIndicator(
-                strokeWidth: 6,
-                backgroundColor: bGcolor,
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
-              )),
+            return CircularProgressIndicator(
+              strokeWidth: 6,
+              backgroundColor: bGcolor,
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
             );
           }),
     );
@@ -80,10 +88,6 @@ Future<Product> _getdata(String? id) async {
     print(products.toJson());
     return products;
 //====================================================================
-  }
-  if (res.statusCode == 404) {
-    throw 'errror';
-  } else {
-    throw Exception(res.statusCode.toString());
-  }
+  } else
+    return Notfound('product not found');
 }

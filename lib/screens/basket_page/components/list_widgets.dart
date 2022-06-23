@@ -24,6 +24,7 @@ class _ListWidgetState extends State<ListWidget> {
   late int quantity;
   @override
   void initState() {
+    super.initState();
     prod = this.widget.product;
     quantity = this.widget.product.quantity;
     initialPrice = this.widget.product.price / quantity;
@@ -41,7 +42,7 @@ class _ListWidgetState extends State<ListWidget> {
     return Column(
       children: [
         Container(
-            margin: EdgeInsets.all(8),
+            margin: EdgeInsets.all(12),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               color: Colors.white,
@@ -50,7 +51,7 @@ class _ListWidgetState extends State<ListWidget> {
                 contentPadding: EdgeInsets.all(10),
                 leading: CircleAvatar(
                   radius: 32,
-                  backgroundImage: AssetImage(widget.product.image),
+                  backgroundImage: NetworkImage(widget.product.image),
                 ),
                 title: Text(
                   widget.product.name,
