@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:veganic_foods_app/constants.dart';
 import 'package:veganic_foods_app/screens/details_page/details.dart';
-import 'package:veganic_foods_app/widgets/error_pages.dart';
 
 import '../../details_page/components/product_class.dart';
+import '../scan.dart';
 
 class Httpp extends StatefulWidget {
   final String? id;
@@ -17,7 +18,13 @@ class Httpp extends StatefulWidget {
 }
 
 class _HttppState extends State<Httpp> {
-  late final Future<Product> _future = _getdata(widget.id);
+  late Future<Product> _future ;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _future = _getdata(widget.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,58 +33,58 @@ class _HttppState extends State<Httpp> {
           future: _future,
           builder: (context, AsyncSnapshot<Product> snapshot) {
             if (snapshot.hasData) {
+              Product? data = snapshot.data;
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:
                   return Center(
                     child: CircularProgressIndicator(),
                   );
                 case ConnectionState.done:
-                  SchedulerBinding.instance?.addPostFrameCallback((_) {
+                  SchedulerBinding.instance!.addPostFrameCallback((_) {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => Details(
-                                  product_id: snapshot.data!.product_id,
-                                  category: snapshot.data!.category,
-                                  name: snapshot.data!.name,
-                                  quantity: snapshot.data!.quantity,
-                                  price: snapshot.data!.price,
-                                  description: snapshot.data!.description,
-                                  image: snapshot.data!.image,
+                                  product_id: data!.product_id,
+                                  category: data.category,
+                                  name: data.name,
+                                  quantity: data.quantity,
+                                  price: data.price,
+                                  description: data.description,
+                                  image: data.image,
                                 )));
                   });
                   break;
                 case ConnectionState.none:
-                  throw Exception('couldnt get item');
+                  return NetworkErrorpage();
                 default:
                   return Center(
                     child: Text('error'),
                   );
               }
             } else {
-              return Container(
-                  decoration: BoxDecoration(color: bGcolor),
-                  child: Center(
-                    child: Text(snapshot.error!.toString()),
-                  )
-                  //     child: ircularProgressIndicator(
-                  //   strokeWidth: 6,
-                  //   backgroundCoClor: bGcolor,
-                  //   valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
-                  // )),
-                  );
+              return Center(
+                child: CircularProgressIndicator(
+                  strokeWidth: 6,
+                  backgroundColor: bGcolor,
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+                ),
+              );
+              ;
             }
-            return CircularProgressIndicator(
-              strokeWidth: 6,
-              backgroundColor: bGcolor,
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+            return Center(
+              child: CircularProgressIndicator(
+                strokeWidth: 6,
+                backgroundColor: bGcolor,
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+              ),
             );
           }),
     );
   }
 }
 
-const String postUrl = "http://192.168.137.1:8007/api/product";
+const String postUrl = "http://192.168.235.5:8007/api/product";
 Future<Product> _getdata(String? id) async {
   String url = postUrl + '/$id';
   var res = await http.get(Uri.parse(url));
@@ -89,5 +96,49 @@ Future<Product> _getdata(String? id) async {
     return products;
 //====================================================================
   } else
-    return Notfound('product not found');
+    return Circle();
+  // return NetworkErrorpage();
+}
+
+dynamic Circle() {
+  return CircularProgressIndicator();
+}
+
+dynamic NetworkErrorpage() {
+  return Scaffold(
+    body: Stack(
+      fit: StackFit.expand,
+      children: [
+        Image.asset(
+          "assets/images/1_No Connection.png",
+          fit: BoxFit.cover,
+        ),
+        Container(
+          padding:
+              const EdgeInsets.only(top: 100, left: 20, right: 20, bottom: 90),
+          alignment: Alignment.bottomCenter,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              fixedSize: Size(300, 59),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              primary: Color(0xFF6B92F2),
+              onPrimary: Colors.white,
+            ),
+            onPressed: () {
+              Get.to(ScanningPage());
+            },
+            child: Text('scan again',
+                maxLines: 3,
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                )),
+          ),
+        )
+      ],
+    ),
+  );
 }

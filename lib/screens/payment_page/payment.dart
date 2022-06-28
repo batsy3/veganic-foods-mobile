@@ -32,7 +32,7 @@ class PaymentList extends StatefulWidget {
   State<PaymentList> createState() => _PaymentListState();
 }
 
-enum Paymentmethod { mobile_money, visa, bank_transfer }
+enum Paymentmethod { mobile_money, visa, bank_transfer, master_card }
 
 class _PaymentListState extends State<PaymentList> {
   final textcontroller = TextEditingController();
@@ -63,7 +63,7 @@ class _PaymentListState extends State<PaymentList> {
                 // ignore: prefer_const_constructors
                 backgroundbubbles(
                   // height: size.height*0.1719.h,
-                  height: height * 0.215,
+                  height: height * 0.1,
                   name: '',
                 ),
 
@@ -78,7 +78,7 @@ class _PaymentListState extends State<PaymentList> {
                     ),
                   ),
                   SizedBox(
-                    height: height * 0.04,
+                    height: height * 0.02,
                   ),
                   Container(
                       width: width.w,
@@ -132,6 +132,23 @@ class _PaymentListState extends State<PaymentList> {
                           title: RadiotileCSS(
                             imagestring: 'assets/icons/mbilemoney.png',
                             text: 'Mobile Money',
+                          ),
+                          selected: false,
+                        ),
+                        divider(),
+                        SizedBox(
+                          height: height * 0.03,
+                        ),
+                        RadioListTile<Paymentmethod>(
+                          contentPadding: EdgeInsets.only(left: 40),
+                          value: Paymentmethod.master_card,
+                          groupValue: _init,
+                          onChanged: (Paymentmethod? value) =>
+                              setState(() => {_init = value}),
+                          activeColor: Colors.deepPurple[500],
+                          title: RadiotileCSS(
+                            imagestring: 'assets/icons/master-card-icon-4.png',
+                            text: 'Master Card',
                           ),
                           selected: false,
                         ),
@@ -246,6 +263,14 @@ class _PaymentListState extends State<PaymentList> {
                                       textcontroller: textcontroller,
                                       validator: 'enter valid card number',
                                     );
+                                  else if (_init == Paymentmethod.master_card)
+                                    return TransactionAlertDalog(
+                                      text: 'Visa',
+                                      hint: 'card number',
+                                      formkey: _formkey,
+                                      textcontroller: textcontroller,
+                                      validator: 'enter valid card number',
+                                    );
                                   else
                                     return TransactionAlertDalog(
                                       text: 'Bank Transfer',
@@ -316,7 +341,7 @@ class TransactionAlertDalog extends StatelessWidget {
               )),
         ),
         content: Container(
-          height: size.height * 0.36,
+          height: size.height * 0.4,
           padding: EdgeInsets.all(20),
           alignment: Alignment.center,
           child: Form(
@@ -325,7 +350,7 @@ class TransactionAlertDalog extends StatelessWidget {
               Text(text,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               SizedBox(
-                height: size.height * 0.03,
+                height: size.height * 0.02,
               ),
               TextFormField(
                 validator: (value) {
@@ -338,7 +363,7 @@ class TransactionAlertDalog extends StatelessWidget {
                 style: TextStyle(color: Colors.black),
                 controller: textcontroller,
                 decoration: InputDecoration(
-                  hintText: 'enter $hint',
+                  hintText: '260 ',
                   hintStyle: TextStyle(color: Colors.grey.shade700),
                   labelText: hint,
                   labelStyle: TextStyle(color: Colors.grey.shade700),
@@ -352,7 +377,7 @@ class TransactionAlertDalog extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: size.height * 0.03,
+                height: size.height * 0.02,
               ),
               Text(
                 'your cart total is ${context.read<Cart>().total}',
@@ -372,7 +397,7 @@ class TransactionAlertDalog extends StatelessWidget {
                         textcontroller.text, context.read<Cart>().carttotal());
                     Navigator.of(context).pop();
                     final SnackBar snackBar = SnackBar(
-                      duration: Duration(seconds: 1),
+                        duration: Duration(seconds: 3),
                         padding: EdgeInsets.only(top: 250, bottom: 300),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
@@ -386,6 +411,7 @@ class TransactionAlertDalog extends StatelessWidget {
                             ),
                             alignment: Alignment.center,
                             child: Column(
+            
                               children: [
                                 if (context.read<Cart>().carttotal() != 0.0)
                                   Icon(
@@ -450,7 +476,7 @@ class RadiotileCSS extends StatelessWidget {
               height: 25.h,
             ),
             SizedBox(
-              width: size.height * 0.04,
+              width: size.height * 0.02,
             ),
             Text(
               text,

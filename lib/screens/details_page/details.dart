@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:veganic_foods_app/constants.dart';
 import 'package:veganic_foods_app/providers/cart_provider.dart';
@@ -87,343 +88,359 @@ class _DetailsState extends State<Details> {
     Size size = MediaQuery.of(context).size;
     var init_price = widget.price;
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      bottomNavigationBar: Bottombar(),
+        resizeToAvoidBottomInset: false,
+        bottomNavigationBar: Bottombar(),
         body: Container(
-            decoration: BoxDecoration(
-          color: bGcolor,
-          image: DecorationImage(
-              image: NetworkImage(widget.image), fit: BoxFit.fill)),
-            child: Stack(children: [
-        SafeArea(
-          top: false,
-          child: Column(
-            children: [
-              backgroundbubbles(name: '',
-              height: size.height*0.24,
-              ),
-              
-          
-              // SizedBox(height: size.height * 0.005),
-              Container(
-                width: size.width,
-                height: size.height * 0.67,
-                decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(40),
-                        topRight: Radius.circular(40))),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.only(top: 20, left: 20),
-                      child: Row(
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.arrow_back_ios),
-                            onPressed: () {
-                              Navigator.pushNamed(context, Routes.scan);
-                            },
-                          ),
-                           SizedBox(
-                            width: size.width * 0.46,
-                          ),
-                          Text(
-                            'K ${widget.price}',
-                            style: TextStyle(
-                                fontSize: 35, fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+          decoration: BoxDecoration(
+              color: bGcolor,
+              image: DecorationImage(
+                  image: NetworkImage(widget.image), fit: BoxFit.cover)),
+          child: Stack(children: [
+            SafeArea(
+              top: false,
+              child: Column(
+                children: [
+                  // backgroundbubbles(
+                  //   name: '',
+                  //   height: size.height * 0.24,
+                  // ),
+
+                  SizedBox(height: size.height * 0.24),
+                  Container(
+                    width: size.width,
+                    height: size.height * 0.67,
+                    decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(40),
+                            topRight: Radius.circular(40))),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Expanded(
-                            child: Center(
-                          child: Column(
+                        Container(
+                          padding: const EdgeInsets.only(top: 20, left: 20),
+                          child: Row(
                             children: [
+                              IconButton(
+                                icon: const Icon(Icons.arrow_back_ios),
+                                onPressed: () {
+                                  Navigator.pushNamed(context, Routes.scan);
+                                },
+                              ),
+                              SizedBox(
+                                width: size.width * 0.46,
+                              ),
                               Text(
-                                'Description',
+                                'K ${widget.price}',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
-                              ),
+                                    fontSize: 35, fontWeight: FontWeight.bold),
+                              )
                             ],
                           ),
-                        )),
-                        const VerticalDivider(
-                          width: 1,
                         ),
-                        Expanded(
-                            child: const Center(
-                          child: Text(
-                            ' Nutritional value',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 15),
-                          ),
-                        )),
-                      ],
-                    ),
-                    const Divider(
-                      indent: 220,
-                      endIndent: 20,
-                      thickness: 1,
-                      color: Colors.black,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            padding: const EdgeInsets.only(
-                                left: 50, right: 10, top: 0, bottom: 40),
-                            child: Text(
-                              widget.description,
-                            ),
-                          ),
-                        ),
-                        const VerticalDivider(
-                          width: 1.0,
-                        ),
-                        Expanded(
-                            child: Container(
-                          padding: const EdgeInsets.only(left: 30, right: 10),
-                          child: Center(
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                                child: Center(
                               child: Column(
-                            children: [
-                              const Text(
-                                '',
-                                textWidthBasis: TextWidthBasis.parent,
+                                children: [
+                                  Text(
+                                    'Description',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
+                                ],
                               ),
-                            ],
-                          )),
-                        ))
-                      ],
-                    ),
-                    const Divider(
-                      indent: 220,
-                      endIndent: 20,
-                      thickness: 1,
-                      color: Colors.black,
-                    ),
-                    Container(
-                        padding: const EdgeInsets.only(left: 220),
-                        child: Row(
-                          children:  [
-                            Icon(Icons.check),
-                            SizedBox(
-                              width: size.width * 0.02,
+                            )),
+                            const VerticalDivider(
+                              width: 1,
                             ),
-                            Text('15 cals'),
-                            SizedBox(
-                              width: 30,
-                            ),
-                            Text(
-                              '*daily value',
-                              style: TextStyle(fontSize: 10),
-                            )
+                            Expanded(
+                                child: const Center(
+                              child: Text(
+                                ' Nutritional value',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 15),
+                              ),
+                            )),
                           ],
-                        )),
-                     SizedBox(
-                      height: size.height * 0.01,
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(right: 200),
-                      child: Text(
-                        'Ingredients',
-                        style:
-                            TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Flex(
-                      direction: Axis.horizontal,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: size.width * 0.85,
-                          height: size.height * 0.1,
-                          alignment: Alignment.center,
-                          padding: const EdgeInsets.all(10),
-                          decoration: const BoxDecoration(
-                              color: Color.fromARGB(255, 249, 253, 255),
-                              boxShadow: [
-                                BoxShadow(
-                                    blurRadius: 3,
-                                    spreadRadius: -3,
-                                    offset: Offset(0.84, 5))
-                              ],
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(40))),
-                          child: ingredient_images(),
                         ),
-                      ],
-                    ),
-                    // Multipleselect(),
-                     SizedBox(
-                      height: size.height*0.02,
-                    ),
-                    Column(
-                      children: [
+                        const Divider(
+                          indent: 220,
+                          endIndent: 20,
+                          thickness: 1,
+                          color: Colors.black,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                padding: const EdgeInsets.only(
+                                    left: 50, right: 10, top: 0, bottom: 40),
+                                child: Text(
+                                  widget.description,
+                                ),
+                              ),
+                            ),
+                            const VerticalDivider(
+                              width: 1.0,
+                            ),
+                            Expanded(
+                                child: Container(
+                              padding:
+                                  const EdgeInsets.only(left: 30, right: 10),
+                              child: Center(
+                                  child: Column(
+                                children: [
+                                  const Text(
+                                    '',
+                                    textWidthBasis: TextWidthBasis.parent,
+                                  ),
+                                ],
+                              )),
+                            ))
+                          ],
+                        ),
+                        const Divider(
+                          indent: 220,
+                          endIndent: 20,
+                          thickness: 1,
+                          color: Colors.black,
+                        ),
                         Container(
-                          padding: EdgeInsets.only(right: size.width * 0.5),
+                            padding: const EdgeInsets.only(left: 220),
+                            child: Row(
+                              children: [
+                                Icon(Icons.check),
+                                SizedBox(
+                                  width: size.width * 0.02,
+                                ),
+                                Text('15 cals'),
+                                SizedBox(
+                                  width: 30,
+                                ),
+                                Text(
+                                  '*daily value',
+                                  style: TextStyle(fontSize: 10),
+                                )
+                              ],
+                            )),
+                        SizedBox(
+                          height: size.height * 0.01,
+                        ),
+                        Container(
+                          padding: EdgeInsets.only(right: 200),
                           child: Text(
-                            'Additions',
+                            'Ingredients',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 25),
+                                fontSize: 15, fontWeight: FontWeight.bold),
                           ),
                         ),
-                        SizedBox(
-                          height: size.height * 0.05,
-                          width: size.width * 0.7,
-                          child: DropdownButton<dynamic>(
-                              underline:  Container(
-                                height: 1,
-                                color: Colors.deepPurple,
-                              ),
-                              elevation: 9,
-                              value: _selectedAddition,
-                              isExpanded: true,
-                              hint: Text(
-                                'pick an addition',
-                              ),
-                              icon: Icon(Icons.keyboard_arrow_down_sharp),
-                              items: additions,
-                              onChanged: (value) {
-                                setState(() {
-                                  _selectedAddition = value;
-                                });
-                              }),
-                        )
-                      ],
-                    ),
-          
-                    Row(
-                      children: [
                         Flex(
                           direction: Axis.horizontal,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              padding: EdgeInsets.only(left: size.width * 0.1),
+                              width: size.width * 0.85,
+                              height: size.height * 0.1,
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.all(10),
+                              decoration: const BoxDecoration(
+                                  color: Color.fromARGB(255, 249, 253, 255),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        blurRadius: 3,
+                                        spreadRadius: -3,
+                                        offset: Offset(0.84, 5))
+                                  ],
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(40))),
+                              child: ingredient_images(),
+                            ),
+                          ],
+                        ),
+                        // Multipleselect(),
+                        SizedBox(
+                          height: size.height * 0.02,
+                        ),
+                        Column(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.only(right: size.width * 0.5),
                               child: Text(
-                                'K ${price}',
-                                style: const TextStyle(
+                                'Additions',
+                                style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 25),
                               ),
                             ),
+                            SizedBox(
+                              height: size.height * 0.05,
+                              width: size.width * 0.7,
+                              child: DropdownButton<dynamic>(
+                                  underline: Container(
+                                    height: 1,
+                                    color: Colors.deepPurple,
+                                  ),
+                                  elevation: 9,
+                                  value: _selectedAddition,
+                                  isExpanded: true,
+                                  hint: Text(
+                                    'pick an addition',
+                                  ),
+                                  icon: Icon(Icons.keyboard_arrow_down_sharp),
+                                  items: additions,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _selectedAddition = value;
+                                    });
+                                  }),
+                            )
                           ],
                         ),
-                        SizedBox(
-                          width: size.width * 0.12,
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(right: 30),
-                          child: Flex(
-                            direction: Axis.horizontal,
-                            children: [
-                              Row(
+
+                        Row(
+                          children: [
+                            Flex(
+                              direction: Axis.horizontal,
+                              children: [
+                                Container(
+                                  padding:
+                                      EdgeInsets.only(left: size.width * 0.07),
+                                  child: Text(
+                                    'K ${price}',
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: size.width * 0.12,
+                            ),
+                            Container(
+                              padding: EdgeInsets.only(right: 30),
+                              child: Flex(
+                                direction: Axis.horizontal,
                                 children: [
-                                  IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          _count--;
-                                          prod.quantity = _count;
-                                          price -= init_price;
-                                          prod.price = price;
-                                        });
-                                      },
-                                      icon: Icon(
-                                        Icons.remove,
-                                        size: 15,
-                                        color: Colors.black,
-                                      )),
-                                  Text(_count.toString()),
-                                  IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          _count++;
-                                          prod.quantity = _count;
-                                          price += init_price;
-                                          prod.price = price;
-                                        });
-                                      },
-                                      icon: Icon(
-                                        Icons.add,
-                                        size: 15,
-                                        color: Colors.black,
-                                      )),
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              _count--;
+                                              prod.quantity = _count;
+                                              price -= init_price;
+                                              prod.price = price;
+                                            });
+                                          },
+                                          icon: Icon(
+                                            Icons.remove,
+                                            size: 15,
+                                            color: Colors.black,
+                                          )),
+                                      Text(_count.toString()),
+                                      IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              _count++;
+                                              prod.quantity = _count;
+                                              price += init_price;
+                                              prod.price = price;
+                                            });
+                                          },
+                                          icon: Icon(
+                                            Icons.add,
+                                            size: 15,
+                                            color: Colors.black,
+                                          )),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: size.width * 0.1,
+                                  ),
+                                  Container(
+                                    padding: EdgeInsets.all(4),
+                                    decoration: BoxDecoration(
+                                        boxShadow: [
+                                          BoxShadow(
+                                              blurRadius: 10,
+                                              spreadRadius: -5,
+                                              offset: Offset(0.84, 5)),
+                                        ],
+                                        color: Colors.white,
+                                        shape: BoxShape.circle),
+                                    child: Badge(
+                                        padding: EdgeInsets.all(3),
+                                        shape: BadgeShape.circle,
+                                        badgeColor: bGcolor,
+                                        child: Icon(
+                                          Icons.shopping_basket,
+                                          size: 30,
+                                        ),
+                                        //cart item count
+                                        badgeContent: Text(
+                                            '${context.watch<Cart>().count}')),
+                                  ),
                                 ],
                               ),
-                               SizedBox(
-                                width: size.width * 0.1,
-                              ),
-                              Container(
-                                padding: EdgeInsets.all(4),
-                                decoration: BoxDecoration(boxShadow: [
-                                  BoxShadow(
-                                      blurRadius: 10,
-                                      spreadRadius: -5,
-                                      offset: Offset(0.84, 5)),
-                                ], color: Colors.white, shape: BoxShape.circle),
-                                child: Badge(
-                                    padding: EdgeInsets.all(3),
-                                    shape: BadgeShape.circle,
-                                    badgeColor: bGcolor,
-                                    child: Icon(
-                                      Icons.shopping_basket,
-                                      size: 30,
-                                    ),
-                                    //cart item count
-                                    badgeContent:
-                                        Text('${context.watch<Cart>().count}')),
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
+                        AppButton(
+                            text: 'Add to Basket',
+                            fontSize: 20,
+                            textColor: Colors.white,
+                            bgColor: Colors.black,
+                            onTap: () {
+                              context.read<Cart>().addtoCart(prod);
+                              Get.snackbar('', '',
+                              // borderRadius: 30,
+                              messageText: Text('${prod.name} successfuly added to the basket'),
+                              titleText: Text('item  added', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                                  
+                                  icon: Icon(Icons.playlist_add_check),
+                                  padding: EdgeInsets.all(15),
+                                  backgroundColor: Colors.amberAccent.shade700);
+                              print(prod.price);
+                              Navigator.pushNamed(context, Routes.cart);
+                            },
+                            fontWeight: FontWeight.normal,
+                            borderRadius: 40,
+                            height: size.height * 0.01)
                       ],
                     ),
-                    AppButton(
-                        text: 'Add to Basket',
-                        fontSize: 20,
-                        textColor: Colors.white,
-                        bgColor: Colors.black,
-                        onTap: () {
-                          context.read<Cart>().addtoCart(prod);
-                          print(prod.price);
-                          Navigator.pushNamed(context,
-                             Routes.cart
-                            );
-                        },
-                        fontWeight: FontWeight.normal,
-                        borderRadius: 40,
-                        height: size.height * 0.01)
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-        Align(
-          alignment: const Alignment(-0.6, -0.5),
-          child: Container(
-              decoration: const BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                        blurRadius: 8, spreadRadius: -7, offset: Offset(0.8, 5))
-                  ],
-                  color: Color.fromARGB(255, 255, 255, 255),
-                  borderRadius: BorderRadius.all(Radius.circular(50))),
-              width: size.width * 0.5,
-              height: size.height * 0.07,
-              child: Center(
-                child: Text(
-                  widget.name,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              )),
-        ),
-            ]),
-          ));
+            ),
+            Align(
+              alignment: const Alignment(-0.6, -0.5),
+              child: Container(
+                  decoration: const BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                            blurRadius: 8,
+                            spreadRadius: -7,
+                            offset: Offset(0.8, 5))
+                      ],
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      borderRadius: BorderRadius.all(Radius.circular(50))),
+                  width: size.width * 0.5,
+                  height: size.height * 0.07,
+                  child: Center(
+                    child: Text(
+                      widget.name,
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  )),
+            ),
+          ]),
+        ));
   }
 }
 

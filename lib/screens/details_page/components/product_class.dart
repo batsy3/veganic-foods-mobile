@@ -2,7 +2,7 @@ import 'dart:convert';
 
 class Product {
   // ignore: non_constant_identifier_names
-  final int product_id;
+   int product_id;
   
   final String name;
   final String description;

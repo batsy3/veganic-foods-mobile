@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:veganic_foods_app/screens/details_page/components/product_class.dart';
 import 'package:veganic_foods_app/utils/globals.dart';
 
@@ -35,14 +36,15 @@ class Cart with ChangeNotifier {
   }
 
   addtoCart(Product product) {
-    if (_cart.contains(product.product_id)) {
-      print('item exists');
+    if (_cart.contains(product)) {
+      Get.snackbar('yikes', 'item already exists bucko');
     } else {
       _cart.add(product);
       notifyListeners();
-      final SnackBar snackbar = SnackBar(content: Text('item added'));
-      snackbarKey.currentState?.showSnackBar(snackbar);
-      return snackbar;
+
+      // final SnackBar snackbar = SnackBar(content: Text('item added'));
+      // snackbarKey.currentState?.showSnackBar(snackbar);
+
     }
   }
 

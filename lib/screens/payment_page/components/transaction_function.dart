@@ -6,10 +6,9 @@ import 'package:veganic_foods_app/screens/details_page/components/product_class.
 import 'package:http/http.dart' as http;
 import '../../../providers/cart_provider.dart';
 
-
 var id = ShortUuid().generate();
 List<dynamic> cart = [];
-String url = 'http://192.168.100.15:8007/api/order/';
+String url = 'http://192.168.235.5:8007/api/order/';
 Future<dynamic> gateway(
   String number,
   double cart_total,
@@ -33,42 +32,53 @@ Future<dynamic> gateway(
         // "products": cart
       }));
   Map<String, dynamic> temp = jsonDecode(res.body);
-  print('response is ${temp["task_id"]}');
-  if (res.statusCode != 200){
+  print('response is ${temp["data"]}');
+  print('${res.statusCode}');
+  if (res.statusCode != 201) {
     Get.snackbar('Error', 'Something went wrong',
         snackPosition: SnackPosition.TOP,
         duration: Duration(seconds: 3),
         icon: Icon(Icons.error),
         backgroundColor: Colors.red,
         colorText: Colors.white);
-        
   }
-  const status_url =
-      'http://192.168.100.15:8007/api/order/check_payment_status';
-  Future<dynamic>.delayed(Duration(seconds: 150), () async {
-    String post_url = status_url + '/${temp["task_id"]}';
+  const status_url = 'http://192.168.235.5:8007/api/order/check';
+  Future<dynamic>.delayed(Duration(seconds: 120), () async {
+    String post_url = status_url + '/${temp["data"]}';
     var status = await http.get(Uri.parse(post_url));
-    Map<String, dynamic> temp2 = jsonDecode(status.body);
+    // Map<String, dynamic> temp2 = jsonDecode(status.body);    // Map<String, dynamic> temp2 = jsonDecode(status.body);
+    var temp2 =status.body;
+
     print('body is ${temp2}');
-    if (temp2 == 2) {
+    if (temp2.toString().contains('successful') && status.statusCode == 200) {
       return Get.snackbar(
         'Success',
         'your payment was successful',
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: Colors.green,
         duration: Duration(seconds: 3),
+        colorText: Colors.white,
         icon: Icon(Icons.check),
-
       );
-    } else {  
+    } else if (temp.toString().contains('error') && status.statusCode == 400) {
       return Get.snackbar(
-        'Error',
-        'your payment was unsuccessful',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red.shade200,
+        'Sorry',
+        'A network error occured while processing your payment please try sagain',
+        snackPosition: SnackPosition.TOP,
+        colorText: Colors.white,
+        backgroundColor: Colors.red.shade700,
         duration: Duration(seconds: 3),
         icon: Icon(Icons.error),
-
+      );
+    }else{
+      return Get.snackbar(
+        'Sorry',
+        'A connection issue occured please try again after some time',
+        colorText: Colors.white,
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.red.shade700,
+        duration: Duration(seconds: 3),
+        icon: Icon(Icons.check),
       );
     }
   });
