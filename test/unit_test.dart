@@ -63,6 +63,7 @@ main() {
   });
   group('futures test', () {
     test('scan async function', () async {
+      final client = ApiProvider();
       final mockHttpClient = MockClient((request) async{
         final response = {
           "name": 'food 1',
@@ -75,7 +76,7 @@ main() {
         };
         return Response(jsonEncode(response), 200);
       });
-      
+      final result = await ApiProvider.getData(mockHttpClient)
     });
   });
 }

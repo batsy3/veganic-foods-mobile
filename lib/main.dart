@@ -11,7 +11,6 @@ import 'package:veganic_foods_app/utils/globals.dart';
 import 'package:veganic_foods_app/utils/routes.dart';
 import 'package:veganic_foods_app/widgets/error_pages.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'screens/details_page/details.dart';
 
 void main() {
   ErrorWidget.builder =(details) => Notfound('$details');
