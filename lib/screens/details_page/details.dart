@@ -1,12 +1,10 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:veganic_foods_app/constants.dart';
 import 'package:veganic_foods_app/providers/cart_provider.dart';
 import 'package:veganic_foods_app/screens/details_page/components/product_class.dart';
-import 'package:veganic_foods_app/screens/payment_page/components/background_eclipses.dart';
 import 'package:veganic_foods_app/utils/routes.dart';
 import 'package:veganic_foods_app/widgets/bottom_nav_bar.dart';
 import 'package:veganic_foods_app/widgets/custom_button.dart';
@@ -100,11 +98,6 @@ class _DetailsState extends State<Details> {
               top: false,
               child: Column(
                 children: [
-                  // backgroundbubbles(
-                  //   name: '',
-                  //   height: size.height * 0.24,
-                  // ),
-
                   SizedBox(height: size.height * 0.24),
                   Container(
                     width: size.width,
@@ -397,14 +390,6 @@ class _DetailsState extends State<Details> {
                             bgColor: Colors.black,
                             onTap: () {
                               context.read<Cart>().addtoCart(prod);
-                              Get.snackbar('', '',
-                              // borderRadius: 30,
-                              messageText: Text('${prod.name} successfuly added to the basket'),
-                              titleText: Text('item  added', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
-                                  
-                                  icon: Icon(Icons.playlist_add_check),
-                                  padding: EdgeInsets.all(15),
-                                  backgroundColor: Colors.amberAccent.shade700);
                               print(prod.price);
                               Navigator.pushNamed(context, Routes.cart);
                             },
