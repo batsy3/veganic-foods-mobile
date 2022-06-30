@@ -9,7 +9,7 @@ import '../widgets/network_error_page.dart';
 class ApiProvider {
   var id = ShortUuid().generate();
 
-  String _rootUrl = "http://192.168.179.5:8007/api";
+  String _rootUrl = "http://127.0.0.1:8007/api";
   Client client = Client();
   Future<Product>getProduct(String? id) async {
     final response = await client.get(Uri.parse(_rootUrl + '/product/$id'));
@@ -17,7 +17,8 @@ class ApiProvider {
       Map<String, dynamic> productMap = jsonDecode(response.body);
       var products = Product.fromJson(productMap);
       return products;
-    } else
+    } 
+    else
       return NetworkErrorpage();
   }
   Future<dynamic> gateway(

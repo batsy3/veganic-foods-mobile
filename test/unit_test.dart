@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 import 'package:http/testing.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
+import 'package:veganic_foods_app/providers/Api_provider.dart';
 import 'package:veganic_foods_app/providers/cart_provider.dart';
 import 'package:veganic_foods_app/screens/details_page/components/product_class.dart';
 
@@ -40,11 +42,35 @@ List<Product> fixture_data = [
       image: 'assets/images/toppng_1.png',
       category: 1)
 ];
-main() {
+
+class MockGetdata implements ApiProvider {
+  @override
+  late Client client;
+
+  @override
+  late String id;
+
+  @override
+  Future gateway(String number, double cart_total) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Product> getProduct(String? id) async {
+    return fixture_data[1];
+  }
+}
+
+class BetterMockService extends Mock implements ApiProvider {}
+
+void main() {
   late Cart cart = Cart();
-  setUpAll(() {
+  late BetterMockService mockService;
+  late ApiProvider http;
+  setUp(() {
     for (Product i in fixture_data) {
       cart.addtoCart(i);
+      http = BetterMockService();
     }
   });
   group('cart provider tests', () {
@@ -55,28 +81,22 @@ main() {
       expect(cart.carttotal(), 14);
     });
     test('clear function', () {
+      for (Product i in fixture_data) {
+        cart.addtoCart(i);
+      }
+
       cart.clearall();
       expect(cart.cart, isEmpty);
       expect(cart.carttotal(), 0);
       expect(cart.count, 0);
     });
   });
-  group('futures test', () {
-    test('scan async function', () async {
-      final client = ApiProvider();
-      final mockHttpClient = MockClient((request) async{
-        final response = {
-          "name": 'food 1',
-          "product_id": 1,
-          "description": 'first food',
-          "price": 3,
-          "quantity": 1,
-          "image": 'assets/images/toppng_1.png',
-          "category": 1
-        };
-        return Response(jsonEncode(response), 200);
-      });
-      final result = await ApiProvider.getData(mockHttpClient)
+
+  group('mocking api', () {
+    test('description', () async {
+      when(() => http.getProduct('1')).thenAnswer((_) async =>fixture_data[1]);
+      expect(await http.getProduct('1'), fixture_data[1]);
+      verify(() => http.getProduct('1')).called(1);
     });
   });
 }
