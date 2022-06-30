@@ -93,10 +93,16 @@ void main() {
   });
 
   group('mocking api', () {
-    test('description', () async {
-      when(() => http.getProduct('1')).thenAnswer((_) async =>fixture_data[1]);
+    test('getData Api call', () async {
+      when(() => http.getProduct('1')).thenAnswer((_) async => fixture_data[1]);
       expect(await http.getProduct('1'), fixture_data[1]);
-      verify(() => http.getProduct('1')).called(1);
+      expect(await http.getProduct('1'), isA<Product>());
+      // verify(() => http.getProduct('1')).called(1);
+    });
+    test('payment gateway test', () async {
+      when(() => http.gateway('01234567890', cart.total))
+          .thenAnswer((_) async => 'successful');
+      expect(await http.gateway('01234567890', cart.total), 'successful');
     });
   });
 }
