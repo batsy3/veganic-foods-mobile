@@ -66,7 +66,6 @@ class _HttppState extends State<Httpp> {
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
                 ),
               );
-              ;
             }
             return Center(
               child: CircularProgressIndicator(
