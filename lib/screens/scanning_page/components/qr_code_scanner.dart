@@ -7,7 +7,6 @@ import 'package:veganic_foods_app/utils/routes.dart';
 import 'package:veganic_foods_app/widgets/page_background.dart';
 import '../../../widgets/bottom_nav_bar.dart';
 import 'https_service.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class QRCodeScanner extends StatefulWidget {
   const QRCodeScanner({Key? key}) : super(key: key);

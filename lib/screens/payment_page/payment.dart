@@ -57,31 +57,20 @@ class _PaymentListState extends State<PaymentList> {
             resizeToAvoidBottomInset: false,
             backgroundColor: bGcolor,
             bottomNavigationBar: Bottombar(),
-            body: SafeArea(
-              top: false,
-              child:
-                  Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-                // ignore: prefer_const_constructors
-                backgroundbubbles(
-                  height: height * 0.1,
-                  name: '',
-                ),
+            body: Stack(
 
-                Column(children: [
-                  Container(
-                    padding: EdgeInsets.only(left: 40),
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      'Payment',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-                    ),
-                  ),
-                  SizedBox(
-                    height: height * 0.02,
-                  ),
+              children: [
+                backgroundbubbles(
+                  height: height * 0.19,
+                  name: 'Payment',
+                ),
+            
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
                   Container(
                       width: width.w,
+                      height: height * 0.8,
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(
@@ -93,8 +82,7 @@ class _PaymentListState extends State<PaymentList> {
                           height: height * 0.02,
                         ),
                         Container(
-                          padding:
-                              EdgeInsets.only(left: 30, top: height * 0.01),
+                          padding: EdgeInsets.only(left: 30, top: height * 0.01),
                           child: Row(
                             // ignore: prefer_const_literals_to_create_immutables
                             children: [
@@ -205,21 +193,19 @@ class _PaymentListState extends State<PaymentList> {
                                 Text(
                                   '${Provider.of<Cart>(context, listen: false).total.toStringAsFixed(2)}',
                                   style: TextStyle(
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.bold),
+                                      fontSize: 30, fontWeight: FontWeight.bold),
                                 )
                               else
                                 Text(
                                   'k 0.0',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 30),
+                                      fontWeight: FontWeight.bold, fontSize: 30),
                                 )
                             ],
                           ),
                         ),
                         SizedBox(
-                          height: height * 0.003,
+                          height: height * 0.0003,
                         ),
                         AppButton(
                           text: 'Proceed',
@@ -285,13 +271,9 @@ class _PaymentListState extends State<PaymentList> {
                         ),
                       ]))
                 ]),
-                // ignore: prefer_const_constructors
-              ]),
+              ],
             )),
       );
     }));
   }
 }
-
-
-
