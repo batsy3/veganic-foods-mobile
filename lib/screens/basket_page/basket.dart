@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:veganic_foods_app/constants.dart';
 import 'package:veganic_foods_app/providers/cart_provider.dart';
@@ -32,40 +33,42 @@ class _BasketpageState extends State<Basketpage> {
             height: size.height * 0.198,
             child: backgroundbubbles(
               name: 'Basket',
-              height:0,
+              height: 0,
             ),
           ),
-          
           if (context.read<Cart>().cart.isEmpty)
             Center(
               child: Container(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    SizedBox(height: 80,),
-                    Image.asset('assets/images/empty-cart-yellow.png', height: size.height * 0.4),
+                    SizedBox(
+                      height: 80,
+                    ),
+                    Image.asset('assets/images/empty-cart-yellow.png',
+                        height: size.height * 0.4),
                   ],
                 ),
               ),
             ),
           if (context.read<Cart>().cart.isNotEmpty)
-          Container(
+            Container(
               padding: EdgeInsets.all(8),
               height: size.height * 0.712,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40),
-                      topRight: Radius.circular(40),
-                      ),
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40),
+                  ),
                   color: Colors.white),
               child: Column(
                 children: [
-
                   Container(
-                      margin: EdgeInsets.only(top: size.height * 0.02, right: size.width * 0.7),
+                      margin: EdgeInsets.only(
+                          top: size.height * 0.02, right: size.width * 0.7),
                       child: IconButton(
                         onPressed: () =>
-                            Navigator.pushNamed(context,Routes.scan),
+                            Navigator.pushNamed(context, Routes.scan),
                         icon: Icon(Icons.arrow_back_ios_new_sharp),
                       )),
                   Expanded(
@@ -82,13 +85,25 @@ class _BasketpageState extends State<Basketpage> {
                             motion: const ScrollMotion(),
                             children: [
                               SlidableAction(
-                                key: ValueKey(
-                                    context.read<Cart>().cart[index].product_id),
+                                key: ValueKey(context
+                                    .read<Cart>()
+                                    .cart[index]
+                                    .product_id),
                                 autoClose: true,
                                 flex: 2,
                                 onPressed: (context) => {
                                   removeitem(index),
                                   context.read<Cart>().deletefromcart(index),
+                                  Get.snackbar(
+                                    'opps',
+                                    '',
+                                    backgroundColor: Colors.amber.shade300,
+                                    colorText: Colors.black,
+                                    snackPosition: SnackPosition.TOP,
+                                    duration: Duration(seconds: 5),
+                                    icon: Icon(Icons.alarm),
+                                    snackStyle: SnackStyle.FLOATING,
+                                  )
                                 },
                                 backgroundColor: Color(0xFFEF5350),
                                 icon: Icons.delete,
@@ -102,24 +117,23 @@ class _BasketpageState extends State<Basketpage> {
                       ),
                     ),
                   ),
-          AppButton(
-              text: 'Proceed',
-              fontSize: 20,
-              textColor: Colors.white,
-              bgColor: Colors.black,
-              fontWeight: FontWeight.bold,
-              borderRadius: 30,
-              height: 10,
-              onTap: () {
-                Navigator.pushNamed(context,Routes.payment);
-              }),
-              SizedBox(
-                height: size.height * 0.006,
-              ),
+                  AppButton(
+                      text: 'Proceed',
+                      fontSize: 20,
+                      textColor: Colors.white,
+                      bgColor: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      borderRadius: 30,
+                      height: 10,
+                      onTap: () {
+                        Navigator.pushNamed(context, Routes.payment);
+                      }),
+                  SizedBox(
+                    height: size.height * 0.006,
+                  ),
                 ],
               ),
             ),
-
         ],
       ),
     );
