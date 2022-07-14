@@ -1,8 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:veganic_foods_app/constants.dart';
+import 'package:veganic_foods_app/providers/Api_provider.dart';
+import 'package:veganic_foods_app/screens/payment_page/components/stripePayment.dart';
+import 'package:veganic_foods_app/screens/scanning_page/components/https_service.dart';
 import 'package:veganic_foods_app/widgets/custom_button.dart';
 import '../../providers/cart_provider.dart';
 import '../../utils/routes.dart';
@@ -11,6 +17,7 @@ import '../../widgets/divider.dart';
 import '../../widgets/radiotile_css.dart';
 import '../../widgets/transaction_alert_dialog.dart';
 import 'components/background_eclipses.dart';
+import 'package:http/http.dart' as http;
 
 class PaymentPage extends StatefulWidget {
   const PaymentPage({Key? key}) : super(key: key);
@@ -51,23 +58,18 @@ class _PaymentListState extends State<PaymentList> {
       final width = constraints.maxWidth;
       final height = constraints.maxHeight;
       return SafeArea(
-        top: false,
-        child: Scaffold(
-            extendBody: true,
-            resizeToAvoidBottomInset: false,
-            backgroundColor: bGcolor,
-            bottomNavigationBar: Bottombar(),
-            body: Stack(
-
-              children: [
+          top: false,
+          child: Scaffold(
+              extendBody: true,
+              resizeToAvoidBottomInset: false,
+              backgroundColor: bGcolor,
+              bottomNavigationBar: Bottombar(),
+              body: Stack(children: [
                 backgroundbubbles(
                   height: height * 0.19,
                   name: 'Payment',
                 ),
-            
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
+                Column(mainAxisAlignment: MainAxisAlignment.end, children: [
                   Container(
                       width: width.w,
                       height: height * 0.8,
@@ -82,7 +84,8 @@ class _PaymentListState extends State<PaymentList> {
                           height: height * 0.02,
                         ),
                         Container(
-                          padding: EdgeInsets.only(left: 30, top: height * 0.01),
+                          padding:
+                              EdgeInsets.only(left: 30, top: height * 0.01),
                           child: Row(
                             // ignore: prefer_const_literals_to_create_immutables
                             children: [
@@ -193,13 +196,15 @@ class _PaymentListState extends State<PaymentList> {
                                 Text(
                                   '${Provider.of<Cart>(context, listen: false).total.toStringAsFixed(2)}',
                                   style: TextStyle(
-                                      fontSize: 30, fontWeight: FontWeight.bold),
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold),
                                 )
                               else
                                 Text(
                                   'k 0.0',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold, fontSize: 30),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 30),
                                 )
                             ],
                           ),
@@ -227,11 +232,10 @@ class _PaymentListState extends State<PaymentList> {
                                 icon: Icon(Icons.alarm),
                                 snackStyle: SnackStyle.FLOATING,
                               );
-                            } else {
+                            } else if (_init == Paymentmethod.mobile_money) {
                               showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  if (_init == Paymentmethod.mobile_money)
+                                  context: context,
+                                  builder: (BuildContext context) {
                                     return TransactionAlertDalog(
                                       text: 'Mobile Money',
                                       hint: 'phone number',
@@ -239,41 +243,44 @@ class _PaymentListState extends State<PaymentList> {
                                       textcontroller: textcontroller,
                                       validator: 'enter valid phone number',
                                     );
-                                  else if (_init == Paymentmethod.visa)
-                                    return TransactionAlertDalog(
-                                      text: 'Visa',
-                                      hint: 'card number',
-                                      formkey: _formkey,
-                                      textcontroller: textcontroller,
-                                      validator: 'enter valid card number',
-                                    );
-                                  else if (_init == Paymentmethod.master_card)
-                                    return TransactionAlertDalog(
-                                      text: 'Visa',
-                                      hint: 'card number',
-                                      formkey: _formkey,
-                                      textcontroller: textcontroller,
-                                      validator: 'enter valid card number',
-                                    );
-                                  else
-                                    return TransactionAlertDalog(
-                                      text: 'Bank Transfer',
-                                      hint: 'bank account number',
-                                      formkey: _formkey,
-                                      textcontroller: textcontroller,
-                                      validator:
-                                          'enter valid bank account number',
-                                    );
-                                },
-                              );
+                                  });
+                            } else if (_init == Paymentmethod.master_card) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => StripePayment(
+                                        text: "text", validator: "validator"),
+                                  ));
+                              // ApiProvider()
+                              //     .makePayment(context.read<Cart>().total)
+                              //     .then((value) async {
+                              //   try {
+                              //     await Stripe.instance.initPaymentSheet(
+                              //         paymentSheetParameters:
+                              //             SetupPaymentSheetParameters(
+                              //       paymentIntentClientSecret: value,
+                              //       applePay: true,
+                              //       googlePay: true,
+                              //       style: ThemeMode.system,
+                              //     ));
+                              //    } catch (e) {}
+                              // });
                             }
                           },
-                        ),
+                        )
                       ]))
-                ]),
-              ],
-            )),
-      );
+                ])
+              ])));
+
+// Future<dynamic> visaPayment() async{
+
+// }
     }));
   }
+}
+
+void displayresult() async {
+  try {
+    Stripe.instance.presentPaymentSheet();
+  } catch (e) {}
 }

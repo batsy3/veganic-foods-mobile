@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import '../constants.dart';
 import '../providers/Api_provider.dart';
 import '../providers/cart_provider.dart';
-import '../utils/globals.dart';
 import 'custom_button.dart';
 
 class TransactionAlertDalog extends StatelessWidget {

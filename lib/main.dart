@@ -6,6 +6,7 @@ import 'package:veganic_foods_app/providers/cart_provider.dart';
 import 'package:veganic_foods_app/screens/basket_page/basket.dart';
 import 'package:veganic_foods_app/screens/details_page/details.dart';
 import 'package:veganic_foods_app/screens/home/home.dart';
+import 'package:veganic_foods_app/screens/payment_page/components/stripePayment.dart';
 import 'package:veganic_foods_app/screens/payment_page/payment.dart';
 import 'package:veganic_foods_app/screens/scanning_page/scan.dart';
 import 'package:veganic_foods_app/utils/globals.dart';
@@ -14,7 +15,7 @@ import 'package:veganic_foods_app/widgets/error_pages.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() {
-  ErrorWidget.builder = (details) => Notfound('$details');
+  // ErrorWidget.builder = (details) => Notfound('$details');
   runApp(MultiProvider(
     providers: [ChangeNotifierProvider(create: (_) => Cart())],
     child: MyApp(),
@@ -41,20 +42,20 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.blue,
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
+            // home:LandingPage(),
             home: Details(
-              category: 1,
-              price: 30,
-              description: 'food',
-              name: 'rice',
-              image: '',
-              product_id: 1,
-              quantity: 1,
-            ),
+                product_id: 1,
+                name: "name",
+                description: "description",
+                price: 12,
+                quantity: 1,
+                image: "",
+                category: 1),
             routes: {
               Routes.home: (context) => LandingPage(),
               Routes.scan: (context) => ScanningPage(),
               Routes.cart: (context) => Basketpage(),
-              Routes.payment: (context) => const PaymentPage()
+              Routes.payment: (context) => PaymentPage()
             },
             //  Define routes to other pages
           )),
