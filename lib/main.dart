@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:veganic_foods_app/providers/cart_provider.dart';
 import 'package:veganic_foods_app/screens/basket_page/basket.dart';
 import 'package:veganic_foods_app/screens/details_page/details.dart';
 import 'package:veganic_foods_app/screens/home/home.dart';
-import 'package:veganic_foods_app/screens/payment_page/components/stripePayment.dart';
 import 'package:veganic_foods_app/screens/payment_page/payment.dart';
 import 'package:veganic_foods_app/screens/scanning_page/scan.dart';
 import 'package:veganic_foods_app/utils/globals.dart';
 import 'package:veganic_foods_app/utils/routes.dart';
-import 'package:veganic_foods_app/widgets/error_pages.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void main() {
+void main() async {
+  Stripe.publishableKey = "pk_test_51LKLbhFeefKhDfbbMxla8Vsz0PxaYJ1f2At2vZPJV1Svub7m0g1KgZLGHj60qx6EDdhwKSWrbXLzXBr4c2DFHKmu00bM2oCqsq";
   // ErrorWidget.builder = (details) => Notfound('$details');
   runApp(MultiProvider(
     providers: [ChangeNotifierProvider(create: (_) => Cart())],
@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
                 product_id: 1,
                 name: "name",
                 description: "description",
-                price: 12,
+                price: 112,
                 quantity: 1,
                 image: "",
                 category: 1),

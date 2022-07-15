@@ -1,14 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:veganic_foods_app/constants.dart';
-import 'package:veganic_foods_app/providers/Api_provider.dart';
 import 'package:veganic_foods_app/screens/payment_page/components/stripePayment.dart';
-import 'package:veganic_foods_app/screens/scanning_page/components/https_service.dart';
 import 'package:veganic_foods_app/widgets/custom_button.dart';
 import '../../providers/cart_provider.dart';
 import '../../utils/routes.dart';
@@ -17,7 +13,6 @@ import '../../widgets/divider.dart';
 import '../../widgets/radiotile_css.dart';
 import '../../widgets/transaction_alert_dialog.dart';
 import 'components/background_eclipses.dart';
-import 'package:http/http.dart' as http;
 
 class PaymentPage extends StatefulWidget {
   const PaymentPage({Key? key}) : super(key: key);

@@ -9,22 +9,27 @@ import '../widgets/network_error_page.dart';
 class ApiProvider {
   var id = ShortUuid().generate();
 
-  String _rootUrl = "http://192.168.81.5:8007/api";
+  String _rootUrl = "http://192.168.40.245:8007/api/order";
   Client client = Client();
 
   Future makePayment(double amount) async {
     var body = jsonEncode({
-      "amount": amount,
+      "amount": amount.ceil(),
       "currency": "usd",
     });
 
     try {
-      var intentResponse = await client.post(Uri.parse(_rootUrl+"/stripe/"), body: body);
-      Map<String, dynamic> temp = jsonDecode(intentResponse.body);
-      print(temp);
-      return temp["client_secret"];
+      var intentResponse =
+          await client.post(Uri.parse(_rootUrl + "/stripe/"), body: body, headers: {
+            "Accept":"application/json",
+            "Content-Type":"application/json"
+          });
+      var temp = jsonDecode(intentResponse.body);
+      print({"result is ": temp});
+      print({"body is": intentResponse.body});
+      return ({"client secret is": temp});
     } catch (e) {
-      print(e);
+      return ({"error is ": e});
     }
   }
 
@@ -42,7 +47,7 @@ class ApiProvider {
     String number,
     double cart_total,
   ) async {
-    var res = await client
+    await client
         .post(Uri.parse(_rootUrl + '/order/'),
             headers: {
               'Content-Type': 'application/json',

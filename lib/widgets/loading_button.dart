@@ -31,7 +31,7 @@ class _LoadingButtonState extends State<LoadingButton> {
                   height: 22,
                   width: 30,
                   child: CircularProgressIndicator(
-                    strokeWidth: 2,
+                    strokeWidth: 1,
                   ),
                 )
               : Text(widget.text, style: TextStyle(fontSize: 20, color: Colors.white),)),
