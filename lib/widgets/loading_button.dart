@@ -1,12 +1,16 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class LoadingButton extends StatefulWidget {
   final Future Function()? onpressed;
   final String text;
-  const LoadingButton({Key? key, this.onpressed, required this.text,})
-      : super(key: key);
+  const LoadingButton({
+    Key? key,
+    this.onpressed,
+    required this.text,
+  }) : super(key: key);
 
   @override
   State<LoadingButton> createState() => _LoadingButtonState();
@@ -43,8 +47,10 @@ class _LoadingButtonState extends State<LoadingButton> {
                 )),
     );
   }
+
   Future<void> _loadfuture() async {
     setState(() {
+      FocusManager.instance.primaryFocus?.unfocus();
       _isloading = true;
     });
     try {
@@ -58,4 +64,3 @@ class _LoadingButtonState extends State<LoadingButton> {
     }
   }
 }
-

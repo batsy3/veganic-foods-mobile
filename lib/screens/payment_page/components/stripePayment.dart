@@ -112,9 +112,10 @@ class _StripePaymentState extends State<StripePayment>
                           borderRadius: BorderRadius.circular(20),
                         ),
                         backCardDecoration: BoxDecoration(
-                          color: Colors.blue,
+                          color: Colors.indigo.shade400,
                           borderRadius: BorderRadius.circular(20),
                         ),
+                        resetButtonDecoration: buttondecoration,
                         nextButtonDecoration: buttondecoration,
                         nextButtonTextStyle: buttonstyle,
                         prevButtonDecoration: buttondecoration,
@@ -223,8 +224,8 @@ class _StripePaymentState extends State<StripePayment>
                     ),
                     Container(
                         padding: EdgeInsets.only(bottom: 15),
-                        child:
-                            LoadingButton(onpressed: _makepyment, text: "pay"))
+                        child: LoadingButton(
+                            onpressed: _makepyment, text: "pay"))
                   ],
                 ),
               ),
@@ -242,43 +243,49 @@ class _StripePaymentState extends State<StripePayment>
           number: _cardInfo.cardNumber,
           cvc: _cardInfo.cvv,
           expirationMonth:
-              int.tryParse(_cardInfo.validate.toString().split("/")[0]),
+              int.tryParse(_cardInfo.validate.toString().split("/")[0][0]),
           expirationYear:
-              int.tryParse(_cardInfo.validate.toString().split("/")[1]));
+              int.tryParse(_cardInfo.validate.toString().split("/")[0][1]));
     });
-    await Stripe.instance.dangerouslyUpdateCardDetails(_card);
+    try {
+      await Stripe.instance.dangerouslyUpdateCardDetails(_card);
 
-    final billingDetails = BillingDetails(
-        email: _billingInfo["email"],
-        phone: _billingInfo["phone"],
-        name: _billingInfo["name"]);
-    final paymentMethod = await Stripe.instance.createPaymentMethod(
-        PaymentMethodParams.card(
-            paymentMethodData:
-                PaymentMethodData(billingDetails: billingDetails)));
-    var paymentINtent = ApiProvider()
-        .makePayment(context.read<Cart>().carttotal())
-        .then((value) async {
-      if (value["client_secret"] != null) {
-        Get.snackbar('Hey', 'Payment was succesfull',
-            snackPosition: SnackPosition.TOP,
-            duration: Duration(seconds: 3),
-            icon: Icon(Icons.error),
-            backgroundColor: Colors.green,
-            colorText: Colors.white);
-        controller.clear();
-        Get.to(() => ScanningPage());
+      final billingDetails = BillingDetails(
+          email: _billingInfo["email"],
+          phone: _billingInfo["phone"],
+          name: _billingInfo["name"]);
+      final paymentMethod = await Stripe.instance.createPaymentMethod(
+          PaymentMethodParams.card(
+              paymentMethodData:
+                  PaymentMethodData(billingDetails: billingDetails)));
+      var paymentINtent = ApiProvider()
+          .makePayment(context.read<Cart>().carttotal())
+          .then((value) async {
+        if (value["client_secret"] != null) {
+          Get.snackbar('Hey', 'Payment was succesfull',
+              snackPosition: SnackPosition.TOP,
+              duration: Duration(seconds: 3),
+              icon: Icon(Icons.check),
+              backgroundColor: Colors.green,
+              colorText: Colors.white);
+          Get.to(() => ScanningPage());
+        } else {
+          Get.snackbar('Error', '${value}',
+              snackPosition: SnackPosition.TOP,
+              duration: Duration(seconds: 3),
+              icon: Icon(Icons.error),
+              backgroundColor: Colors.red,
+              colorText: Colors.white);
+          Get.to(() => PaymentPage());
+        }
+      });
+    } catch (e) {
+      if (e.toString().contains("Your card number is incorrect")) {
+        Get.snackbar("Sorry", 'your card number is incorrect');
       } else {
-        Get.snackbar('Error', '${value}',
-            snackPosition: SnackPosition.TOP,
-            duration: Duration(seconds: 3),
-            icon: Icon(Icons.error),
-            backgroundColor: Colors.red,
-            colorText: Colors.white);
-        controller.clear();
-        Get.to(() => PaymentPage());
+        Get.snackbar("sorry", "recheck your credentials please");
       }
-    });
+    }
   }
 }
 
