@@ -9,7 +9,7 @@ import '../widgets/network_error_page.dart';
 class ApiProvider {
   var id = ShortUuid().generate();
 
-  String _rootUrl = "http://192.168.40.245:8007/api/order/";
+  String _rootUrl = "http://192.168.40.53:8007/api/order/";
   Client client = Client();
 
   Future makePayment(double amount) async {
@@ -19,17 +19,16 @@ class ApiProvider {
     });
 
     try {
-      var intentResponse =
-          await client.post(Uri.parse(_rootUrl + "stripe/"), body: body, headers: {
-            "Accept":"application/json",
-            "Content-Type":"application/json"
+      var intentResponse = await client.post(Uri.parse(_rootUrl + "stripe/"),
+          body: body,
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
           });
       Map<String, dynamic> temp = jsonDecode(intentResponse.body);
-      print({"inte is ": temp});
-      print({"body is": intentResponse.body});
-      return ({"client secret is": temp});
+      return temp;
     } catch (e) {
-      return ({"error is ": e});
+      return e;
     }
   }
 
@@ -47,7 +46,7 @@ class ApiProvider {
     String number,
     double cart_total,
   ) async {
-    var res =await client
+    var res = await client
         .post(Uri.parse(_rootUrl),
             headers: {
               'Content-Type': 'application/json',
@@ -64,8 +63,6 @@ class ApiProvider {
             }))
         .then((value) {
       Map<String, dynamic> temp = jsonDecode(value.body);
-      print('value response is ${temp["data"]}');
-      print('${value.statusCode}');
       if (value.statusCode != 201) {
         Get.snackbar('Error', 'Something went wrong plese try again',
             snackPosition: SnackPosition.TOP,
@@ -79,7 +76,6 @@ class ApiProvider {
               .get(Uri.parse(_rootUrl + '/order/check/${temp["data"]}'));
           var temp2 = status.body;
 
-          print('body is ${temp2}');
           if (temp2.toString().contains('successful') &&
               status.statusCode == 200) {
             return Get.snackbar(

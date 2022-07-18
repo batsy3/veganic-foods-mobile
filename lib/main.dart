@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
                 description: "description",
                 price: 112,
                 quantity: 1,
-                image: "",
+                image: "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?cs=srgb&dl=pexels-ella-olsson-1640777.jpg&fm=jpg",
                 category: 1),
             routes: {
               Routes.home: (context) => LandingPage(),

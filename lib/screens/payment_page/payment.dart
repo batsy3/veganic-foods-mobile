@@ -246,20 +246,6 @@ class _PaymentListState extends State<PaymentList> {
                                     builder: (context) => StripePayment(
                                         text: "text", validator: "validator"),
                                   ));
-                              // ApiProvider()
-                              //     .makePayment(context.read<Cart>().total)
-                              //     .then((value) async {
-                              //   try {
-                              //     await Stripe.instance.initPaymentSheet(
-                              //         paymentSheetParameters:
-                              //             SetupPaymentSheetParameters(
-                              //       paymentIntentClientSecret: value,
-                              //       applePay: true,
-                              //       googlePay: true,
-                              //       style: ThemeMode.system,
-                              //     ));
-                              //    } catch (e) {}
-                              // });
                             }
                           },
                         )

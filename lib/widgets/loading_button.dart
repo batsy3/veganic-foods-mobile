@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class LoadingButton extends StatefulWidget {
   final Future Function()? onpressed;
   final String text;
-  const LoadingButton({Key? key, this.onpressed, required this.text})
+  const LoadingButton({Key? key, this.onpressed, required this.text,})
       : super(key: key);
 
   @override
@@ -20,15 +20,12 @@ class _LoadingButtonState extends State<LoadingButton> {
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
       width: 150,
       child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          
-          onPrimary: Colors.amber.shade700,
-          primary: Colors.amber
-        ),
-          onPressed: (_isloading || widget.onpressed == null)? null:_loadfuture,
+          style: ElevatedButton.styleFrom(
+              onPrimary: Colors.amber.shade700, primary: Colors.amber),
+          onPressed:
+              (_isloading || widget.onpressed == null) ? null : _loadfuture,
           child: _isloading
               ? SizedBox(
-                
                   height: 30,
                   width: 30,
                   child: CircularProgressIndicator(
@@ -37,10 +34,15 @@ class _LoadingButtonState extends State<LoadingButton> {
                     strokeWidth: 3,
                   ),
                 )
-              : Text(widget.text, style: TextStyle(fontSize: 20, color: Colors.white,),)),
+              : Text(
+                  widget.text,
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                  ),
+                )),
     );
   }
-
   Future<void> _loadfuture() async {
     setState(() {
       _isloading = true;
@@ -56,3 +58,4 @@ class _LoadingButtonState extends State<LoadingButton> {
     }
   }
 }
+

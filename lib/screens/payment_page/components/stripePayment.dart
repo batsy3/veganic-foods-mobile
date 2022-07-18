@@ -1,10 +1,13 @@
 import 'package:credit_card_input_form/model/card_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:veganic_foods_app/constants.dart';
 import 'package:veganic_foods_app/providers/Api_provider.dart';
 import 'package:veganic_foods_app/providers/cart_provider.dart';
+import 'package:veganic_foods_app/screens/payment_page/payment.dart';
+import 'package:veganic_foods_app/screens/scanning_page/scan.dart';
 import 'package:veganic_foods_app/widgets/loading_button.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
@@ -22,20 +25,18 @@ class StripePayment extends StatefulWidget {
 
 class _StripePaymentState extends State<StripePayment>
     with TickerProviderStateMixin {
-  late TabController _tabController;
   final controller = CardFormEditController();
   late bool isvalid;
   late var _billingInfo = {};
   late TextEditingController emailcontroller;
   CardDetails _card = CardDetails();
   late CardInfo _cardInfo;
-  @override 
+  @override
   void initState() {
     controller.addListener(update);
-    _tabController = new TabController(length: 2, vsync: this);
     emailcontroller = TextEditingController();
     isvalid = EmailValidator.validate(emailcontroller.text);
-     _billingInfo = {
+    _billingInfo = {
       "name": null,
       "email": null,
       "phone": null,
@@ -46,9 +47,9 @@ class _StripePaymentState extends State<StripePayment>
         number: _cardInfo.cardNumber,
         cvc: _cardInfo.cvv,
         expirationMonth:
-            int.tryParse(_cardInfo.validate.toString().split("/")[0]),
+            int.tryParse(_cardInfo.validate.toString().split("/")[0][0]),
         expirationYear:
-            int.tryParse(_cardInfo.validate.toString().split("/")[1]));
+            int.tryParse(_cardInfo.validate.toString().split("/")[0][1]));
 
     super.initState();
   }
@@ -56,7 +57,6 @@ class _StripePaymentState extends State<StripePayment>
   void update() => setState(() {
         @override
         void dispose() {
-          _tabController.dispose();
           controller.removeListener(update);
           controller.dispose();
           super.dispose();
@@ -107,6 +107,14 @@ class _StripePaymentState extends State<StripePayment>
                             print(_cardInfo);
                           });
                         },
+                        frontCardDecoration: BoxDecoration(
+                          color: Colors.indigo.shade400,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        backCardDecoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
                         nextButtonDecoration: buttondecoration,
                         nextButtonTextStyle: buttonstyle,
                         prevButtonDecoration: buttondecoration,
@@ -139,7 +147,7 @@ class _StripePaymentState extends State<StripePayment>
                                             BorderSide(color: Colors.white)),
                                     enabledBorder: OutlineInputBorder(
                                         borderSide:
-                                            BorderSide(color: Colors.black),
+                                            BorderSide(color: Colors.white),
                                         borderRadius:
                                             BorderRadius.circular(10)),
                                     hintText: 'Name',
@@ -167,7 +175,7 @@ class _StripePaymentState extends State<StripePayment>
                                             BorderSide(color: Colors.white)),
                                     enabledBorder: OutlineInputBorder(
                                         borderSide:
-                                            BorderSide(color: Colors.black),
+                                            BorderSide(color: Colors.white),
                                         borderRadius:
                                             BorderRadius.circular(10)),
                                     hintText: 'Email',
@@ -195,7 +203,7 @@ class _StripePaymentState extends State<StripePayment>
                                             BorderSide(color: Colors.white)),
                                     enabledBorder: OutlineInputBorder(
                                         borderSide:
-                                            BorderSide(color: Colors.black),
+                                            BorderSide(color: Colors.white),
                                         borderRadius:
                                             BorderRadius.circular(10)),
                                     hintText: 'phone',
@@ -250,11 +258,26 @@ class _StripePaymentState extends State<StripePayment>
                 PaymentMethodData(billingDetails: billingDetails)));
     var paymentINtent = ApiProvider()
         .makePayment(context.read<Cart>().carttotal())
-        .then((value) => print("intent result" + value.toString()));
-    print({
-      "total": context.read<Cart>().total.ceil(),
-      "payment_method": paymentMethod.toString(),
-      "payment_intent": paymentINtent.toString(),
+        .then((value) async {
+      if (value["client_secret"] != null) {
+        Get.snackbar('Hey', 'Payment was succesfull',
+            snackPosition: SnackPosition.TOP,
+            duration: Duration(seconds: 3),
+            icon: Icon(Icons.error),
+            backgroundColor: Colors.green,
+            colorText: Colors.white);
+        controller.clear();
+        Get.to(() => ScanningPage());
+      } else {
+        Get.snackbar('Error', '${value}',
+            snackPosition: SnackPosition.TOP,
+            duration: Duration(seconds: 3),
+            icon: Icon(Icons.error),
+            backgroundColor: Colors.red,
+            colorText: Colors.white);
+        controller.clear();
+        Get.to(() => PaymentPage());
+      }
     });
   }
 }
