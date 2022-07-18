@@ -118,6 +118,7 @@ class TransactionAlertDalog extends StatelessWidget {
                         ),
                         icon: Icon(Icons.playlist_add_check),
                         padding: EdgeInsets.all(15),
+                        duration: Duration(seconds: 3),
                         backgroundColor: Colors.amberAccent.shade700);
                   }
                 },

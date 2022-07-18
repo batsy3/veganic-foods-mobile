@@ -17,24 +17,27 @@ class _LoadingButtonState extends State<LoadingButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 200,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(40),
-        color: Colors.black
-      ),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
+      width: 150,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
+          
+          onPrimary: Colors.amber.shade700,
+          primary: Colors.amber
         ),
           onPressed: (_isloading || widget.onpressed == null)? null:_loadfuture,
           child: _isloading
               ? SizedBox(
-                  height: 22,
+                
+                  height: 30,
                   width: 30,
                   child: CircularProgressIndicator(
-                    strokeWidth: 1,
+                    color: Colors.amber,
+                    backgroundColor: Colors.green,
+                    strokeWidth: 3,
                   ),
                 )
-              : Text(widget.text, style: TextStyle(fontSize: 20, color: Colors.white),)),
+              : Text(widget.text, style: TextStyle(fontSize: 20, color: Colors.white,),)),
     );
   }
 

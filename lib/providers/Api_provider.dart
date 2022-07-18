@@ -9,7 +9,7 @@ import '../widgets/network_error_page.dart';
 class ApiProvider {
   var id = ShortUuid().generate();
 
-  String _rootUrl = "http://192.168.40.245:8007/api/order";
+  String _rootUrl = "http://192.168.40.245:8007/api/order/";
   Client client = Client();
 
   Future makePayment(double amount) async {
@@ -20,12 +20,12 @@ class ApiProvider {
 
     try {
       var intentResponse =
-          await client.post(Uri.parse(_rootUrl + "/stripe/"), body: body, headers: {
+          await client.post(Uri.parse(_rootUrl + "stripe/"), body: body, headers: {
             "Accept":"application/json",
             "Content-Type":"application/json"
           });
-      var temp = jsonDecode(intentResponse.body);
-      print({"result is ": temp});
+      Map<String, dynamic> temp = jsonDecode(intentResponse.body);
+      print({"inte is ": temp});
       print({"body is": intentResponse.body});
       return ({"client secret is": temp});
     } catch (e) {
@@ -34,7 +34,7 @@ class ApiProvider {
   }
 
   Future<Product> getProduct(String? id) async {
-    final response = await client.get(Uri.parse(_rootUrl + '/product/$id'));
+    final response = await client.get(Uri.parse(_rootUrl + 'product/$id'));
     if (response.statusCode == 200) {
       Map<String, dynamic> productMap = jsonDecode(response.body);
       var products = Product.fromJson(productMap);
@@ -47,8 +47,8 @@ class ApiProvider {
     String number,
     double cart_total,
   ) async {
-    await client
-        .post(Uri.parse(_rootUrl + '/order/'),
+    var res =await client
+        .post(Uri.parse(_rootUrl),
             headers: {
               'Content-Type': 'application/json',
               'Accept': 'application/json',

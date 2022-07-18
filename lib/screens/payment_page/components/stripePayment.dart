@@ -1,3 +1,4 @@
+import 'package:credit_card_input_form/model/card_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +8,7 @@ import 'package:veganic_foods_app/providers/cart_provider.dart';
 import 'package:veganic_foods_app/widgets/loading_button.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
+import 'package:credit_card_input_form/credit_card_input_form.dart';
 
 class StripePayment extends StatefulWidget {
   final String text;
@@ -22,31 +24,32 @@ class _StripePaymentState extends State<StripePayment>
     with TickerProviderStateMixin {
   late TabController _tabController;
   final controller = CardFormEditController();
-  late TextEditingController citycontroller;
-  late TextEditingController streetController;
-  late TextEditingController emailcontroller;
-  late TextEditingController countrycontroller;
-  late TextEditingController phoneNumberController;
-  late TextEditingController cvcCOntroller;
-  late TextEditingController expdateCOntroller;
-  late TextEditingController cardHolderController;
-  late TextEditingController cardNUmberCOntroller;
   late bool isvalid;
+  late var _billingInfo = {};
+  late TextEditingController emailcontroller;
   CardDetails _card = CardDetails();
-  @override
+  late CardInfo _cardInfo;
+  @override 
   void initState() {
     controller.addListener(update);
     _tabController = new TabController(length: 2, vsync: this);
-    citycontroller = TextEditingController();
-    streetController = TextEditingController();
     emailcontroller = TextEditingController();
-    countrycontroller = TextEditingController();
-    phoneNumberController = TextEditingController();
-    cvcCOntroller = TextEditingController();
-    cardHolderController = TextEditingController();
-    expdateCOntroller = TextEditingController();
-    cardNUmberCOntroller = TextEditingController();
     isvalid = EmailValidator.validate(emailcontroller.text);
+     _billingInfo = {
+      "name": null,
+      "email": null,
+      "phone": null,
+    };
+    _cardInfo =
+        CardInfo(cardNumber: null, name: null, cvv: null, validate: null);
+    _card = _card.copyWith(
+        number: _cardInfo.cardNumber,
+        cvc: _cardInfo.cvv,
+        expirationMonth:
+            int.tryParse(_cardInfo.validate.toString().split("/")[0]),
+        expirationYear:
+            int.tryParse(_cardInfo.validate.toString().split("/")[1]));
+
     super.initState();
   }
 
@@ -62,6 +65,15 @@ class _StripePaymentState extends State<StripePayment>
 
   @override
   Widget build(BuildContext context) {
+    final buttonstyle = TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
+        backgroundColor: Colors.amber);
+    final buttondecoration = BoxDecoration(
+        color: Colors.amber,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.amber));
     return Scaffold(
       backgroundColor: bGcolor,
       body: SafeArea(
@@ -70,159 +82,142 @@ class _StripePaymentState extends State<StripePayment>
           child: Column(
             children: [
               SizedBox(
-                height: 100,
+                height: 40,
               ),
-              Dialog(
-                shape: ShapeBorder.lerp(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  0.5,
+              Padding(
+                padding: EdgeInsets.only(top: 10, left: 10, right: 200),
+                child: Text(
+                  "Card Details",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
-                backgroundColor: Colors.white,
-                child: Container(
-                  // height: 800,
-                  child: Column(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(1),
-                        child: CreditCardWidget(
-                          backgroundImage: "assets/images/1_No Connection.png",
-                          cardNumber: "",
-                          expiryDate: "",
-                          cardHolderName: "",
-                          cvvCode: "",
-                          cardBgColor: bGcolor,
-                          showBackView: false,
-                          glassmorphismConfig: Glassmorphism.defaultConfig(),
-                          obscureCardNumber: true,
-                          obscureCardCvv: true,
-                          isHolderNameVisible: true,
-                          height: 175,
-                          cardType: CardType.mastercard,
-                          textStyle: TextStyle(color: Colors.white),
-                          width: MediaQuery.of(context).size.width,
-                          isChipVisible: true,
-                          isSwipeGestureEnabled: true,
-                          animationDuration: Duration(milliseconds: 1000),
-                          onCreditCardWidgetChange: (CreditCardBrand) {},
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                height: 800,
+                child: Column(
+                  children: [
+                    Container(
+                      child: CreditCardInputForm(
+                        cardHeight: 190,
+                        onStateChange: (inputstate, cardinfo) {
+                          setState(() {
+                            _cardInfo = cardinfo;
+                            print(_cardInfo);
+                          });
+                        },
+                        nextButtonDecoration: buttondecoration,
+                        nextButtonTextStyle: buttonstyle,
+                        prevButtonDecoration: buttondecoration,
+                        prevButtonTextStyle: buttonstyle,
+                      ),
+                    ),
+                    Column(
+                      children: [
+                        Padding(
+                          padding:
+                              EdgeInsets.only(top: 0, left: 10, right: 200),
+                          child: Text(
+                            "Billing Details",
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
                         ),
-                      ),
-                      Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: bGcolor),
-                                    borderRadius: BorderRadius.circular(20)),
-                                padding: EdgeInsets.only(left: 20),
-                                child: TextField(
-                                  decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: 'card number'),
-                                  onChanged: (number) {
-                                    setState(() {
-                                      _card = _card.copyWith(number: number);
-                                    });
-                                  },
-                                  keyboardType: TextInputType.number,
-                                )),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Expanded(
-                                  flex: 2,
-                                  child: Container(
-                                      padding: EdgeInsets.only(
-                                        left: 20,
-                                      ),
-                                      decoration: BoxDecoration(
-                                          border: Border.all(color: bGcolor),
-                                          borderRadius:
-                                              BorderRadius.circular(20)),
-                                      child: TextField(
-                                        keyboardType: TextInputType.number,
-                                        onChanged: (number) {
-                                          setState(() {
-                                            _card = _card.copyWith(
-                                                expirationYear:
-                                                    int.tryParse(number));
-                                          });
-                                        },
-                                        decoration: InputDecoration(
-                                            border: InputBorder.none,
-                                            hintText: "exp year"),
-                                      )),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: Container(
-                                      padding: EdgeInsets.only(left: 20),
-                                      decoration: BoxDecoration(
-                                          border: Border.all(color: bGcolor),
-                                          borderRadius:
-                                              BorderRadius.circular(20)),
-                                      child: TextField(
-                                        keyboardType: TextInputType.number,
-                                        onChanged: (number) {
-                                          setState(() {
-                                            _card = _card.copyWith(
-                                                expirationMonth:
-                                                    int.tryParse(number));
-                                          });
-                                        },
-                                        decoration: InputDecoration(
-                                            border: InputBorder.none,
-                                            hintText: "exp month"),
-                                      )),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                      padding: EdgeInsets.only(left: 10),
-                                      decoration: BoxDecoration(
-                                          border: Border.all(color: bGcolor),
-                                          borderRadius:
-                                              BorderRadius.circular(20)),
-                                      child: TextField(
-                                        keyboardType: TextInputType.number,
-                                        onChanged: (number) {
-                                          setState(() {
-                                            _card = _card.copyWith(cvc: number);
-                                          });
-                                        },
-                                        decoration: InputDecoration(
-                                            border: InputBorder.none,
-                                            hintText: "cvc"),
-                                      )),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                          padding: EdgeInsets.only(bottom: 15),
-                          child: LoadingButton(
-                              onpressed: _makepyment, text: "pay"))
-                    ],
-                  ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: bGcolor),
+                                  borderRadius: BorderRadius.circular(20)),
+                              padding: EdgeInsets.all(8),
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide:
+                                            BorderSide(color: Colors.white)),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.black),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    hintText: 'Name',
+                                    hintStyle: TextStyle(color: Colors.black)),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _billingInfo["name"] = value;
+                                  });
+                                },
+                                keyboardType: TextInputType.text,
+                              )),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: bGcolor),
+                                  borderRadius: BorderRadius.circular(20)),
+                              padding: EdgeInsets.all(8),
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide:
+                                            BorderSide(color: Colors.white)),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.black),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    hintText: 'Email',
+                                    hintStyle: TextStyle(color: Colors.black)),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _billingInfo["email"] = value;
+                                  });
+                                },
+                                keyboardType: TextInputType.text,
+                              )),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: bGcolor),
+                                  borderRadius: BorderRadius.circular(20)),
+                              padding: EdgeInsets.all(8),
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide:
+                                            BorderSide(color: Colors.white)),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.black),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    hintText: 'phone',
+                                    hintStyle: TextStyle(color: Colors.black)),
+                                onChanged: (value) {
+                                  setState(() {
+                                    _billingInfo["phone"] = value;
+                                  });
+                                },
+                                keyboardType: TextInputType.number,
+                              )),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                        padding: EdgeInsets.only(bottom: 15),
+                        child:
+                            LoadingButton(onpressed: _makepyment, text: "pay"))
+                  ],
                 ),
               ),
             ],
@@ -233,10 +228,22 @@ class _StripePaymentState extends State<StripePayment>
   }
 
   Future _makepyment() async {
+    print(_card);
+    setState(() {
+      _card = _card.copyWith(
+          number: _cardInfo.cardNumber,
+          cvc: _cardInfo.cvv,
+          expirationMonth:
+              int.tryParse(_cardInfo.validate.toString().split("/")[0]),
+          expirationYear:
+              int.tryParse(_cardInfo.validate.toString().split("/")[1]));
+    });
     await Stripe.instance.dangerouslyUpdateCardDetails(_card);
 
     final billingDetails = BillingDetails(
-        email: "someemail.@123.com", phone: "098765433221", name: "bankss");
+        email: _billingInfo["email"],
+        phone: _billingInfo["phone"],
+        name: _billingInfo["name"]);
     final paymentMethod = await Stripe.instance.createPaymentMethod(
         PaymentMethodParams.card(
             paymentMethodData:
@@ -245,8 +252,8 @@ class _StripePaymentState extends State<StripePayment>
         .makePayment(context.read<Cart>().carttotal())
         .then((value) => print("intent result" + value.toString()));
     print({
-      "total":context.read<Cart>().total.ceil(),
-      // "payment_method": paymentMethod.toString(),
+      "total": context.read<Cart>().total.ceil(),
+      "payment_method": paymentMethod.toString(),
       "payment_intent": paymentINtent.toString(),
     });
   }
