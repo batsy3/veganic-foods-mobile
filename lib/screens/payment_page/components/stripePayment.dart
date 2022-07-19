@@ -104,7 +104,6 @@ class _StripePaymentState extends State<StripePayment>
                         onStateChange: (inputstate, cardinfo) {
                           setState(() {
                             _cardInfo = cardinfo;
-                            print(_cardInfo);
                           });
                         },
                         frontCardDecoration: BoxDecoration(
@@ -243,9 +242,10 @@ class _StripePaymentState extends State<StripePayment>
           number: _cardInfo.cardNumber,
           cvc: _cardInfo.cvv,
           expirationMonth:
-              int.tryParse(_cardInfo.validate.toString().split("/")[0][0]),
+              int.tryParse(_cardInfo.validate.toString().split("/")[0]),
           expirationYear:
-              int.tryParse(_cardInfo.validate.toString().split("/")[0][1]));
+              int.tryParse(_cardInfo.validate.toString().split("/")[1]));
+      print("card info is $_card");
     });
     try {
       await Stripe.instance.dangerouslyUpdateCardDetails(_card);
@@ -262,6 +262,7 @@ class _StripePaymentState extends State<StripePayment>
           .makePayment(context.read<Cart>().carttotal())
           .then((value) async {
         if (value["client_secret"] != null) {
+          context.read<Cart>().clearall();
           Get.snackbar('Hey', 'Payment was succesfull',
               snackPosition: SnackPosition.TOP,
               duration: Duration(seconds: 3),

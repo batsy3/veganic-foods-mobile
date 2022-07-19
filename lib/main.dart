@@ -43,14 +43,14 @@ class MyApp extends StatelessWidget {
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
             // home:LandingPage(),
-            home: Details(
-                product_id: 1,
-                name: "name",
-                description: "description",
-                price: 112,
-                quantity: 1,
-                image: "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?cs=srgb&dl=pexels-ella-olsson-1640777.jpg&fm=jpg",
-                category: 1),
+            // home: Details(
+            //     product_id: 1,
+            //     name: "name",
+            //     description: "description",
+            //     price: 112,
+            //     quantity: 1,
+            //     image: "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?cs=srgb&dl=pexels-ella-olsson-1640777.jpg&fm=jpg",
+            //     category: 1),
             routes: {
               Routes.home: (context) => LandingPage(),
               Routes.scan: (context) => ScanningPage(),
