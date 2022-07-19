@@ -224,8 +224,8 @@ class _StripePaymentState extends State<StripePayment>
                     ),
                     Container(
                         padding: EdgeInsets.only(bottom: 15),
-                        child: LoadingButton(
-                            onpressed: _makepyment, text: "pay"))
+                        child:
+                            LoadingButton(onpressed: _makepyment, text: "pay"))
                   ],
                 ),
               ),
@@ -281,9 +281,19 @@ class _StripePaymentState extends State<StripePayment>
       });
     } catch (e) {
       if (e.toString().contains("Your card number is incorrect")) {
-        Get.snackbar("Sorry", 'your card number is incorrect');
+        Get.snackbar("Sorry", 'your card number is incorrect',
+            snackPosition: SnackPosition.TOP,
+            duration: Duration(seconds: 3),
+            icon: Icon(Icons.error),
+            backgroundColor: Colors.red,
+            colorText: Colors.white);
       } else {
-        Get.snackbar("sorry", "recheck your credentials please");
+        Get.snackbar("sorry", "recheck your credentials please",
+            snackPosition: SnackPosition.TOP,
+            duration: Duration(seconds: 3),
+            icon: Icon(Icons.error),
+            backgroundColor: Colors.red,
+            colorText: Colors.white);
       }
     }
   }
