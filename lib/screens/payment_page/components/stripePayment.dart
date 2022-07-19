@@ -2,6 +2,7 @@ import 'package:credit_card_input_form/model/card_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
+import 'package:localstore/localstore.dart';
 import 'package:provider/provider.dart';
 import 'package:veganic_foods_app/constants.dart';
 import 'package:veganic_foods_app/providers/Api_provider.dart';
@@ -25,8 +26,10 @@ class StripePayment extends StatefulWidget {
 
 class _StripePaymentState extends State<StripePayment>
     with TickerProviderStateMixin {
+  final db = Localstore.instance.collection("customer").doc().id;
   final controller = CardFormEditController();
   late bool isvalid;
+  late bool _check;
   late var _billingInfo = {};
   late TextEditingController emailcontroller;
   CardDetails _card = CardDetails();
@@ -34,6 +37,7 @@ class _StripePaymentState extends State<StripePayment>
   @override
   void initState() {
     controller.addListener(update);
+    _check = false;
     emailcontroller = TextEditingController();
     isvalid = EmailValidator.validate(emailcontroller.text);
     _billingInfo = {
@@ -65,6 +69,7 @@ class _StripePaymentState extends State<StripePayment>
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     final buttonstyle = TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.bold,
@@ -221,6 +226,27 @@ class _StripePaymentState extends State<StripePayment>
                     SizedBox(
                       height: 10,
                     ),
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.only(left: size.width*0.4),
+                          child: Text(
+                            "save billing details",
+                            style: TextStyle(
+                                fontWeight: FontWeight.normal, fontSize: 20),
+                          ),
+                        ),
+                        Checkbox(
+                            activeColor: Colors.indigo.shade400,
+                            checkColor: Colors.amber,
+                            value: _check,
+                            onChanged: (value) {
+                              setState(() {
+                                _check = value!;
+                              });
+                            }),
+                      ],
+                    ),
                     Container(
                         padding: EdgeInsets.only(bottom: 15),
                         child:
@@ -247,6 +273,7 @@ class _StripePaymentState extends State<StripePayment>
               int.tryParse(_cardInfo.validate.toString().split("/")[1]));
       print("card info is $_card");
     });
+
     try {
       await Stripe.instance.dangerouslyUpdateCardDetails(_card);
 
