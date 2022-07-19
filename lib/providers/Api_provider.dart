@@ -9,10 +9,31 @@ import '../widgets/network_error_page.dart';
 class ApiProvider {
   var id = ShortUuid().generate();
 
-  String _rootUrl = "http://192.168.40.245:8007/api";
+  String _rootUrl = "http://192.168.40.53:8007/api/order/";
   Client client = Client();
+
+  Future makePayment(double amount) async {
+    var body = jsonEncode({
+      "amount": amount.ceil(),
+      "currency": "usd",
+    });
+
+    try {
+      var intentResponse = await client.post(Uri.parse(_rootUrl + "stripe/"),
+          body: body,
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+          });
+      Map<String, dynamic> temp = jsonDecode(intentResponse.body);
+      return temp;
+    } catch (e) {
+      return e;
+    }
+  }
+
   Future<Product> getProduct(String? id) async {
-    final response = await client.get(Uri.parse(_rootUrl + '/product/$id'));
+    final response = await client.get(Uri.parse(_rootUrl + 'product/$id'));
     if (response.statusCode == 200) {
       Map<String, dynamic> productMap = jsonDecode(response.body);
       var products = Product.fromJson(productMap);
@@ -26,7 +47,7 @@ class ApiProvider {
     double cart_total,
   ) async {
     var res = await client
-        .post(Uri.parse(_rootUrl + '/order/'),
+        .post(Uri.parse(_rootUrl),
             headers: {
               'Content-Type': 'application/json',
               'Accept': 'application/json',
@@ -42,8 +63,6 @@ class ApiProvider {
             }))
         .then((value) {
       Map<String, dynamic> temp = jsonDecode(value.body);
-      print('value response is ${temp["data"]}');
-      print('${value.statusCode}');
       if (value.statusCode != 201) {
         Get.snackbar('Error', 'Something went wrong plese try again',
             snackPosition: SnackPosition.TOP,
@@ -57,7 +76,6 @@ class ApiProvider {
               .get(Uri.parse(_rootUrl + '/order/check/${temp["data"]}'));
           var temp2 = status.body;
 
-          print('body is ${temp2}');
           if (temp2.toString().contains('successful') &&
               status.statusCode == 200) {
             return Get.snackbar(

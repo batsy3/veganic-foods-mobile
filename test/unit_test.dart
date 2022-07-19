@@ -57,6 +57,12 @@ class MockGetdata implements ApiProvider {
   Future<Product> getProduct(String? id) async {
     return fixture_data[1];
   }
+
+  @override
+  Future makePayment(double amount) {
+    // TODO: implement makePayment
+    throw UnimplementedError();
+  }
 }
 
 class BetterMockService extends Mock implements ApiProvider {}
