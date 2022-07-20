@@ -238,7 +238,7 @@ class _StripePaymentState extends State<StripePayment>
                         ),
                         Checkbox(
                             activeColor: Colors.indigo.shade400,
-                            checkColor: Colors.amber,
+                            checkColor: Colors.white,
                             value: _check,
                             onChanged: (value) {
                               setState(() {
@@ -249,8 +249,8 @@ class _StripePaymentState extends State<StripePayment>
                     ),
                     Container(
                         padding: EdgeInsets.only(bottom: 15),
-                        child:
-                            LoadingButton(onpressed: _makepyment, text: "pay"))
+                        child: LoadingButton(
+                            onpressed: _stripe_payment, text: "pay"))
                   ],
                 ),
               ),
@@ -261,8 +261,7 @@ class _StripePaymentState extends State<StripePayment>
     );
   }
 
-  Future _makepyment() async {
-    print(_card);
+  Future _stripe_payment() async {
     setState(() {
       _card = _card.copyWith(
           number: _cardInfo.cardNumber,
@@ -271,7 +270,6 @@ class _StripePaymentState extends State<StripePayment>
               int.tryParse(_cardInfo.validate.toString().split("/")[0]),
           expirationYear:
               int.tryParse(_cardInfo.validate.toString().split("/")[1]));
-      print("card info is $_card");
     });
 
     try {
@@ -280,55 +278,9 @@ class _StripePaymentState extends State<StripePayment>
           email: _billingInfo["email"],
           phone: _billingInfo["phone"],
           name: _billingInfo["name"]);
-      final paymentMethod = await Stripe.instance.createPaymentMethod(
-          PaymentMethodParams.card(
-              paymentMethodData:
-                  PaymentMethodData(billingDetails: billingDetails)));
-//  ----------------put if clause here----------------------------
-
-      if (_check = true) {
-        try {
-          var customerID = ApiProvider().createCustomer().then((value) {
-            var paymentIntent = ApiProvider()
-                .returningCustoemr(
-                    context.read<Cart>().carttotal(), value as String, "usd")
-                .then((value) => print({"customer id": value}));
-          });
-          print(customerID as String);
-          final db_id = db.collection('customer').doc().id;
-          db.collection('customer').doc(db_id).set({
-            "customerID ": customerID,
-            "name": _billingInfo["name"],
-            "email": _billingInfo["email"],
-            "phone": _billingInfo["phone"]
-          });
-        } catch (e) {
-          print({"customer id error": e});
-        }
-      } else {
-        var paymentINtent = ApiProvider()
-            .makePayment(context.read<Cart>().carttotal())
-            .then((value) async {
-          if (value["client_secret"] != null) {
-            context.read<Cart>().clearall();
-            Get.snackbar('Hey', 'Payment was succesfull',
-                snackPosition: SnackPosition.TOP,
-                duration: Duration(seconds: 3),
-                icon: Icon(Icons.check),
-                backgroundColor: Colors.green,
-                colorText: Colors.white);
-            Get.to(() => ScanningPage());
-          } else {
-            Get.snackbar('Error', '${value}',
-                snackPosition: SnackPosition.TOP,
-                duration: Duration(seconds: 3),
-                icon: Icon(Icons.error),
-                backgroundColor: Colors.red,
-                colorText: Colors.white);
-            Get.to(() => PaymentPage());
-          }
-        });
-      }
+      await Stripe.instance.createPaymentMethod(PaymentMethodParams.card(
+          paymentMethodData:
+              PaymentMethodData(billingDetails: billingDetails)));
     } catch (e) {
       if (e.toString().contains("Your card number is incorrect")) {
         Get.snackbar("Sorry", 'your card number is incorrect',
@@ -347,189 +299,65 @@ class _StripePaymentState extends State<StripePayment>
             colorText: Colors.white);
       }
     }
+    if (_check == true) {
+      setState(() {
+        _check = false;
+      });
+      try {
+        ApiProvider().createCustomer().then((value) async {
+          final db_id = db.collection('customer').doc().id;
+          db.collection('customer').doc(db_id).set({
+            "customerID ": value.toString(),
+            "name": _billingInfo["name"],
+            "email": _billingInfo["email"],
+            "phone": _billingInfo["phone"]
+          });
+          var data = await db.collection('customer').doc(db_id).get();
+          print(data);
+          ApiProvider()
+              .returningCustomer(
+                  context.read<Cart>().carttotal(), value.toString(), "usd")
+              .then((value) {
+            Get.snackbar('Hey', 'Payment was succesfull',
+                snackPosition: SnackPosition.TOP,
+                duration: Duration(seconds: 3),
+                icon: Icon(Icons.check),
+                backgroundColor: Colors.green,
+                colorText: Colors.white);
+            Get.to(() => PaymentPage());
+          });
+        });
+      } catch (e) {
+        Get.snackbar('sorry', '$e',
+            snackPosition: SnackPosition.TOP,
+            duration: Duration(seconds: 3),
+            icon: Icon(Icons.check),
+            backgroundColor: Colors.red,
+            colorText: Colors.white);
+      }
+    } else {
+      ApiProvider()
+          .makePayment(context.read<Cart>().carttotal())
+          .then((value) async {
+        if (value["client_secret"] != null) {
+          context.read<Cart>().clearall();
+          Get.snackbar('Hey', 'Payment was succesfull',
+              snackPosition: SnackPosition.TOP,
+              duration: Duration(seconds: 3),
+              icon: Icon(Icons.check),
+              backgroundColor: Colors.green,
+              colorText: Colors.white);
+          Get.to(() => ScanningPage());
+        } else {
+          Get.snackbar('Error', '${value}',
+              snackPosition: SnackPosition.TOP,
+              duration: Duration(seconds: 3),
+              icon: Icon(Icons.error),
+              backgroundColor: Colors.red,
+              colorText: Colors.white);
+          Get.to(() => PaymentPage());
+        }
+      });
+    }
   }
 }
-
-
-
-// CardFormField(
-//   controller: controller,
-//   style: CardFormStyle(
-//     placeholderColor: Colors.red,
-//     fontSize: 10,
-//     textColor: Colors.white,
-//   ),
-// ),
-// LoadingButton(
-//   text: "pay",
-//   onpressed:
-//       controller.details.complete == true ? _handlePay : null,
-// )
-
-// //           CheckboxListTile(
-// CheckboxListTile(
-//   value: _savecard,
-//   onChanged: (value) {
-//     setState(() {
-//       _savecard = value;
-//     });
-//   },
-//   title: Text("save card during payment"),
-// ),
-
-// AppButton(
-//     text: "Pay",
-//     fontSize: 25,
-//     textColor: bGcolor,
-//     bgColor: Colors.black,
-//     onTap: () {},
-//     fontWeight: FontWeight.bold,
-//     borderRadius: 30,
-//     height: 34)
-
-// Container(
-//             child: SingleChildScrollView(
-//               child: Padding(
-//                   padding: EdgeInsets.symmetric(horizontal: 20),
-//                   child: Column(
-//                     children: [
-//                       Container(
-//                         decoration: BoxDecoration(color: Colors.white70),
-//                         child: Column(children: [
-//                           Padding(
-//                             padding: EdgeInsets.all(5),
-//                             child: TabBar(controller: _tabController, tabs: [
-//                               Tab(
-//                                 text: "data",
-//                               ),
-//                               Tab(
-//                                 text: "more text",
-//                               )
-//                             ]),
-//                           )
-//                         ]),
-//                       ),
-//                       Container(
-//                         height: 400,
-//                         child:
-//                             TabBarView(controller: _tabController, children: [
-//                           Container(
-//                             padding: EdgeInsets.only(
-//                               top: 50,
-//                             ),
-//                             child: Column(
-//                               children: [
-//                                 CardFormField(
-//                                   controller: controller,
-//                                   style: CardFormStyle(
-//                                     backgroundColor: Colors.white,
-//                                     // borderColor: Colors.white,
-//                                     placeholderColor: bGcolor,
-//                                     fontSize: 15,
-//                                     borderRadius: 20,
-//                                     borderWidth: 1,
-
-//                                     textColor: Colors.black,
-//                                   ),
-//                                 ),
-//                                 // SizedBox(
-//                                 //   height: 30,
-//                                 // ),
-//                                 ElevatedButton(
-//                                     onPressed: () => _tabController
-//                                         .animateTo((_tabController.index + 1)),
-//                                     child: Text("next"))
-//                                 // LoadingButton(
-//                                 //   text: "next",
-//                                 //   onpressed: controller.details.complete == true
-//                                 //       ? _handlePay
-//                                 //       : null,
-//                                 // ),
-//                               ],
-//                             ),
-//                           ),
-//                           Container(
-//                             padding: EdgeInsets.all(20),
-//                             child: Column(
-//                               children: [
-//                                 SizedBox(
-//                                   height: 20,
-//                                 ),
-//                                 TextFormField(
-//                                   validator: (value) {
-//                                     if (value!.isEmpty ||
-//                                         isvalid != true ||
-//                                         !value.isEmail) {
-//                                       return 'enter valid email address';
-//                                     } else {
-//                                       return null;
-//                                     }
-//                                   },
-//                                   controller: emailcontroller,
-//                                   decoration: InputDecoration(
-//                                       hintText: "email address",
-//                                       hintStyle: TextStyle(
-//                                           color: Colors.grey.shade300)),
-//                                   keyboardType: TextInputType.emailAddress,
-//                                 ),
-//                                 SizedBox(
-//                                   height: 10,
-//                                 ),
-//                                 TextFormField(
-//                                   validator: (value) {
-//                                     if (value!.isEmpty || value.isNumericOnly) {
-//                                       return 'enter valid phone number';
-//                                     } else {
-//                                       return null;
-//                                     }
-//                                   },
-//                                   controller: phoneNumberController,
-//                                   decoration: InputDecoration(
-//                                       hintText: "phone Number",
-//                                       hintStyle: TextStyle(
-//                                           color: Colors.grey.shade300)),
-//                                   keyboardType: TextInputType.number,
-//                                 ),
-//                                 SizedBox(
-//                                   height: 10,
-//                                 ),
-//                                 TextFormField(
-//                                     controller: countrycontroller,
-//                                     decoration: InputDecoration(
-//                                         hintText: "country",
-//                                         hintStyle: TextStyle(
-//                                             color: Colors.grey.shade300)),
-//                                     keyboardType: TextInputType.text),
-//                                 SizedBox(
-//                                   height: 10,
-//                                 ),
-//                                 TextFormField(
-//                                   controller: citycontroller,
-//                                   decoration: InputDecoration(
-//                                       hintText: "City",
-//                                       hintStyle: TextStyle(
-//                                           color: Colors.grey.shade300)),
-//                                   keyboardType: TextInputType.text,
-//                                 ),
-//                                 SizedBox(
-//                                   height: 40,
-//                                 ),
-//                                 LoadingButton(
-//                                     text: "pay",
-//                                     onpressed: () async {
-//                                       await Stripe.instance.createPaymentMethod(
-//                                           PaymentMethodParams.card(
-//                                               paymentMethodData:
-//                                                   PaymentMethodData(
-//                                         billingDetails: null,
-//                                       )));
-//                                     })
-//                               ],
-//                             ),
-//                           )
-//                         ]),
-//                       ),
-//                     ],
-//                   )),
-//             ),
-//           )),

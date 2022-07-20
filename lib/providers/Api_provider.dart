@@ -14,22 +14,22 @@ class ApiProvider {
   String _rootUrl = "http://192.168.40.53:8007/api/order/";
   Client client = Client();
 
-
-  Future returningCustoemr(
+  Future returningCustomer(
       double amount, String customerID, String currency) async {
     var payload = {
       "customerID": customerID,
       "amount": amount.ceil(),
       "currency": currency
     };
-    await client.post(Uri.parse(_rootUrl + "stripe/returning_customer"),
+    var res = await client.post(
+        Uri.parse(_rootUrl + "stripe/returning_customer/"),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/json"
         },
         body: jsonEncode(payload));
+    return res.body;
   }
-
 
   Future createCustomer() async {
     var customer_id = await client
@@ -40,7 +40,6 @@ class ApiProvider {
     var res = jsonDecode(customer_id.body);
     return res;
   }
-
 
   Future makePayment(double amount) async {
     var body = jsonEncode({
@@ -62,7 +61,6 @@ class ApiProvider {
     }
   }
 
-
   Future<Product> getProduct(String? id) async {
     final response = await client.get(Uri.parse(_rootUrl + 'product/$id'));
     if (response.statusCode == 200) {
@@ -72,7 +70,6 @@ class ApiProvider {
     } else
       return NetworkErrorpage();
   }
-
 
   Future<dynamic> gateway(
     String number,
