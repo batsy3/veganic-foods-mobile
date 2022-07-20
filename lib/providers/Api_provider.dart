@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:short_uuids/short_uuids.dart';
+import 'package:veganic_foods_app/providers/cart_provider.dart';
 import '../screens/details_page/components/product_class.dart';
 import '../widgets/network_error_page.dart';
 
@@ -11,6 +13,34 @@ class ApiProvider {
 
   String _rootUrl = "http://192.168.40.53:8007/api/order/";
   Client client = Client();
+
+
+  Future returningCustoemr(
+      double amount, String customerID, String currency) async {
+    var payload = {
+      "customerID": customerID,
+      "amount": amount.ceil(),
+      "currency": currency
+    };
+    await client.post(Uri.parse(_rootUrl + "stripe/returning_customer"),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        },
+        body: jsonEncode(payload));
+  }
+
+
+  Future createCustomer() async {
+    var customer_id = await client
+        .post(Uri.parse(_rootUrl + "stripe/create_customer/"), headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json"
+    });
+    var res = jsonDecode(customer_id.body);
+    return res;
+  }
+
 
   Future makePayment(double amount) async {
     var body = jsonEncode({
@@ -32,6 +62,7 @@ class ApiProvider {
     }
   }
 
+
   Future<Product> getProduct(String? id) async {
     final response = await client.get(Uri.parse(_rootUrl + 'product/$id'));
     if (response.statusCode == 200) {
@@ -41,6 +72,7 @@ class ApiProvider {
     } else
       return NetworkErrorpage();
   }
+
 
   Future<dynamic> gateway(
     String number,

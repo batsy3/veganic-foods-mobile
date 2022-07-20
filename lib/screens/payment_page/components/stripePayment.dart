@@ -26,7 +26,6 @@ class StripePayment extends StatefulWidget {
 
 class _StripePaymentState extends State<StripePayment>
     with TickerProviderStateMixin {
-  final db = Localstore.instance.collection("customer").doc().id;
   final controller = CardFormEditController();
   late bool isvalid;
   late bool _check;
@@ -34,6 +33,7 @@ class _StripePaymentState extends State<StripePayment>
   late TextEditingController emailcontroller;
   CardDetails _card = CardDetails();
   late CardInfo _cardInfo;
+  final db = Localstore.instance;
   @override
   void initState() {
     controller.addListener(update);
@@ -229,7 +229,7 @@ class _StripePaymentState extends State<StripePayment>
                     Row(
                       children: [
                         Container(
-                          padding: EdgeInsets.only(left: size.width*0.4),
+                          padding: EdgeInsets.only(left: size.width * 0.4),
                           child: Text(
                             "save billing details",
                             style: TextStyle(
@@ -276,7 +276,6 @@ class _StripePaymentState extends State<StripePayment>
 
     try {
       await Stripe.instance.dangerouslyUpdateCardDetails(_card);
-
       final billingDetails = BillingDetails(
           email: _billingInfo["email"],
           phone: _billingInfo["phone"],
@@ -285,28 +284,51 @@ class _StripePaymentState extends State<StripePayment>
           PaymentMethodParams.card(
               paymentMethodData:
                   PaymentMethodData(billingDetails: billingDetails)));
-      var paymentINtent = ApiProvider()
-          .makePayment(context.read<Cart>().carttotal())
-          .then((value) async {
-        if (value["client_secret"] != null) {
-          context.read<Cart>().clearall();
-          Get.snackbar('Hey', 'Payment was succesfull',
-              snackPosition: SnackPosition.TOP,
-              duration: Duration(seconds: 3),
-              icon: Icon(Icons.check),
-              backgroundColor: Colors.green,
-              colorText: Colors.white);
-          Get.to(() => ScanningPage());
-        } else {
-          Get.snackbar('Error', '${value}',
-              snackPosition: SnackPosition.TOP,
-              duration: Duration(seconds: 3),
-              icon: Icon(Icons.error),
-              backgroundColor: Colors.red,
-              colorText: Colors.white);
-          Get.to(() => PaymentPage());
+//  ----------------put if clause here----------------------------
+
+      if (_check = true) {
+        try {
+          var customerID = ApiProvider().createCustomer().then((value) {
+            var paymentIntent = ApiProvider()
+                .returningCustoemr(
+                    context.read<Cart>().carttotal(), value as String, "usd")
+                .then((value) => print({"customer id": value}));
+          });
+          print(customerID as String);
+          final db_id = db.collection('customer').doc().id;
+          db.collection('customer').doc(db_id).set({
+            "customerID ": customerID,
+            "name": _billingInfo["name"],
+            "email": _billingInfo["email"],
+            "phone": _billingInfo["phone"]
+          });
+        } catch (e) {
+          print({"customer id error": e});
         }
-      });
+      } else {
+        var paymentINtent = ApiProvider()
+            .makePayment(context.read<Cart>().carttotal())
+            .then((value) async {
+          if (value["client_secret"] != null) {
+            context.read<Cart>().clearall();
+            Get.snackbar('Hey', 'Payment was succesfull',
+                snackPosition: SnackPosition.TOP,
+                duration: Duration(seconds: 3),
+                icon: Icon(Icons.check),
+                backgroundColor: Colors.green,
+                colorText: Colors.white);
+            Get.to(() => ScanningPage());
+          } else {
+            Get.snackbar('Error', '${value}',
+                snackPosition: SnackPosition.TOP,
+                duration: Duration(seconds: 3),
+                icon: Icon(Icons.error),
+                backgroundColor: Colors.red,
+                colorText: Colors.white);
+            Get.to(() => PaymentPage());
+          }
+        });
+      }
     } catch (e) {
       if (e.toString().contains("Your card number is incorrect")) {
         Get.snackbar("Sorry", 'your card number is incorrect',
@@ -316,6 +338,7 @@ class _StripePaymentState extends State<StripePayment>
             backgroundColor: Colors.red,
             colorText: Colors.white);
       } else {
+        print(e);
         Get.snackbar("sorry", "recheck your credentials please",
             snackPosition: SnackPosition.TOP,
             duration: Duration(seconds: 3),
