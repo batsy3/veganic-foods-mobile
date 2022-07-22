@@ -92,20 +92,26 @@ class _StripePaymentState extends State<StripePayment>
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: EdgeInsets.only(left: 0,),
+                    padding: EdgeInsets.only(
+                      left: 0,
+                    ),
                     child: Text(
                       "Card Details",
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                   ),
                   SizedBox(
                     width: 150,
                   ),
-                   Padding(
+                  Padding(
                     padding: const EdgeInsets.only(left: 10),
                     child: IconButton(
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: ((context) => PaymentPage())));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) => PaymentPage())));
                         },
                         icon: Icon(
                           Icons.close,
@@ -293,6 +299,7 @@ class _StripePaymentState extends State<StripePayment>
     final value = customerID;
     pref.setString(key, value).then((value) => print({"saved value": value}));
   }
+
 
   Future _stripe_payment() async {
     setState(() {

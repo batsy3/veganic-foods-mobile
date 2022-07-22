@@ -404,7 +404,9 @@ class _AcceptDialogState extends State<AcceptDialog> {
                   decoration: BoxDecoration(
                       shape: BoxShape.circle, color: Colors.redAccent),
                   child: IconButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        final SharedPreferences pref = await _pref;
+                        pref.clear();
                         Navigator.push(
                             context,
                             MaterialPageRoute(
