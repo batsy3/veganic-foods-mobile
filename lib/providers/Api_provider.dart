@@ -1,10 +1,8 @@
 import 'dart:convert';
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:short_uuids/short_uuids.dart';
-import 'package:veganic_foods_app/providers/cart_provider.dart';
 import '../screens/details_page/components/product_class.dart';
 import '../widgets/network_error_page.dart';
 
@@ -28,6 +26,7 @@ class ApiProvider {
           "Content-Type": "application/json"
         },
         body: jsonEncode(payload));
+    print(res.body);
     return res.body;
   }
 

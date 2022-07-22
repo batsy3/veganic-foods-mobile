@@ -2,17 +2,17 @@ import 'package:credit_card_input_form/model/card_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
-import 'package:localstore/localstore.dart';
 import 'package:provider/provider.dart';
 import 'package:veganic_foods_app/constants.dart';
 import 'package:veganic_foods_app/providers/Api_provider.dart';
 import 'package:veganic_foods_app/providers/cart_provider.dart';
 import 'package:veganic_foods_app/screens/payment_page/payment.dart';
 import 'package:veganic_foods_app/screens/scanning_page/scan.dart';
+import 'package:veganic_foods_app/widgets/default_back_button.dart';
 import 'package:veganic_foods_app/widgets/loading_button.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter_credit_card/flutter_credit_card.dart';
 import 'package:credit_card_input_form/credit_card_input_form.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StripePayment extends StatefulWidget {
   final String text;
@@ -33,7 +33,6 @@ class _StripePaymentState extends State<StripePayment>
   late TextEditingController emailcontroller;
   CardDetails _card = CardDetails();
   late CardInfo _cardInfo;
-  final db = Localstore.instance;
   @override
   void initState() {
     controller.addListener(update);
@@ -89,12 +88,32 @@ class _StripePaymentState extends State<StripePayment>
               SizedBox(
                 height: 40,
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 10, left: 10, right: 200),
-                child: Text(
-                  "Card Details",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 0,),
+                    child: Text(
+                      "Card Details",
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 150,
+                  ),
+                   Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: IconButton(
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: ((context) => PaymentPage())));
+                        },
+                        icon: Icon(
+                          Icons.close,
+                          color: Colors.black,
+                          size: 20,
+                        )),
+                  ),
+                ],
               ),
               SizedBox(
                 height: 20,
@@ -261,6 +280,20 @@ class _StripePaymentState extends State<StripePayment>
     );
   }
 
+  _read() async {
+    final pref = await SharedPreferences.getInstance();
+    final key = "customer";
+    final value = pref.getString(key) ?? null;
+    print({"read value is ": value});
+  }
+
+  _write(String customerID) async {
+    final pref = await SharedPreferences.getInstance();
+    final key = "customer";
+    final value = customerID;
+    pref.setString(key, value).then((value) => print({"saved value": value}));
+  }
+
   Future _stripe_payment() async {
     setState(() {
       _card = _card.copyWith(
@@ -304,20 +337,14 @@ class _StripePaymentState extends State<StripePayment>
         _check = false;
       });
       try {
-        ApiProvider().createCustomer().then((value) async {
-          final db_id = db.collection('customer').doc().id;
-          db.collection('customer').doc(db_id).set({
-            "customerID ": value.toString(),
-            "name": _billingInfo["name"],
-            "email": _billingInfo["email"],
-            "phone": _billingInfo["phone"]
-          });
-          var data = await db.collection('customer').doc(db_id).get();
-          print(data);
+        ApiProvider().createCustomer().then((value) {
+          _write(value);
+          _read().toString();
           ApiProvider()
               .returningCustomer(
                   context.read<Cart>().carttotal(), value.toString(), "usd")
               .then((value) {
+            // context.read<Cart>().clearall();
             Get.snackbar('Hey', 'Payment was succesfull',
                 snackPosition: SnackPosition.TOP,
                 duration: Duration(seconds: 3),
