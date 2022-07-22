@@ -260,12 +260,13 @@ class _PaymentListState extends State<PaymentList> {
                                         return AcceptDialog();
                                       });
                                 } else {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => StripePayment(
-                                              text: "text", validator: "validator"),
-                                        ));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => StripePayment(
+                                            text: "text",
+                                            validator: "validator"),
+                                      ));
                                 }
                               });
                             }
@@ -413,17 +414,13 @@ class _AcceptDialogState extends State<AcceptDialog> {
                       shape: BoxShape.circle, color: Colors.redAccent),
                   child: IconButton(
                       onPressed: () async {
-                        try {
-                          final SharedPreferences pref = await _pref;
-                          pref.clear().then((value) => print(value));
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => StripePayment(
-                          //             text: "text", validator: "validator")));
-                        } catch (e) {
-                          print(e);
-                        }
+                        final SharedPreferences pref = await _pref;
+                        pref.clear().then((value) => print(value));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => StripePayment(
+                                    text: "text", validator: "validator")));
                       },
                       icon: Icon(
                         Icons.close,
