@@ -45,6 +45,12 @@ enum Paymentmethod { mobile_money, visa, bank_transfer, master_card }
 class _PaymentListState extends State<PaymentList> {
   final textcontroller = TextEditingController();
   final _formkey = GlobalKey<FormState>();
+  var _isnull;
+  @override
+  void initState() {
+    _isnull = "";
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -246,21 +252,22 @@ class _PaymentListState extends State<PaymentList> {
                                     );
                                   });
                             } else if (_init == Paymentmethod.master_card) {
-                              _read();
-                              if (_read() != "null") {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AcceptDialog();
-                                    });
-                              } else {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => StripePayment(
-                                          text: "text", validator: "validator"),
-                                    ));
-                              }
+                              _read().then((value) {
+                                if (value != null) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AcceptDialog();
+                                      });
+                                } else {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => StripePayment(
+                                              text: "text", validator: "validator"),
+                                        ));
+                                }
+                              });
                             }
                           },
                         )
@@ -271,11 +278,12 @@ class _PaymentListState extends State<PaymentList> {
   }
 }
 
-Future<String> _read() async {
+Future<String?> _read() async {
   final pref = await SharedPreferences.getInstance();
   final key = "customer";
-  var value = (pref.getString(key)) ?? "null";
-  return value.toString();
+  var value = (pref.getString(key)) ?? null;
+  print(value);
+  return value;
 }
 
 class AcceptDialog extends StatefulWidget {
@@ -405,13 +413,17 @@ class _AcceptDialogState extends State<AcceptDialog> {
                       shape: BoxShape.circle, color: Colors.redAccent),
                   child: IconButton(
                       onPressed: () async {
-                        final SharedPreferences pref = await _pref;
-                        pref.clear();
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => StripePayment(
-                                    text: "text", validator: "validator")));
+                        try {
+                          final SharedPreferences pref = await _pref;
+                          pref.clear().then((value) => print(value));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => StripePayment(
+                          //             text: "text", validator: "validator")));
+                        } catch (e) {
+                          print(e);
+                        }
                       },
                       icon: Icon(
                         Icons.close,
