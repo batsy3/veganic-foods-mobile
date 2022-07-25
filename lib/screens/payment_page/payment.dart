@@ -1,9 +1,14 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:veganic_foods_app/constants.dart';
+import 'package:veganic_foods_app/providers/Api_provider.dart';
 import 'package:veganic_foods_app/screens/payment_page/components/stripePayment.dart';
 import 'package:veganic_foods_app/widgets/custom_button.dart';
 import '../../providers/cart_provider.dart';
@@ -40,6 +45,13 @@ enum Paymentmethod { mobile_money, visa, bank_transfer, master_card }
 class _PaymentListState extends State<PaymentList> {
   final textcontroller = TextEditingController();
   final _formkey = GlobalKey<FormState>();
+  var _isnull;
+  @override
+  void initState() {
+    _isnull = "";
+    super.initState();
+  }
+
   @override
   void dispose() {
     textcontroller.dispose();
@@ -240,28 +252,187 @@ class _PaymentListState extends State<PaymentList> {
                                     );
                                   });
                             } else if (_init == Paymentmethod.master_card) {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => StripePayment(
-                                        text: "text", validator: "validator"),
-                                  ));
+                              _read().then((value) {
+                                if (value != null) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AcceptDialog();
+                                      });
+                                } else {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => StripePayment(
+                                            text: "text",
+                                            validator: "validator"),
+                                      ));
+                                }
+                              });
                             }
                           },
                         )
                       ]))
                 ])
               ])));
-
-// Future<dynamic> visaPayment() async{
-
-// }
     }));
   }
 }
 
-void displayresult() async {
-  try {
-    Stripe.instance.presentPaymentSheet();
-  } catch (e) {}
+Future<String?> _read() async {
+  final pref = await SharedPreferences.getInstance();
+  final key = "customer";
+  var value = (pref.getString(key)) ?? null;
+  print(value);
+  return value;
+}
+
+class AcceptDialog extends StatefulWidget {
+  const AcceptDialog({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<AcceptDialog> createState() => _AcceptDialogState();
+}
+
+class _AcceptDialogState extends State<AcceptDialog> {
+  final Future<SharedPreferences> _pref = SharedPreferences.getInstance();
+  late String _id = "";
+  bool _isloading = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      shape: ShapeBorder.lerp(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        0.5,
+      ),
+      backgroundColor: Colors.white,
+      title: Container(
+        height: 30,
+        alignment: Alignment.centerRight,
+        child: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.close,
+              size: 30,
+              color: Colors.black,
+            )),
+      ),
+      content: Container(
+        height: 140,
+        child: Column(
+          children: [
+            Center(
+                child: Text(
+              "would you like to use previous billing detaiils ?",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              textAlign: TextAlign.center,
+            )),
+            SizedBox(
+              height: 18,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _isloading
+                    ? CircularProgressIndicator(
+                        backgroundColor: Colors.white,
+                        color: bGcolor,
+                      )
+                    : Container(
+                        padding: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle, color: bGcolor),
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.check,
+                            size: 30,
+                            color: Colors.white,
+                          ),
+                          onPressed: () async {
+                            setState(() {
+                              _isloading = true;
+                            });
+                            try {
+                              final SharedPreferences pref = await _pref;
+                              final String value =
+                                  pref.getString("customer").toString();
+
+                              ApiProvider()
+                                  .returningCustomer(
+                                      context.read<Cart>().carttotal(),
+                                      value,
+                                      "usd")
+                                  .then((value) {
+                                Get.snackbar(
+                                    "heyy", 'your payment was successfull',
+                                    snackPosition: SnackPosition.TOP,
+                                    duration: Duration(seconds: 3),
+                                    icon: Icon(Icons.handshake),
+                                    backgroundColor: Colors.green,
+                                    colorText: Colors.white);
+
+                                setState(() {
+                                  _isloading = false;
+                                });
+                                Navigator.pop(context);
+                              });
+                            } catch (e) {
+                              Get.snackbar(
+                                  "Sorry", 'your payment was not successful',
+                                  snackPosition: SnackPosition.TOP,
+                                  duration: Duration(seconds: 3),
+                                  icon: Icon(Icons.error),
+                                  backgroundColor: Colors.red,
+                                  colorText: Colors.white);
+
+                              print(e);
+                            }
+                          },
+                        ),
+                      ),
+                SizedBox(
+                  width: 30,
+                ),
+                Container(
+                  padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle, color: Colors.redAccent),
+                  child: IconButton(
+                      onPressed: () async {
+                        final SharedPreferences pref = await _pref;
+                        pref.clear().then((value) => print(value));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => StripePayment(
+                                    text: "text", validator: "validator")));
+                      },
+                      icon: Icon(
+                        Icons.close,
+                        color: Colors.white,
+                        size: 30,
+                      )),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
 }

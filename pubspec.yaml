@@ -46,7 +46,8 @@ dependencies:
   email_validator: ^2.0.1
   flutter_credit_card: ^3.0.1
   credit_card_input_form: ^2.3.0
-
+  shared_preferences: ^2.0.15
+  
 dev_dependencies:
   flutter_launcher_icons: "^0.9.2"
   flutter_test:

@@ -9,8 +9,36 @@ import '../widgets/network_error_page.dart';
 class ApiProvider {
   var id = ShortUuid().generate();
 
-  String _rootUrl = "http://192.168.40.53:8007/api/order/";
+  String _rootUrl = "http://192.168.40.77:8007/api/order/";
   Client client = Client();
+
+  Future returningCustomer(
+      double amount, String customerID, String currency) async {
+    var payload = {
+      "customerID": customerID,
+      "amount": amount.ceil(),
+      "currency": currency
+    };
+    var res = await client.post(
+        Uri.parse(_rootUrl + "stripe/returning_customer/"),
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        },
+        body: jsonEncode(payload));
+    print(res.body);
+    return res.body;
+  }
+
+  Future createCustomer() async {
+    var customer_id = await client
+        .post(Uri.parse(_rootUrl + "stripe/create_customer/"), headers: {
+      "Accept": "application/json",
+      "Content-Type": "application/json"
+    });
+    var res = jsonDecode(customer_id.body);
+    return res;
+  }
 
   Future makePayment(double amount) async {
     var body = jsonEncode({

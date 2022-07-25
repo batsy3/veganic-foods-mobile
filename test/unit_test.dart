@@ -63,6 +63,18 @@ class MockGetdata implements ApiProvider {
     // TODO: implement makePayment
     throw UnimplementedError();
   }
+
+  @override
+  Future createCustomer() {
+    // TODO: implement createCustomer
+    throw UnimplementedError();
+  }
+
+  @override
+  Future returningCustomer(double amount, String customerID, String currency) {
+    // TODO: implement returningCustomer
+    throw UnimplementedError();
+  }
 }
 
 class BetterMockService extends Mock implements ApiProvider {}
