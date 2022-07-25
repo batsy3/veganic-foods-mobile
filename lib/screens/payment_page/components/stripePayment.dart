@@ -98,12 +98,10 @@ class _StripePaymentState extends State<StripePayment>
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-
                       Padding(
                         padding: EdgeInsets.only(
                           left: 0,
                           top: 30,
-
                         ),
                         child: Text(
                           "Card Details",
@@ -173,10 +171,13 @@ class _StripePaymentState extends State<StripePayment>
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.all(15.0),
+                              padding: const EdgeInsets.all(10.0),
                               child: Container(
+                                  margin: EdgeInsets.all(8),
+                                  height: 45,
                                   decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.grey.shade400),
+                                      border: Border.all(
+                                          color: Colors.grey.shade400),
                                       borderRadius: BorderRadius.circular(10)),
                                   padding: EdgeInsets.all(0),
                                   child: TextFormField(
@@ -192,8 +193,8 @@ class _StripePaymentState extends State<StripePayment>
                                             borderRadius:
                                                 BorderRadius.circular(5)),
                                         hintText: 'Name',
-                                        hintStyle:
-                                            TextStyle(color: Colors.grey.shade400)),
+                                        hintStyle: TextStyle(
+                                            color: Colors.grey.shade400)),
                                     onChanged: (value) {
                                       setState(() {
                                         _billingInfo["name"] = value;
@@ -203,10 +204,13 @@ class _StripePaymentState extends State<StripePayment>
                                   )),
                             ),
                             Padding(
-                              padding: const EdgeInsets.all(15),
+                              padding: const EdgeInsets.all(10),
                               child: Container(
+                                  margin: EdgeInsets.all(8),
+                                  height: 45,
                                   decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.grey.shade400),
+                                      border: Border.all(
+                                          color: Colors.grey.shade400),
                                       borderRadius: BorderRadius.circular(10)),
                                   padding: EdgeInsets.all(0),
                                   child: TextFormField(
@@ -222,8 +226,8 @@ class _StripePaymentState extends State<StripePayment>
                                             borderRadius:
                                                 BorderRadius.circular(5)),
                                         hintText: 'Email',
-                                        hintStyle:
-                                            TextStyle(color: Colors.grey.shade400)),
+                                        hintStyle: TextStyle(
+                                            color: Colors.grey.shade400)),
                                     onChanged: (value) {
                                       setState(() {
                                         _billingInfo["email"] = value;
@@ -233,10 +237,13 @@ class _StripePaymentState extends State<StripePayment>
                                   )),
                             ),
                             Padding(
-                              padding: const EdgeInsets.all(15),
+                              padding: const EdgeInsets.all(10),
                               child: Container(
+                                  margin: EdgeInsets.all(8),
+                                  height: 45,
                                   decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.grey.shade400),
+                                      border: Border.all(
+                                          color: Colors.grey.shade400),
                                       borderRadius: BorderRadius.circular(10)),
                                   child: TextFormField(
                                     decoration: InputDecoration(
@@ -246,12 +253,12 @@ class _StripePaymentState extends State<StripePayment>
                                             borderSide: BorderSide(
                                                 color: Colors.white)),
                                         enabledBorder: OutlineInputBorder(
-                                            borderSide:
-                                                BorderSide(color: Colors.white),
-),
+                                          borderSide:
+                                              BorderSide(color: Colors.white),
+                                        ),
                                         hintText: 'phone',
-                                        hintStyle:
-                                            TextStyle(color: Colors.grey.shade400)),
+                                        hintStyle: TextStyle(
+                                            color: Colors.grey.shade400)),
                                     onChanged: (value) {
                                       setState(() {
                                         _billingInfo["phone"] = value;
