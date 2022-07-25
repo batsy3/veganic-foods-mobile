@@ -86,198 +86,215 @@ class _StripePaymentState extends State<StripePayment>
           child: Column(
             children: [
               SizedBox(
-                height: 40,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                      left: 0,
-                    ),
-                    child: Text(
-                      "Card Details",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 150,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: IconButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: ((context) => PaymentPage())));
-                        },
-                        icon: Icon(
-                          Icons.close,
-                          color: Colors.black,
-                          size: 20,
-                        )),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 20,
+                height: 50,
               ),
               Container(
-                height: 800,
-                child: Column(
-                  children: [
-                    Container(
-                      child: CreditCardInputForm(
-                        cardHeight: 190,
-                        onStateChange: (inputstate, cardinfo) {
-                          setState(() {
-                            _cardInfo = cardinfo;
-                          });
-                        },
-                        frontCardDecoration: BoxDecoration(
-                          color: Colors.indigo.shade400,
-                          borderRadius: BorderRadius.circular(20),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(40),
+                        topRight: Radius.circular(40))),
+                child: Column(children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: 0,
+                          top: 30,
+
                         ),
-                        backCardDecoration: BoxDecoration(
-                          color: Colors.indigo.shade400,
-                          borderRadius: BorderRadius.circular(20),
+                        child: Text(
+                          "Card Details",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        resetButtonDecoration: buttondecoration,
-                        nextButtonDecoration: buttondecoration,
-                        nextButtonTextStyle: buttonstyle,
-                        prevButtonDecoration: buttondecoration,
-                        prevButtonTextStyle: buttonstyle,
                       ),
-                    ),
-                    Column(
-                      children: [
-                        Padding(
-                          padding:
-                              EdgeInsets.only(top: 0, left: 10, right: 200),
-                          child: Text(
-                            "Billing Details",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: bGcolor),
-                                  borderRadius: BorderRadius.circular(20)),
-                              padding: EdgeInsets.all(8),
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                    focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide:
-                                            BorderSide(color: Colors.white)),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.white),
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    hintText: 'Name',
-                                    hintStyle: TextStyle(color: Colors.black)),
-                                onChanged: (value) {
-                                  setState(() {
-                                    _billingInfo["name"] = value;
-                                  });
-                                },
-                                keyboardType: TextInputType.text,
-                              )),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: bGcolor),
-                                  borderRadius: BorderRadius.circular(20)),
-                              padding: EdgeInsets.all(8),
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                    focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide:
-                                            BorderSide(color: Colors.white)),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.white),
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    hintText: 'Email',
-                                    hintStyle: TextStyle(color: Colors.black)),
-                                onChanged: (value) {
-                                  setState(() {
-                                    _billingInfo["email"] = value;
-                                  });
-                                },
-                                keyboardType: TextInputType.text,
-                              )),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: bGcolor),
-                                  borderRadius: BorderRadius.circular(20)),
-                              padding: EdgeInsets.all(8),
-                              child: TextFormField(
-                                decoration: InputDecoration(
-                                    focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide:
-                                            BorderSide(color: Colors.white)),
-                                    enabledBorder: OutlineInputBorder(
-                                        borderSide:
-                                            BorderSide(color: Colors.white),
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    hintText: 'phone',
-                                    hintStyle: TextStyle(color: Colors.black)),
-                                onChanged: (value) {
-                                  setState(() {
-                                    _billingInfo["phone"] = value;
-                                  });
-                                },
-                                keyboardType: TextInputType.number,
-                              )),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
+                      SizedBox(
+                        width: 150,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10, top: 30),
+                        child: IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: ((context) => PaymentPage())));
+                            },
+                            icon: Icon(
+                              Icons.close,
+                              color: Colors.black,
+                              size: 30,
+                            )),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    height: 800,
+                    child: Column(
                       children: [
                         Container(
-                          padding: EdgeInsets.only(left: size.width * 0.4),
-                          child: Text(
-                            "save billing details",
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal, fontSize: 20),
+                          child: CreditCardInputForm(
+                            cardHeight: 190,
+                            onStateChange: (inputstate, cardinfo) {
+                              setState(() {
+                                _cardInfo = cardinfo;
+                              });
+                            },
+                            frontCardDecoration: BoxDecoration(
+                              color: Colors.indigo.shade400,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            backCardDecoration: BoxDecoration(
+                              color: Colors.indigo.shade400,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            resetButtonDecoration: buttondecoration,
+                            nextButtonDecoration: buttondecoration,
+                            nextButtonTextStyle: buttonstyle,
+                            prevButtonDecoration: buttondecoration,
+                            prevButtonTextStyle: buttonstyle,
                           ),
                         ),
-                        Checkbox(
-                            activeColor: Colors.indigo.shade400,
-                            checkColor: Colors.white,
-                            value: _check,
-                            onChanged: (value) {
-                              setState(() {
-                                _check = value!;
-                              });
-                            }),
+                        Column(
+                          children: [
+                            Padding(
+                              padding:
+                                  EdgeInsets.only(top: 0, left: 10, right: 200),
+                              child: Text(
+                                "Billing Details",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.grey.shade400),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  padding: EdgeInsets.all(0),
+                                  child: TextFormField(
+                                    decoration: InputDecoration(
+                                        focusedBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            borderSide: BorderSide(
+                                                color: Colors.white)),
+                                        enabledBorder: OutlineInputBorder(
+                                            borderSide:
+                                                BorderSide(color: Colors.white),
+                                            borderRadius:
+                                                BorderRadius.circular(5)),
+                                        hintText: 'Name',
+                                        hintStyle:
+                                            TextStyle(color: Colors.black)),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _billingInfo["name"] = value;
+                                      });
+                                    },
+                                    keyboardType: TextInputType.text,
+                                  )),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(15),
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.grey.shade400),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  padding: EdgeInsets.all(0),
+                                  child: TextFormField(
+                                    decoration: InputDecoration(
+                                        focusedBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            borderSide: BorderSide(
+                                                color: Colors.white)),
+                                        enabledBorder: OutlineInputBorder(
+                                            borderSide:
+                                                BorderSide(color: Colors.white),
+                                            borderRadius:
+                                                BorderRadius.circular(5)),
+                                        hintText: 'Email',
+                                        hintStyle:
+                                            TextStyle(color: Colors.black)),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _billingInfo["email"] = value;
+                                      });
+                                    },
+                                    keyboardType: TextInputType.text,
+                                  )),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(15),
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.grey.shade400),
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: TextFormField(
+                                    decoration: InputDecoration(
+                                        focusedBorder: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(0),
+                                            borderSide: BorderSide(
+                                                color: Colors.white)),
+                                        enabledBorder: OutlineInputBorder(
+                                            borderSide:
+                                                BorderSide(color: Colors.white),
+),
+                                        hintText: 'phone',
+                                        hintStyle:
+                                            TextStyle(color: Colors.black)),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _billingInfo["phone"] = value;
+                                      });
+                                    },
+                                    keyboardType: TextInputType.number,
+                                  )),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.only(left: size.width * 0.4),
+                              child: Text(
+                                "save billing details",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 20),
+                              ),
+                            ),
+                            Checkbox(
+                                activeColor: Colors.indigo.shade400,
+                                checkColor: Colors.white,
+                                value: _check,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _check = value!;
+                                  });
+                                }),
+                          ],
+                        ),
+                        Container(
+                            padding: EdgeInsets.only(bottom: 15),
+                            child: LoadingButton(
+                                onpressed: _stripe_payment, text: "pay"))
                       ],
                     ),
-                    Container(
-                        padding: EdgeInsets.only(bottom: 15),
-                        child: LoadingButton(
-                            onpressed: _stripe_payment, text: "pay"))
-                  ],
-                ),
+                  ),
+                ]),
               ),
             ],
           ),
@@ -299,7 +316,6 @@ class _StripePaymentState extends State<StripePayment>
     final value = customerID;
     pref.setString(key, value).then((value) => print({"saved value": value}));
   }
-
 
   Future _stripe_payment() async {
     setState(() {
