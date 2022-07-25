@@ -193,7 +193,7 @@ class _StripePaymentState extends State<StripePayment>
                                                 BorderRadius.circular(5)),
                                         hintText: 'Name',
                                         hintStyle:
-                                            TextStyle(color: Colors.black)),
+                                            TextStyle(color: Colors.grey.shade400)),
                                     onChanged: (value) {
                                       setState(() {
                                         _billingInfo["name"] = value;
@@ -223,7 +223,7 @@ class _StripePaymentState extends State<StripePayment>
                                                 BorderRadius.circular(5)),
                                         hintText: 'Email',
                                         hintStyle:
-                                            TextStyle(color: Colors.black)),
+                                            TextStyle(color: Colors.grey.shade400)),
                                     onChanged: (value) {
                                       setState(() {
                                         _billingInfo["email"] = value;
@@ -251,7 +251,7 @@ class _StripePaymentState extends State<StripePayment>
 ),
                                         hintText: 'phone',
                                         hintStyle:
-                                            TextStyle(color: Colors.black)),
+                                            TextStyle(color: Colors.grey.shade400)),
                                     onChanged: (value) {
                                       setState(() {
                                         _billingInfo["phone"] = value;
