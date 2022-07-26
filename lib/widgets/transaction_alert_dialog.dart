@@ -5,7 +5,6 @@ import 'package:provider/provider.dart';
 import '../constants.dart';
 import '../providers/Api_provider.dart';
 import '../providers/cart_provider.dart';
-import '../utils/globals.dart';
 import 'custom_button.dart';
 
 class TransactionAlertDalog extends StatelessWidget {
@@ -119,6 +118,7 @@ class TransactionAlertDalog extends StatelessWidget {
                         ),
                         icon: Icon(Icons.playlist_add_check),
                         padding: EdgeInsets.all(15),
+                        duration: Duration(seconds: 3),
                         backgroundColor: Colors.amberAccent.shade700);
                   }
                 },
