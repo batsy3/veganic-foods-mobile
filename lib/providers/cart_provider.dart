@@ -30,15 +30,15 @@ class Cart with ChangeNotifier {
   deletefromcart(index) {
     _cart.removeAt(index);
     notifyListeners();
-    // Get.snackbar('', '',
-    //     messageText: Text('${_cart.elementAt(index).name} removed from the basket'),
-    //     titleText: Text(
-    //       'item  deleted',
-    //       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-    //     ),
-    //     icon: Icon(Icons.remove),
-    //     padding: EdgeInsets.all(15),
-    //     backgroundColor: Colors.amberAccent.shade700);
+    Get.snackbar('', '',
+        messageText: Text('${_cart.elementAt(index).name} removed from the basket'),
+        titleText: Text(
+          'item  deleted',
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        ),
+        icon: Icon(Icons.remove),
+        padding: EdgeInsets.all(15),
+        backgroundColor: Colors.amberAccent.shade700);
   }
 
   addtoCart(Product product) {
@@ -49,27 +49,27 @@ class Cart with ChangeNotifier {
           (element) => element.quantity == product.quantity,
           orElse: null);
       addqt.quantity = addqt.quantity + 1;
-      // Get.snackbar('', '',
-      //     messageText: Text('${product.name} already exists'),
-      //     titleText: Text(
-      //       'oops',
-      //       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-      //     ),
-      //     icon: Icon(Icons.playlist_add_check),
-      //     padding: EdgeInsets.all(15),
-      //     backgroundColor: Colors.amberAccent.shade700);
+      Get.snackbar('', '',
+          messageText: Text('${product.name} already exists'),
+          titleText: Text(
+            'oops',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          ),
+          icon: Icon(Icons.playlist_add_check),
+          padding: EdgeInsets.all(15),
+          backgroundColor: Colors.amberAccent.shade700);
     } else {
       _cart.add(product);
       notifyListeners();
-      // Get.snackbar('', '',
-      //     messageText: Text('${product.name} successfuly added to the basket'),
-      //     titleText: Text(
-      //       'item  added',
-      //       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-      //     ),
-      //     icon: Icon(Icons.playlist_add_check),
-      //     padding: EdgeInsets.all(15),
-      //     backgroundColor: Colors.amberAccent.shade700);
+      Get.snackbar('', '',
+          messageText: Text('${product.name} successfuly added to the basket'),
+          titleText: Text(
+            'item  added',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          ),
+          icon: Icon(Icons.playlist_add_check),
+          padding: EdgeInsets.all(15),
+          backgroundColor: Colors.amberAccent.shade700);
     }
   }
 
