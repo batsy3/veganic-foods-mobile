@@ -1,4 +1,3 @@
-
 import 'package:http/http.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
@@ -59,14 +58,14 @@ class MockGetdata implements ApiProvider {
   }
 
   @override
-  Future makePayment(double amount) {
-    // TODO: implement makePayment
+  Future createCustomer() {
+    // TODO: implement createCustomer
     throw UnimplementedError();
   }
 
   @override
-  Future createCustomer() {
-    // TODO: implement createCustomer
+  Future makePayment(double amount) {
+    // TODO: implement makePayment
     throw UnimplementedError();
   }
 
@@ -109,7 +108,7 @@ void main() {
   });
 
   group('mocking api', () {
-    test('getData Api call', () async {
+    test('Api call to get product Data ', () async {
       when(() => http.getProduct('1')).thenAnswer((_) async => fixture_data[1]);
       expect(await http.getProduct('1'), fixture_data[1]);
       expect(await http.getProduct('1'), isA<Product>());
@@ -119,6 +118,29 @@ void main() {
       when(() => http.gateway('01234567890', cart.total))
           .thenAnswer((_) async => 'successful');
       expect(await http.gateway('01234567890', cart.total), 'successful');
+    });
+
+    test("stripe implementation for returning customer", () async {
+      when(() => http.returningCustomer(430, "customerID", "usd"))
+          .thenAnswer((_) async => {
+                "customer_id": "customerID",
+                "empheral_key": "786576ghdfhbgyuy4534",
+                "client_secret": "sfhbkclient__secret__947943eugiewgjdvbjkxc"
+              });
+      expect(await http.returningCustomer(430, "customerID", "usd"),
+          contains("empheral_key"));
+      verify(() => http.returningCustomer(430, "customerID", "usd"));
+    });
+    test("create stripe customer ", () async {
+      when(() => http.createCustomer()).thenAnswer((_) async => "anId435jgkdj");
+      expect(await http.createCustomer(), isA<String>());
+      verify(() => http.createCustomer());
+    });
+
+    test("making default stripe payment", () async {
+      when(() => http.makePayment(300)).thenAnswer((_) async => "sucessful");
+      expect(await http.makePayment(300), "sucessful");
+      verify(() => http.makePayment(300));
     });
   });
 }
