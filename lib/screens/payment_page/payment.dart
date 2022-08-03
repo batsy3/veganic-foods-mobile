@@ -91,8 +91,7 @@ class _PaymentListState extends State<PaymentList> {
                           height: height * 0.02,
                         ),
                         Container(
-                          padding:
-                              EdgeInsets.only(left: 30, top: height * 0.01),
+                          padding: EdgeInsets.only(left: 30, top: height * 0.01),
                           child: Row(
                             // ignore: prefer_const_literals_to_create_immutables
                             children: [
@@ -203,15 +202,13 @@ class _PaymentListState extends State<PaymentList> {
                                 Text(
                                   '${Provider.of<Cart>(context, listen: false).total.toStringAsFixed(2)}',
                                   style: TextStyle(
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.bold),
+                                      fontSize: 30, fontWeight: FontWeight.bold),
                                 )
                               else
                                 Text(
                                   'k 0.0',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 30),
+                                      fontWeight: FontWeight.bold, fontSize: 30),
                                 )
                             ],
                           ),
