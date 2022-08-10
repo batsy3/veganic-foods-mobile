@@ -75,7 +75,7 @@ class ApiProvider {
     double cart_total,
   ) async {
     var res = await client
-        .post(Uri.parse(_rootUrl),
+        .post(Uri.parse(_rootUrl + "order/"),
             headers: {
               'Content-Type': 'application/json',
               'Accept': 'application/json',

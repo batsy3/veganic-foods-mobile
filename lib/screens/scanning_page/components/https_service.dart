@@ -56,7 +56,13 @@ class _HttppState extends State<Httpp> {
               );
             }
 
-            throw " ";
+            return Center(
+              child: CircularProgressIndicator(
+                strokeWidth: 6,
+                backgroundColor: bGcolor,
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
+              ),
+            );
           }),
     );
   }
