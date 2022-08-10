@@ -46,12 +46,12 @@ class MyApp extends StatelessWidget {
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
             home:LandingPage(),
-            // routes: {
-            //   Routes.home: (context) => LandingPage(),
-            //   Routes.scan: (context) => ScanningPage(),
-            //   Routes.cart: (context) => Basketpage(),
-            //   Routes.payment: (context) => PaymentPage()
-            // },
+            routes: {
+              Routes.home: (context) => LandingPage(),
+              Routes.scan: (context) => ScanningPage(),
+              Routes.cart: (context) => Basketpage(),
+              Routes.payment: (context) => PaymentPage()
+            },
             //  Define routes to other pages
           )),
     );
