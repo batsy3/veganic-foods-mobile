@@ -74,12 +74,16 @@ class _PaymentListState extends State<PaymentList> {
               body: Stack(children: [
                 backgroundbubbles(
                   height: height * 0.19,
-                  name: 'Payment',
+                  name: '',
                 ),
                 Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+                  Padding(
+                    padding: EdgeInsets.only(right: 170, bottom: 20),
+                    child: Text("Payment",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),),
+                  ),
                   Container(
                       width: width.w,
-                      height: height * 0.8,
+                      height: height * 0.7,
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(
@@ -91,8 +95,7 @@ class _PaymentListState extends State<PaymentList> {
                           height: height * 0.02,
                         ),
                         Container(
-                          padding:
-                              EdgeInsets.only(left: 30, top: height * 0.01),
+                          padding: EdgeInsets.only(left: 30, top: height * 0.01),
                           child: Row(
                             // ignore: prefer_const_literals_to_create_immutables
                             children: [
@@ -117,7 +120,7 @@ class _PaymentListState extends State<PaymentList> {
                           ),
                         ),
                         SizedBox(
-                          height: height * 0.03,
+                          height: height * 0.08,
                         ),
                         RadioListTile<Paymentmethod>(
                           contentPadding: EdgeInsets.only(left: 40),
@@ -127,6 +130,7 @@ class _PaymentListState extends State<PaymentList> {
                               setState(() => {_init = value}),
                           activeColor: Colors.deepPurple[500],
                           title: RadiotileCSS(
+                            height: 25,
                             imagestring: 'assets/icons/mbilemoney.png',
                             text: 'Mobile Money',
                           ),
@@ -134,7 +138,7 @@ class _PaymentListState extends State<PaymentList> {
                         ),
                         divider(),
                         SizedBox(
-                          height: height * 0.03,
+                          height: height * 0.05,
                         ),
                         RadioListTile<Paymentmethod>(
                           contentPadding: EdgeInsets.only(left: 40),
@@ -144,50 +148,15 @@ class _PaymentListState extends State<PaymentList> {
                               setState(() => {_init = value}),
                           activeColor: Colors.deepPurple[500],
                           title: RadiotileCSS(
-                            imagestring: 'assets/icons/master-card-icon-4.png',
-                            text: 'Master Card',
+                            height: 40,
+                            imagestring: 'assets/icons/card.webp',
+                            text: 'Card',
                           ),
                           selected: false,
                         ),
                         divider(),
                         SizedBox(
-                          height: height * 0.03,
-                        ),
-                        RadioListTile<Paymentmethod>(
-                          contentPadding: EdgeInsets.only(left: 40),
-                          value: Paymentmethod.visa,
-                          groupValue: _init,
-                          onChanged: (Paymentmethod? value) =>
-                              setState(() => {_init = value}),
-                          activeColor: Colors.deepPurple[500],
-                          title: RadiotileCSS(
-                            imagestring:
-                                'assets/icons/3069706_circle_payment_round icon_visa_icon.png',
-                            text: 'Visa',
-                          ),
-                          selected: false,
-                        ),
-                        divider(),
-                        SizedBox(
-                          height: height * 0.03,
-                        ),
-                        RadioListTile<Paymentmethod>(
-                          contentPadding: EdgeInsets.only(left: 40),
-                          value: Paymentmethod.bank_transfer,
-                          groupValue: _init,
-                          onChanged: (Paymentmethod? value) =>
-                              setState(() => {_init = value}),
-                          activeColor: Colors.deepPurple[500],
-                          title: RadiotileCSS(
-                            imagestring:
-                                'assets/icons/213750_bank_card_checkout_online shopping_payment method_icon.png',
-                            text: 'Bank Transfer',
-                          ),
-                          selected: false,
-                        ),
-                        divider(),
-                        SizedBox(
-                          height: height * 0.02,
+                          height: height * 0.06,
                         ),
                         SizedBox(
                           height: height * 0.06,
@@ -203,15 +172,13 @@ class _PaymentListState extends State<PaymentList> {
                                 Text(
                                   '${Provider.of<Cart>(context, listen: false).total.toStringAsFixed(2)}',
                                   style: TextStyle(
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.bold),
+                                      fontSize: 30, fontWeight: FontWeight.bold),
                                 )
                               else
                                 Text(
                                   'k 0.0',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 30),
+                                      fontWeight: FontWeight.bold, fontSize: 30),
                                 )
                             ],
                           ),

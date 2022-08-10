@@ -3,8 +3,12 @@ import 'package:flutter/material.dart';
 class RadiotileCSS extends StatelessWidget {
   final String text;
   final String imagestring;
+  final Color? color;
+  final double height;
   const RadiotileCSS({
     Key? key,
+    this.color,
+    required this.height,
     required this.text,
     required this.imagestring,
   }) : super(key: key);
@@ -19,7 +23,8 @@ class RadiotileCSS extends StatelessWidget {
           children: [
             Image.asset(
               imagestring,
-              height: 25,
+              color: color,
+              height: height,
             ),
             SizedBox(
               width: size.height * 0.02,
