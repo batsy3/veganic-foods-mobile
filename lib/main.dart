@@ -12,12 +12,13 @@ import 'package:veganic_foods_app/screens/scanning_page/scan.dart';
 import 'package:veganic_foods_app/utils/globals.dart';
 import 'package:veganic_foods_app/utils/routes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:veganic_foods_app/widgets/error_pages.dart';
 
 void main() async {
   Stripe.publishableKey =
       "pk_test_51LKLbhFeefKhDfbbMxla8Vsz0PxaYJ1f2At2vZPJV1Svub7m0g1KgZLGHj60qx6EDdhwKSWrbXLzXBr4c2DFHKmu00bM2oCqsq";
   WidgetsFlutterBinding.ensureInitialized();
-  // ErrorWidget.builder = (details) => Notfound('$details');
+  ErrorWidget.builder = (details) => Notfound('$details');
   runApp(MultiProvider(
     providers: [ChangeNotifierProvider(create: (_) => Cart())],
     child: MyApp(),
@@ -44,15 +45,15 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.blue,
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
-            // home:LandingPage(),
-            home: Details(
-                product_id: 1,
-                name: "name",
-                description: "description",
-                price: 112,
-                quantity: 1,
-                image: "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?cs=srgb&dl=pexels-ella-olsson-1640777.jpg&fm=jpg",
-                category: 1),
+            home:LandingPage(),
+            // home: Details(
+            //     product_id: 1,
+            //     name: "name",
+            //     description: "description",
+            //     price: 112,
+            //     quantity: 1,
+            //     image: "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?cs=srgb&dl=pexels-ella-olsson-1640777.jpg&fm=jpg",
+            //     category: 1),
             routes: {
               Routes.home: (context) => LandingPage(),
               Routes.scan: (context) => ScanningPage(),

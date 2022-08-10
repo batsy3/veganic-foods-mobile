@@ -28,36 +28,24 @@ class _HttppState extends State<Httpp> {
       body: FutureBuilder(
           future: _future,
           builder: (context, AsyncSnapshot<Product> snapshot) {
+            Product? data = snapshot.data;
             if (snapshot.hasData) {
-              Product? data = snapshot.data;
-              switch (snapshot.connectionState) {
-                case ConnectionState.waiting:
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                case ConnectionState.done:
-                  SchedulerBinding.instance!.addPostFrameCallback((_) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Details(
-                                  product_id: data!.product_id,
-                                  category: data.category,
-                                  name: data.name,
-                                  quantity: data.quantity,
-                                  price: data.price,
-                                  description: data.description,
-                                  image: data.image,
-                                )));
-                  });
-                  break;
-                case ConnectionState.none:
-                  return NetworkErrorpage();
-                default:
-                  return Center(
-                    child: Text('error'),
-                  );
-              }
+              SchedulerBinding.instance!.addPostFrameCallback((_) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Details(
+                              product_id: data!.product_id,
+                              category: data.category,
+                              name: data.name,
+                              quantity: data.quantity,
+                              price: data.price,
+                              description: data.description,
+                              image: data.image,
+                            )));
+              });
+            } else if (snapshot.hasError) {
+              return NetworkErrorpage();
             } else {
               return Center(
                 child: CircularProgressIndicator(
@@ -67,21 +55,13 @@ class _HttppState extends State<Httpp> {
                 ),
               );
             }
-            return Center(
-              child: CircularProgressIndicator(
-                strokeWidth: 6,
-                backgroundColor: bGcolor,
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
-              ),
-            );
+
+            throw " ";
           }),
     );
   }
 }
 
-
 dynamic Circle() {
   return CircularProgressIndicator();
 }
-
-
