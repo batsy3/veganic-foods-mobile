@@ -25,54 +25,60 @@ class Background extends StatelessWidget {
               )),
           Positioned(
               top: size.height * 0.19,
-              left:size.width * 0.19,
+              left: size.width * 0.19,
               child: Image.asset(
                 "assets/images/Ellipse_2.png",
                 fit: BoxFit.cover,
               )),
           Positioned(
               top: size.height * 0.0,
-              left:size.width * 0.85,
+              left: size.width * 0.85,
               child: Image.asset(
                 "assets/images/Ellipse_3.png",
                 fit: BoxFit.cover,
               )),
           Positioned(
               top: size.height * 0.8,
-              left:size.width * -0.04,
+              left: size.width * -0.04,
               child: Image.asset(
                 "assets/images/Ellipse_4.png",
                 fit: BoxFit.cover,
               )),
           Positioned(
               top: size.height * 0.5,
-              left:size.width * 0.75,
+              left: size.width * 0.75,
               child: Image.asset(
                 "assets/images/Ellipse_6.png",
                 fit: BoxFit.cover,
               )),
           Positioned(
               top: size.height * 0.8,
-              left:size.width * 0.95,
+              left: size.width * 0.95,
               child: Image.asset(
                 "assets/images/Ellipse_1.png",
                 fit: BoxFit.cover,
               )),
           Positioned(
               top: size.height * 0.15,
-              left: size.width * 0.3,
+              left: size.width * 0.24,
+              height: size.height * 0.23,
               child: Image.asset(
                 "assets/images/app_logo.png",
                 fit: BoxFit.cover,
               )),
           Positioned(
               top: size.height * 0.45,
-              left: size.width * 0.23,
+              left: size.width * 0.15,
+              height: size.height * 0.35,
               child: Image.asset(
                 "assets/images/landing_topping.png",
                 fit: BoxFit.cover,
               )),
-          Positioned(bottom: size.height*0.02, left: size.width*0.1, right: size.width*0.1, child: child),
+          Positioned(
+              bottom: size.height * 0.02,
+              left: size.width * 0.1,
+              right: size.width * 0.1,
+              child: child),
         ],
       ),
     );

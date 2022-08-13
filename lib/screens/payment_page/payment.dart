@@ -79,7 +79,11 @@ class _PaymentListState extends State<PaymentList> {
                 Column(mainAxisAlignment: MainAxisAlignment.end, children: [
                   Padding(
                     padding: EdgeInsets.only(right: 170, bottom: 20),
-                    child: Text("Payment",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),),
+                    child: Text(
+                      "Payment",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                    ),
                   ),
                   Container(
                       width: width.w,
@@ -95,7 +99,8 @@ class _PaymentListState extends State<PaymentList> {
                           height: height * 0.02,
                         ),
                         Container(
-                          padding: EdgeInsets.only(left: 30, top: height * 0.01),
+                          padding:
+                              EdgeInsets.only(left: 30, top: height * 0.01),
                           child: Row(
                             // ignore: prefer_const_literals_to_create_immutables
                             children: [
@@ -172,13 +177,15 @@ class _PaymentListState extends State<PaymentList> {
                                 Text(
                                   '${Provider.of<Cart>(context, listen: false).total.toStringAsFixed(2)}',
                                   style: TextStyle(
-                                      fontSize: 30, fontWeight: FontWeight.bold),
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold),
                                 )
                               else
                                 Text(
                                   'k 0.0',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold, fontSize: 30),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 30),
                                 )
                             ],
                           ),
@@ -275,6 +282,7 @@ class _AcceptDialogState extends State<AcceptDialog> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return AlertDialog(
       shape: ShapeBorder.lerp(
         RoundedRectangleBorder(

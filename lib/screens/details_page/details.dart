@@ -8,19 +8,25 @@ import 'package:veganic_foods_app/screens/details_page/components/product_class.
 import 'package:veganic_foods_app/utils/routes.dart';
 import 'package:veganic_foods_app/widgets/bottom_nav_bar.dart';
 import 'package:veganic_foods_app/widgets/custom_button.dart';
+
 // ignore: must_be_immutable
 class Details extends StatefulWidget {
-  final int product_id;
-  final String name;
-  final String description;
+  
+  int product_id;
+  String name;
+  String description;
   double price;
+  List<String>ingredient_images;
+  List<dynamic> additions;
   int quantity;
-  final String image;
-  final int category;
+  String image;
+  dynamic category;
   Details({
     Key? key,
     // ignore: non_constant_identifier_names
     required this.product_id,
+    required this.additions,
+    required this.ingredient_images,
     required this.name,
     required this.description,
     required this.price,
@@ -37,6 +43,8 @@ class _DetailsState extends State<Details> {
   late Product prod;
   late double price;
   late int _count;
+  late List additions_choices;
+  late List<String> ingredient_images;
   late List<DropdownMenuItem<dynamic>> additions;
   late String _selectedAddition;
   @override
@@ -49,7 +57,9 @@ class _DetailsState extends State<Details> {
         price: widget.price,
         quantity: widget.quantity,
         image: widget.image,
-        category: widget.category);
+        ingredient_images: ingredient_images,
+        category: widget.category,
+        additions: widget.additions);
     price = prod.price;
     _count = 1;
     additions = [
@@ -59,23 +69,23 @@ class _DetailsState extends State<Details> {
       ),
       DropdownMenuItem(
         child: Text('Add 1'),
-        value: 'Add 1',
+        value: prod.additions[0] | null,
       ),
       DropdownMenuItem(
         child: Text('Add 2'),
-        value: 'Add 2',
+        value: prod.additions[1] | null,
       ),
       DropdownMenuItem(
         child: Text('Add 3'),
-        value: 'Add 3',
+        value: prod.additions[2] | null,
       ),
       DropdownMenuItem(
         child: Text('Add 4'),
-        value: 'Add 4',
+        value: prod.additions[3] | null,
       ),
       DropdownMenuItem(
         child: Text('Add 5'),
-        value: 'Add 5',
+        value: prod.additions[4] | null,
       ),
     ];
     _selectedAddition = additions[0].value;
@@ -97,21 +107,21 @@ class _DetailsState extends State<Details> {
             SafeArea(
               top: false,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   SizedBox(height: size.height * 0.24),
                   Container(
                     width: size.width,
-                    height: size.height * 0.67,
+                    height: size.height * 0.53,
                     decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(40),
                             topRight: Radius.circular(40))),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Container(
-                          padding: const EdgeInsets.only(top: 20, left: 20),
+                          padding: const EdgeInsets.only(top: 30, left: 30),
                           child: Row(
                             children: [
                               IconButton(
@@ -121,15 +131,18 @@ class _DetailsState extends State<Details> {
                                 },
                               ),
                               SizedBox(
-                                width: size.width * 0.46,
+                                width: size.width * 0.52,
                               ),
                               Text(
                                 'K ${widget.price}',
                                 style: TextStyle(
-                                    fontSize: 35, fontWeight: FontWeight.bold),
+                                    fontSize: 45, fontWeight: FontWeight.bold),
                               )
                             ],
                           ),
+                        ),
+                        SizedBox(
+                          height: 25,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -142,7 +155,7 @@ class _DetailsState extends State<Details> {
                                     'Description',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 20),
+                                        fontSize: 25),
                                   ),
                                 ],
                               ),
@@ -155,7 +168,7 @@ class _DetailsState extends State<Details> {
                               child: Text(
                                 ' Nutritional value',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 15),
+                                    fontWeight: FontWeight.bold, fontSize: 25),
                               ),
                             )),
                           ],
@@ -251,7 +264,9 @@ class _DetailsState extends State<Details> {
                                   ],
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(40))),
-                              child: ingredient_images(),
+                              child: ingredients(
+                                images: prod.ingredient_images,
+                              ),
                             ),
                           ],
                         ),
@@ -403,7 +418,7 @@ class _DetailsState extends State<Details> {
               ),
             ),
             Align(
-              alignment: const Alignment(-0.6, -0.5),
+              alignment: const Alignment(-0.5, -0.2),
               child: Container(
                   decoration: const BoxDecoration(
                       boxShadow: [
@@ -429,12 +444,11 @@ class _DetailsState extends State<Details> {
   }
 }
 
-List images = [];
-
-// ignore: camel_case_types
-class ingredient_images extends StatelessWidget {
-  const ingredient_images({
+class ingredients extends StatelessWidget {
+  final List images;
+  const ingredients({
     Key? key,
+    required this.images,
   }) : super(key: key);
 
   @override
@@ -462,3 +476,6 @@ class ingredient_images extends StatelessWidget {
     );
   }
 }
+
+
+// ignore: camel_case_types
