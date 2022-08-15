@@ -7,9 +7,9 @@ class Product {
   String description;
   double price;
   List<dynamic> additions;
+  List<String> ingredient_images;
   int quantity;
   String image;
-  List<String> ingredient_images;
   dynamic category;
 
   // ignore: non_constant_identifier_names

@@ -42,6 +42,8 @@ class _HttppState extends State<Httpp> {
                               price: data.price,
                               description: data.description,
                               image: data.image,
+                              additions: data.additions,
+                              ingredient_images: data.ingredient_images
                             )));
               });
             } else if (snapshot.hasError) {

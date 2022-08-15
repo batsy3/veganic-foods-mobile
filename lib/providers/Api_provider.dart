@@ -9,7 +9,7 @@ import '../widgets/network_error_page.dart';
 class ApiProvider {
   var id = ShortUuid().generate();
 
-  String _rootUrl = "http://81.28.6.163:8007/api/";
+  String _rootUrl = "http://192.168.100.15:8007/api/";
   Client client = Client();
 
   Future returningCustomer(

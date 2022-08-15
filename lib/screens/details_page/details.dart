@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:veganic_foods_app/constants.dart';
 import 'package:veganic_foods_app/providers/cart_provider.dart';
@@ -11,13 +12,12 @@ import 'package:veganic_foods_app/widgets/custom_button.dart';
 
 // ignore: must_be_immutable
 class Details extends StatefulWidget {
-  
   int product_id;
   String name;
   String description;
   double price;
-  List<String>ingredient_images;
   List<dynamic> additions;
+  List<String> ingredient_images;
   int quantity;
   String image;
   dynamic category;
@@ -44,7 +44,6 @@ class _DetailsState extends State<Details> {
   late double price;
   late int _count;
   late List additions_choices;
-  late List<String> ingredient_images;
   late List<DropdownMenuItem<dynamic>> additions;
   late String _selectedAddition;
   @override
@@ -57,10 +56,11 @@ class _DetailsState extends State<Details> {
         price: widget.price,
         quantity: widget.quantity,
         image: widget.image,
-        ingredient_images: ingredient_images,
+        ingredient_images: widget.ingredient_images,
         category: widget.category,
         additions: widget.additions);
     price = prod.price;
+    print(prod.ingredient_images);
     _count = 1;
     additions = [
       DropdownMenuItem(
@@ -68,24 +68,20 @@ class _DetailsState extends State<Details> {
         value: 'Select',
       ),
       DropdownMenuItem(
-        child: Text('Add 1'),
-        value: prod.additions[0] | null,
+        child: Text('${prod.additions[0].toString()}'),
+        value: prod.additions[0],
       ),
       DropdownMenuItem(
-        child: Text('Add 2'),
-        value: prod.additions[1] | null,
+        child: Text('${prod.additions[1].toString()}'),
+        value: prod.additions[1],
       ),
       DropdownMenuItem(
-        child: Text('Add 3'),
-        value: prod.additions[2] | null,
+        child: Text('${prod.additions[2].toString()}'),
+        value: prod.additions[2],
       ),
       DropdownMenuItem(
-        child: Text('Add 4'),
-        value: prod.additions[3] | null,
-      ),
-      DropdownMenuItem(
-        child: Text('Add 5'),
-        value: prod.additions[4] | null,
+        child: Text('${prod.additions[0].toString()}'),
+        value: prod.additions[3],
       ),
     ];
     _selectedAddition = additions[0].value;
@@ -109,10 +105,10 @@ class _DetailsState extends State<Details> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  SizedBox(height: size.height * 0.24),
+                  SizedBox(height: size.height * 0.2),
                   Container(
                     width: size.width,
-                    height: size.height * 0.53,
+                    height: size.height * 0.7,
                     decoration: const BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
@@ -131,7 +127,7 @@ class _DetailsState extends State<Details> {
                                 },
                               ),
                               SizedBox(
-                                width: size.width * 0.52,
+                                width: size.width * 0.4,
                               ),
                               Text(
                                 'K ${widget.price}',
@@ -316,7 +312,7 @@ class _DetailsState extends State<Details> {
                               children: [
                                 Container(
                                   padding:
-                                      EdgeInsets.only(left: size.width * 0.07),
+                                      EdgeInsets.only(left: size.width * 0.09),
                                   child: Text(
                                     'K ${price}',
                                     style: const TextStyle(
@@ -418,7 +414,7 @@ class _DetailsState extends State<Details> {
               ),
             ),
             Align(
-              alignment: const Alignment(-0.5, -0.2),
+              alignment: const Alignment(-0.5, -0.6),
               child: Container(
                   decoration: const BoxDecoration(
                       boxShadow: [
@@ -445,7 +441,7 @@ class _DetailsState extends State<Details> {
 }
 
 class ingredients extends StatelessWidget {
-  final List images;
+  final List<dynamic> images;
   const ingredients({
     Key? key,
     required this.images,
@@ -457,21 +453,19 @@ class ingredients extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       itemCount: images.length,
       itemBuilder: (BuildContext context, int index) {
-        return ListBody(children: [
-          Row(
-            children: [
-              Image.asset(
-                images.elementAt(index),
-                height: 90,
-                fit: BoxFit.fitHeight,
-              ),
-              const VerticalDivider(
-                width: 8,
-                thickness: 0,
-              )
-            ],
+        return Container(
+          height: 70,
+          width: 80,
+          child: ListTile(
+            style:ListTileStyle.list,
+            contentPadding: EdgeInsets.all(5),
+            title: Image.network(
+              images[0],
+              alignment: Alignment.center,
+              fit: BoxFit.cover,
+            ),
           ),
-        ]);
+        );
       },
     );
   }
