@@ -16,15 +16,19 @@ class Details extends StatefulWidget {
   String name;
   String description;
   double price;
+  Map nutritionalValue;
   List<dynamic> additions;
   List<String> ingredient_images;
+  String calories;
   int quantity;
   String image;
   dynamic category;
   Details({
     Key? key,
     // ignore: non_constant_identifier_names
+    required this.nutritionalValue,
     required this.product_id,
+    required this.calories,
     required this.additions,
     required this.ingredient_images,
     required this.name,
@@ -58,9 +62,10 @@ class _DetailsState extends State<Details> {
         image: widget.image,
         ingredient_images: widget.ingredient_images,
         category: widget.category,
-        additions: widget.additions);
+        calories:widget.calories,
+        additions: widget.additions,
+        nutritionalValue: widget.nutritionalValue);
     price = prod.price;
-    print(prod.ingredient_images);
     _count = 1;
     additions = [
       DropdownMenuItem(
@@ -80,7 +85,7 @@ class _DetailsState extends State<Details> {
         value: prod.additions[2],
       ),
       DropdownMenuItem(
-        child: Text('${prod.additions[0].toString()}'),
+        child: Text('${prod.additions[3].toString()}'),
         value: prod.additions[3],
       ),
     ];
@@ -197,10 +202,16 @@ class _DetailsState extends State<Details> {
                               child: Center(
                                   child: Column(
                                 children: [
-                                  const Text(
-                                    '',
-                                    textWidthBasis: TextWidthBasis.parent,
-                                  ),
+                                  ListView.builder(itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Container(
+                                      height: 70,
+                                      child: ListTile(
+                                        leading: Text('${prod.nutritionalValue.keys}', style: TextStyle(),),
+                                        trailing: Text('${prod.nutritionalValue.values}', style: TextStyle(fontWeight: FontWeight.bold),),
+                                      ),
+                                    );
+                                  })
                                 ],
                               )),
                             ))
@@ -216,11 +227,15 @@ class _DetailsState extends State<Details> {
                             padding: const EdgeInsets.only(left: 220),
                             child: Row(
                               children: [
-                                Icon(Icons.check),
+                                Image.asset(
+                                  "assets/icons/fire.png",
+                                  height: 20,
+                                  width: 20,
+                                ),
                                 SizedBox(
                                   width: size.width * 0.02,
                                 ),
-                                Text('15 cals'),
+                                Text('${prod.calories}'),
                                 SizedBox(
                                   width: 30,
                                 ),
@@ -457,7 +472,7 @@ class ingredients extends StatelessWidget {
           height: 70,
           width: 80,
           child: ListTile(
-            style:ListTileStyle.list,
+            style: ListTileStyle.list,
             contentPadding: EdgeInsets.all(5),
             title: Image.network(
               images[0],

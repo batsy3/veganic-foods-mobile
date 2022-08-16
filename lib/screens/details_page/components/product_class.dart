@@ -6,6 +6,8 @@ class Product {
   String name;
   String description;
   double price;
+  Map nutritionalValue;
+  String calories;
   List<dynamic> additions;
   List<String> ingredient_images;
   int quantity;
@@ -16,12 +18,14 @@ class Product {
   Product(
       // ignore: non_constant_identifier_names
       {required this.name,
+      required this.calories,
       required this.product_id,
       required this.description,
       required this.price,
       required this.additions,
       required this.quantity,
       required this.image,
+      required this.nutritionalValue,
       required this.ingredient_images,
       required this.category});
   Product.fromJson(Map<String, dynamic> json)
@@ -33,6 +37,8 @@ class Product {
         additions = json['additions'],
         image = json['image'] as String,
         category = json['category']['id'],
+        nutritionalValue = json['nutrients']["nutrients"],
+        calories = json["nutrients"]["calories"],
         ingredient_images = [
           json['ingredient_images']['food_ingredient_image_1'],
           json['ingredient_images']['food_ingredient_image_2'],

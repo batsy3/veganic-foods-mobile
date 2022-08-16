@@ -43,7 +43,9 @@ class _HttppState extends State<Httpp> {
                               description: data.description,
                               image: data.image,
                               additions: data.additions,
-                              ingredient_images: data.ingredient_images
+                              ingredient_images: data.ingredient_images,
+                              nutritionalValue: data.nutritionalValue,
+                              calories: data.calories,
                             )));
               });
             } else if (snapshot.hasError) {
