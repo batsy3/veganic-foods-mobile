@@ -45,25 +45,34 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.blue,
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
-            home:LandingPage(),
-            // home: Details(
-            //   additions: ['rice', 'beans', 'potatos', 'others'],
-            //   category: {'id': 1},
-            //   description: '',
-            //   ingredient_images: [
-            //     "https://png.pngtree.com/png-clipart/20210411/ourmid/pngtree-herbal-ingredients-transparent-image-png-image_3206949.jpg",
-            //     "https://png.pngtree.com/png-clipart/20210411/ourmid/pngtree-herbal-ingredients-transparent-image-png-image_3206949.jpg",
-            //     "https://png.pngtree.com/png-clipart/20210411/ourmid/pngtree-herbal-ingredients-transparent-image-png-image_3206949.jpg",
-            //     "https://png.pngtree.com/png-clipart/20210411/ourmid/pngtree-herbal-ingredients-transparent-image-png-image_3206949.jpg",
-            //     "https://png.pngtree.com/png-clipart/20210411/ourmid/pngtree-herbal-ingredients-transparent-image-png-image_3206949.jpg",
-            //   ],
-            //   image:
-            //       "https://media.istockphoto.com/photos/fried-pork-and-vegetables-on-white-background-picture-id1190330112?k=20&m=1190330112&s=612x612&w=0&h=_TrmthJupdqYmMU-NC-es85TEvaBJsynDS383hqiAvM=",
-            //   name: 'chopsss',
-            //   price: 40.0,
-            //   product_id: 1,
-            //   quantity: 1, nutritionalValue: [{'aids': '44kb'}],
-            // ),
+            // home:LandingPage(),
+            home: Details(
+              additions: ['rice', 'beans', 'potatos', 'others'],
+              category: {'id': 1},
+              description:
+                  'orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry',
+              ingredient_images: [
+                "https://png.pngtree.com/png-clipart/20210411/ourmid/pngtree-herbal-ingredients-transparent-image-png-image_3206949.jpg",
+                "https://png.pngtree.com/png-clipart/20210411/ourmid/pngtree-herbal-ingredients-transparent-image-png-image_3206949.jpg",
+                "https://png.pngtree.com/png-clipart/20210411/ourmid/pngtree-herbal-ingredients-transparent-image-png-image_3206949.jpg",
+                "https://png.pngtree.com/png-clipart/20210411/ourmid/pngtree-herbal-ingredients-transparent-image-png-image_3206949.jpg",
+                "https://png.pngtree.com/png-clipart/20210411/ourmid/pngtree-herbal-ingredients-transparent-image-png-image_3206949.jpg",
+              ],
+              image:
+                  "https://media.istockphoto.com/photos/fried-pork-and-vegetables-on-white-background-picture-id1190330112?k=20&m=1190330112&s=612x612&w=0&h=_TrmthJupdqYmMU-NC-es85TEvaBJsynDS383hqiAvM=",
+              name: 'chopsss',
+              price: 40.0,
+              product_id: 1,
+              quantity: 1,
+              nutritionalValue: 
+                {
+                  'aids': '44kb',
+                  'more': '44kb',
+                  'toreing': '44kb',
+                  'foreing': '44kb',
+                },
+              calories: '500',
+            ),
             routes: {
               Routes.home: (context) => LandingPage(),
               Routes.scan: (context) => ScanningPage(),

@@ -29,14 +29,14 @@ class PagesBackground extends StatelessWidget {
             top:size.height*0.11,
             right: null,
             bottom: null,
-            child: Text('Hi User', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+            child: Text('Hey!!', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),),
           ),
            Positioned(
             left:size.width*0.19,
             top: size.height*0.13,
             right: null,
             bottom: null,
-            child: Text('What would like to order today?', style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal)),
+            child: Text('What would like to order today?', style: TextStyle(fontSize: 15, fontWeight: FontWeight.normal)),
           ),
           Positioned(
               top: size.height*0.07,

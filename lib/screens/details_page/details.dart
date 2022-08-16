@@ -62,7 +62,7 @@ class _DetailsState extends State<Details> {
         image: widget.image,
         ingredient_images: widget.ingredient_images,
         category: widget.category,
-        calories:widget.calories,
+        calories: widget.calories,
         additions: widget.additions,
         nutritionalValue: widget.nutritionalValue);
     price = prod.price;
@@ -143,108 +143,220 @@ class _DetailsState extends State<Details> {
                           ),
                         ),
                         SizedBox(
-                          height: 25,
+                          height: 10,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                                child: Center(
-                              child: Column(
-                                children: [
-                                  Text(
-                                    'Description',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 25),
-                                  ),
-                                ],
-                              ),
-                            )),
-                            const VerticalDivider(
-                              width: 1,
-                            ),
-                            Expanded(
-                                child: const Center(
-                              child: Text(
-                                ' Nutritional value',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 25),
-                              ),
-                            )),
-                          ],
-                        ),
-                        const Divider(
-                          indent: 220,
-                          endIndent: 20,
-                          thickness: 1,
-                          color: Colors.black,
-                        ),
-                        Row(
-                          children: [
+                        Container(
+                          padding: EdgeInsets.all(8),
+                          child: Row(children: [
                             Expanded(
                               flex: 1,
                               child: Container(
-                                padding: const EdgeInsets.only(
-                                    left: 50, right: 10, top: 0, bottom: 40),
-                                child: Text(
-                                  widget.description,
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 50),
+                                      child: Text(
+                                        "Description",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 25, bottom: 20),
+                                      child: Text(
+                                        "${prod.description}",
+                                        textWidthBasis: TextWidthBasis.parent,
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
                             ),
-                            const VerticalDivider(
-                              width: 1.0,
-                            ),
                             Expanded(
-                                child: Container(
-                              padding:
-                                  const EdgeInsets.only(left: 30, right: 10),
-                              child: Center(
-                                  child: Column(
+                              flex: 1,
+                              child: Column(
                                 children: [
-                                  ListView.builder(itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return Container(
-                                      height: 70,
-                                      child: ListTile(
-                                        leading: Text('${prod.nutritionalValue.keys}', style: TextStyle(),),
-                                        trailing: Text('${prod.nutritionalValue.values}', style: TextStyle(fontWeight: FontWeight.bold),),
-                                      ),
-                                    );
-                                  })
+                                  Text(
+                                    "Nutritional Value",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
+                                   Divider(
+                                    indent: 10,
+                                    endIndent: 10,
+                                    thickness: 1,
+                                    color: Colors.black,
+                                  ),
+                                  
+                                  Container(
+                                    padding: EdgeInsets.only(left: 20),
+                                    height: 75,
+                                    child: ListView.builder(
+                                      
+                                      padding: EdgeInsets.zero,
+                                        itemCount:
+                                            prod.nutritionalValue.length,
+                                        itemBuilder: (context, index) {
+                                          return Row(
+                                            children: [
+                                            Expanded(
+                                              flex: 1,
+                                              child: Text(
+                                                  '${prod.nutritionalValue.keys.toList().elementAt(index).toString()}'),
+                                            ),
+                                            SizedBox(
+                                              width: 35,
+                                            ),
+                                           Expanded(
+                                            flex: 1,
+                                             child: Text(
+                                                  '${prod.nutritionalValue.values.toList().elementAt(index).toString()}', style: TextStyle(fontWeight: FontWeight.bold),),
+                                           ),
+
+                                            ],
+                                          );
+                                        }),
+                                  ),
+                                  const Divider(
+                                    indent: 10,
+                                    endIndent: 10,
+                                    thickness: 1,
+                                    color: Colors.black,
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(),
+                                    child: Row(
+                                      children: [
+                                        Image.asset(
+                                          "assets/icons/fireemo.jpg",
+                                          height: 20,
+                                        ),
+                                        Text('${prod.calories} cals'),
+                                        SizedBox(
+                                          width: 25,
+                                        ),
+                                        Text('*daily value')
+                                      ],
+                                    ),
+                                  )
                                 ],
-                              )),
-                            ))
-                          ],
-                        ),
-                        const Divider(
-                          indent: 220,
-                          endIndent: 20,
-                          thickness: 1,
-                          color: Colors.black,
-                        ),
-                        Container(
-                            padding: const EdgeInsets.only(left: 220),
-                            child: Row(
-                              children: [
-                                Image.asset(
-                                  "assets/icons/fire.png",
-                                  height: 20,
-                                  width: 20,
-                                ),
-                                SizedBox(
-                                  width: size.width * 0.02,
-                                ),
-                                Text('${prod.calories}'),
-                                SizedBox(
-                                  width: 30,
-                                ),
-                                Text(
-                                  '*daily value',
-                                  style: TextStyle(fontSize: 10),
-                                )
-                              ],
-                            )),
+                              ),
+                            ),
+                          ]),
+                        )
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: [
+                        //     Expanded(
+                        //         child: Center(
+                        //       child: Column(
+                        //         children: [
+                        //           Text(
+                        //             'Description',
+                        //             style: TextStyle(
+                        //                 fontWeight: FontWeight.bold,
+                        //                 fontSize: 25),
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     )),
+                        //     const VerticalDivider(
+                        //       width: 1,
+                        //     ),
+                        //     Expanded(
+                        //         child: const Center(
+                        //       child: Text(
+                        //         ' Nutritional value',
+                        //         style: TextStyle(
+                        //             fontWeight: FontWeight.bold, fontSize: 25),
+                        //       ),
+                        //     )),
+                        //   ],
+                        // ),
+                        // const Divider(
+                        //   indent: 220,
+                        //   endIndent: 20,
+                        //   thickness: 1,
+                        //   color: Colors.black,
+                        // ),
+                        // Row(
+                        //   children: [
+                        //     Expanded(
+                        //       flex: 1,
+                        //       child: Container(
+                        //         height: 75,
+                        //         padding:
+                        //             const EdgeInsets.only(left: 50, top: 0),
+                        //         child: Text(
+                        //           widget.description,
+                        //         ),
+                        //       ),
+                        //     ),
+                        //     const VerticalDivider(
+                        //       width: 1.0,
+                        //     ),
+                        //     Expanded(
+                        //       flex: 1,
+                        //         child: Container(
+                        //           color: Colors.pink,
+                        //       height: 75,
+                        //       padding:
+                        //           const EdgeInsets.all(5),
+                        //       child: ListView.builder(
+                        //         padding: EdgeInsets.only(right: 20),
+                        //         itemBuilder:
+                        //           (BuildContext context, int index) {
+                        //         return ListTile(
+                        //           leading:
+                        //               Text(
+                        //                 '${prod.nutritionalValue.keys.toList().elementAt(index)}',
+                        //                 style: TextStyle(fontSize: 15),
+                        //               ),
+                        //              trailing: Text(
+                        //                 '${prod.nutritionalValue.values.toList()[index]}',
+                        //                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                        //               ),
+
+                        //         );
+                        //       }),
+                        //     ))
+                        //   ],
+                        // ),
+                        // const Divider(
+                        //   indent: 220,
+                        //   endIndent: 20,
+                        //   thickness: 1,
+                        //   color: Colors.black,
+                        // ),
+                        // Container(
+                        //     padding: const EdgeInsets.only(left: 220),
+                        //     child: Row(
+                        //       children: [
+                        //         Image.asset(
+                        //           "assets/icons/fire.png",
+                        //           height: 20,
+                        //           width: 20,
+                        //         ),
+                        //         SizedBox(
+                        //           width: size.width * 0.02,
+                        //         ),
+                        //         Text('${prod.calories}'),
+                        //         SizedBox(
+                        //           width: 30,
+                        //         ),
+                        //         Text(
+                        //           '*daily value',
+                        //           style: TextStyle(fontSize: 10),
+                        //         )
+                        //       ],
+                        //     )),
+                        ,
                         SizedBox(
                           height: size.height * 0.01,
                         ),
@@ -485,6 +597,5 @@ class ingredients extends StatelessWidget {
     );
   }
 }
-
 
 // ignore: camel_case_types
