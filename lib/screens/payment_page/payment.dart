@@ -72,18 +72,21 @@ class _PaymentListState extends State<PaymentList> {
               backgroundColor: bGcolor,
               bottomNavigationBar: Bottombar(),
               body: Stack(children: [
-                backgroundbubbles(
-                  height: height * 0.19,
-                  name: '',
-                ),
+                Positioned(child: Image.asset('assets/images/picart.png', height: 500,),
+                top: height * 0.03,
+                left: width * 0.15,),
                 Column(mainAxisAlignment: MainAxisAlignment.end, children: [
                   Padding(
-                    padding: EdgeInsets.only(right: 170, bottom: 20),
-                    child: Text("Payment",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),),
+                    padding: EdgeInsets.only(right: 190, bottom: 20),
+                    child: Text(
+                      "Payment",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                    ),
                   ),
                   Container(
                       width: width.w,
-                      height: height * 0.7,
+                      height: height * 0.6,
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(
@@ -95,7 +98,8 @@ class _PaymentListState extends State<PaymentList> {
                           height: height * 0.02,
                         ),
                         Container(
-                          padding: EdgeInsets.only(left: 30, top: height * 0.01),
+                          padding:
+                              EdgeInsets.only(left: 30, top: height * 0.01),
                           child: Row(
                             // ignore: prefer_const_literals_to_create_immutables
                             children: [
@@ -156,7 +160,7 @@ class _PaymentListState extends State<PaymentList> {
                         ),
                         divider(),
                         SizedBox(
-                          height: height * 0.06,
+                          height: height * 0.03,
                         ),
                         SizedBox(
                           height: height * 0.06,
@@ -172,13 +176,15 @@ class _PaymentListState extends State<PaymentList> {
                                 Text(
                                   '${Provider.of<Cart>(context, listen: false).total.toStringAsFixed(2)}',
                                   style: TextStyle(
-                                      fontSize: 30, fontWeight: FontWeight.bold),
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold),
                                 )
                               else
                                 Text(
                                   'k 0.0',
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold, fontSize: 30),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 30),
                                 )
                             ],
                           ),
@@ -195,7 +201,7 @@ class _PaymentListState extends State<PaymentList> {
                           textColor: Colors.white,
                           bgColor: Colors.black,
                           onTap: () {
-                            if (context.read<Cart>().carttotal() == 0.0) {
+                            if (context.read<Cart>().carttotal() != 0.0) {
                               Get.snackbar(
                                 'opps',
                                 'please add items to cart',
@@ -275,6 +281,7 @@ class _AcceptDialogState extends State<AcceptDialog> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return AlertDialog(
       shape: ShapeBorder.lerp(
         RoundedRectangleBorder(

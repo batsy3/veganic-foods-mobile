@@ -12,12 +12,13 @@ import 'package:veganic_foods_app/screens/scanning_page/scan.dart';
 import 'package:veganic_foods_app/utils/globals.dart';
 import 'package:veganic_foods_app/utils/routes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:veganic_foods_app/widgets/error_pages.dart';
 
 void main() async {
   Stripe.publishableKey =
       "pk_test_51LKLbhFeefKhDfbbMxla8Vsz0PxaYJ1f2At2vZPJV1Svub7m0g1KgZLGHj60qx6EDdhwKSWrbXLzXBr4c2DFHKmu00bM2oCqsq";
   WidgetsFlutterBinding.ensureInitialized();
-  // ErrorWidget.builder = (details) => Notfound('$details');
+  ErrorWidget.builder = (details) => Notfound('$details');
   runApp(MultiProvider(
     providers: [ChangeNotifierProvider(create: (_) => Cart())],
     child: MyApp(),
@@ -44,15 +45,37 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.blue,
               visualDensity: VisualDensity.adaptivePlatformDensity,
             ),
-            // home:LandingPage(),
-            home: Details(
-                product_id: 1,
-                name: "name",
-                description: "description",
-                price: 112,
-                quantity: 1,
-                image: "https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?cs=srgb&dl=pexels-ella-olsson-1640777.jpg&fm=jpg",
-                category: 1),
+            home:LandingPage(),
+            // home: Details(
+            //   additions: ['rice', 'beans', 'potatos', 'others'],
+            //   category: {'id': 1},
+            //   description:
+            //       'orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry',
+            //   ingredient_images: [
+            //     "https://png.pngtree.com/png-clipart/20210411/ourmid/pngtree-herbal-ingredients-transparent-image-png-image_3206949.jpg",
+            //     "https://png.pngtree.com/png-clipart/20210411/ourmid/pngtree-herbal-ingredients-transparent-image-png-image_3206949.jpg",
+            //     "https://png.pngtree.com/png-clipart/20210411/ourmid/pngtree-herbal-ingredients-transparent-image-png-image_3206949.jpg",
+            //     "https://png.pngtree.com/png-clipart/20210411/ourmid/pngtree-herbal-ingredients-transparent-image-png-image_3206949.jpg",
+            //     "https://png.pngtree.com/png-clipart/20210411/ourmid/pngtree-herbal-ingredients-transparent-image-png-image_3206949.jpg",
+            //   ],
+            //   image:
+            //       "https://media.istockphoto.com/photos/fried-pork-and-vegetables-on-white-background-picture-id1190330112?k=20&m=1190330112&s=612x612&w=0&h=_TrmthJupdqYmMU-NC-es85TEvaBJsynDS383hqiAvM=",
+            //   name: 'chopsss',
+            //   price: 40.0,
+            //   product_id: 1,
+            //   quantity: 1,
+            //   nutritionalValue: 
+            //     {
+            //       'aids': '44kb',
+            //       'more': '44kb',
+            //       'toreing': '44kb',
+            //       'foreing': '44kb',
+            //       'others': '44kb',
+            //       'foolins': '44kb',
+            //       'how many': '44kb',
+            //     },
+            //   calories: '500',
+            // ),
             routes: {
               Routes.home: (context) => LandingPage(),
               Routes.scan: (context) => ScanningPage(),
