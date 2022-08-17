@@ -20,7 +20,7 @@ class ApiProvider {
       "currency": currency
     };
     var res = await client.post(
-        Uri.parse(_rootUrl + "stripe/returning_customer/"),
+        Uri.parse(_rootUrl + "order/stripe/returning_customer/"),
         headers: {
           "Accept": "application/json",
           "Content-Type": "application/json"
@@ -32,7 +32,7 @@ class ApiProvider {
 
   Future createCustomer() async {
     var customer_id = await client
-        .post(Uri.parse(_rootUrl + "stripe/create_customer/"), headers: {
+        .post(Uri.parse(_rootUrl + "order/stripe/create_customer/"), headers: {
       "Accept": "application/json",
       "Content-Type": "application/json"
     });
@@ -47,7 +47,7 @@ class ApiProvider {
     });
 
     try {
-      var intentResponse = await client.post(Uri.parse(_rootUrl + "stripe/"),
+      var intentResponse = await client.post(Uri.parse(_rootUrl + "order/stripe/"),
           body: body,
           headers: {
             "Accept": "application/json",
@@ -75,7 +75,7 @@ class ApiProvider {
     double cart_total,
   ) async {
     var res = await client
-        .post(Uri.parse(_rootUrl),
+        .post(Uri.parse(_rootUrl + "order/"),
             headers: {
               'Content-Type': 'application/json',
               'Accept': 'application/json',

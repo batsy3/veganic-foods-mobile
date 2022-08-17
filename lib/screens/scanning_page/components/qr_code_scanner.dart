@@ -50,7 +50,7 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
                 children: [
                   Container(
                     width: size.width,
-                    height: size.height *0.678,
+                    height: size.height * 0.678,
                     // padding:  EdgeInsets.symmetric(vertical: 0.h),
                     decoration:  BoxDecoration(
                         color: Colors.white,
