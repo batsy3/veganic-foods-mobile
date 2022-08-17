@@ -86,7 +86,7 @@ class _StripePaymentState extends State<StripePayment>
           child: Column(
             children: [
               SizedBox(
-                height: 50,
+                height: size.height * 0.2,
               ),
               Container(
                 decoration: BoxDecoration(
@@ -106,7 +106,7 @@ class _StripePaymentState extends State<StripePayment>
                         child: Text(
                           "Card Details",
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                              fontSize: 25, fontWeight: FontWeight.bold),
                         ),
                       ),
                       SizedBox(
@@ -124,13 +124,13 @@ class _StripePaymentState extends State<StripePayment>
                             icon: Icon(
                               Icons.close,
                               color: Colors.black,
-                              size: 30,
+                              size: 35,
                             )),
                       ),
                     ],
                   ),
                   SizedBox(
-                    height: 20,
+                    height: size.height * 0.02,
                   ),
                   Container(
                     height: 800,
@@ -138,7 +138,7 @@ class _StripePaymentState extends State<StripePayment>
                       children: [
                         Container(
                           child: CreditCardInputForm(
-                            cardHeight: 190,
+                            cardHeight: 250,
                             onStateChange: (inputstate, cardinfo) {
                               setState(() {
                                 _cardInfo = cardinfo;
