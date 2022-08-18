@@ -61,194 +61,191 @@ class _PaymentListState extends State<PaymentList> {
   Paymentmethod? _init = Paymentmethod.mobile_money;
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: ((context, constraints) {
-      final width = constraints.maxWidth;
-      final height = constraints.maxHeight;
-      return SafeArea(
-          top: false,
-          child: Scaffold(
-              extendBody: true,
-              resizeToAvoidBottomInset: false,
-              backgroundColor: bGcolor,
-              bottomNavigationBar: Bottombar(),
-              body: Stack(children: [
-                Positioned(child: Image.asset('assets/images/picart.png', height: 500,),
-                top: height * 0.03,
-                left: width * 0.15,),
-                Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-                  Padding(
-                    padding: EdgeInsets.only(right: 190, bottom: 20),
-                    child: Text(
-                      "Payment",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-                    ),
+    Size size = MediaQuery.of(context).size;
+    return SafeArea(
+        top: false,
+        child: Scaffold(
+            extendBody: true,
+            resizeToAvoidBottomInset: false,
+            backgroundColor: bGcolor,
+            bottomNavigationBar: Bottombar(),
+            body: Stack(children: [
+              Positioned(
+                child: Image.asset(
+                  'assets/images/picart.png',
+                  height: size.height*0.4,
+                ),
+                top: size.height * 0.01,
+                left: size.width * 0.27,
+              ),
+              Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+                Padding(
+                  padding: EdgeInsets.only(right: 190, bottom: 20),
+                  child: Text(
+                    "Payment",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                   ),
-                  Container(
-                      width: width.w,
-                      height: height * 0.6,
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(40),
-                            topRight: Radius.circular(40),
-                          )),
-                      child: Column(children: [
-                        SizedBox(
-                          height: height * 0.02,
-                        ),
-                        Container(
-                          padding:
-                              EdgeInsets.only(left: 30, top: height * 0.01),
-                          child: Row(
-                            // ignore: prefer_const_literals_to_create_immutables
-                            children: [
-                              IconButton(
-                                icon: Icon(
-                                  Icons.arrow_back,
-                                  color: Colors.black,
-                                ),
-                                onPressed: () {
-                                  Navigator.pushNamed(context, Routes.cart);
-                                },
+                ),
+                Container(
+                    width: size.width,
+                    height: size.height * 0.63,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(40),
+                          topRight: Radius.circular(40),
+                        )),
+                    child: Column(children: [
+                      SizedBox(
+                        height: size.height * 0.02,
+                      ),
+                      Container(
+                        padding: EdgeInsets.only(left: 30, top: size.height * 0.01),
+                        child: Row(
+                          // ignore: prefer_const_literals_to_create_immutables
+                          children: [
+                            IconButton(
+                              icon: Icon(
+                                Icons.arrow_back,
+                                color: Colors.black,
                               ),
-                              SizedBox(
-                                width: width * 0.08,
-                              ),
+                              onPressed: () {
+                                Navigator.pushNamed(context, Routes.cart);
+                              },
+                            ),
+                            SizedBox(
+                              width: size.width * 0.08,
+                            ),
+                            Text(
+                              'Payment methods',
+                              style: TextStyle(
+                                  fontSize: 23, fontWeight: FontWeight.bold),
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: size.height * 0.04,
+                      ),
+                      RadioListTile<Paymentmethod>(
+                        contentPadding: EdgeInsets.only(left: 40),
+                        value: Paymentmethod.mobile_money,
+                        groupValue: _init,
+                        onChanged: (Paymentmethod? value) =>
+                            setState(() => {_init = value}),
+                        activeColor: Colors.deepPurple[500],
+                        title: RadiotileCSS(
+                          height: 25,
+                          imagestring: 'assets/icons/mbilemoney.png',
+                          text: 'Mobile Money',
+                        ),
+                        selected: false,
+                      ),
+                      divider(),
+                      SizedBox(
+                        height: size.height * 0.05,
+                      ),
+                      RadioListTile<Paymentmethod>(
+                        contentPadding: EdgeInsets.only(left: 40),
+                        value: Paymentmethod.master_card,
+                        groupValue: _init,
+                        onChanged: (Paymentmethod? value) =>
+                            setState(() => {_init = value}),
+                        activeColor: Colors.deepPurple[500],
+                        title: RadiotileCSS(
+                          height: 40,
+                          imagestring: 'assets/icons/card.webp',
+                          text: 'Card',
+                        ),
+                        selected: false,
+                      ),
+                      divider(),
+                      SizedBox(
+                        height: size.height * 0.03,
+                      ),
+                      SizedBox(
+                        height: size.height * 0.06,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(
+                              'Total',
+                              style: TextStyle(
+                                  fontSize: 30, fontWeight: FontWeight.bold),
+                            ),
+                            if (context.read<Cart>().cart.isNotEmpty)
                               Text(
-                                'Payment methods',
-                                style: TextStyle(
-                                    fontSize: 23, fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: height * 0.08,
-                        ),
-                        RadioListTile<Paymentmethod>(
-                          contentPadding: EdgeInsets.only(left: 40),
-                          value: Paymentmethod.mobile_money,
-                          groupValue: _init,
-                          onChanged: (Paymentmethod? value) =>
-                              setState(() => {_init = value}),
-                          activeColor: Colors.deepPurple[500],
-                          title: RadiotileCSS(
-                            height: 25,
-                            imagestring: 'assets/icons/mbilemoney.png',
-                            text: 'Mobile Money',
-                          ),
-                          selected: false,
-                        ),
-                        divider(),
-                        SizedBox(
-                          height: height * 0.05,
-                        ),
-                        RadioListTile<Paymentmethod>(
-                          contentPadding: EdgeInsets.only(left: 40),
-                          value: Paymentmethod.master_card,
-                          groupValue: _init,
-                          onChanged: (Paymentmethod? value) =>
-                              setState(() => {_init = value}),
-                          activeColor: Colors.deepPurple[500],
-                          title: RadiotileCSS(
-                            height: 40,
-                            imagestring: 'assets/icons/card.webp',
-                            text: 'Card',
-                          ),
-                          selected: false,
-                        ),
-                        divider(),
-                        SizedBox(
-                          height: height * 0.03,
-                        ),
-                        SizedBox(
-                          height: height * 0.06,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              Text(
-                                'Total',
+                                '${Provider.of<Cart>(context, listen: false).total.toStringAsFixed(2)}',
                                 style: TextStyle(
                                     fontSize: 30, fontWeight: FontWeight.bold),
-                              ),
-                              if (context.read<Cart>().cart.isNotEmpty)
-                                Text(
-                                  '${Provider.of<Cart>(context, listen: false).total.toStringAsFixed(2)}',
-                                  style: TextStyle(
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.bold),
-                                )
-                              else
-                                Text(
-                                  'k 0.0',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 30),
-                                )
-                            ],
-                          ),
+                              )
+                            else
+                              Text(
+                                'k 0.0',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 30),
+                              )
+                          ],
                         ),
-                        SizedBox(
-                          height: height * 0.0003,
-                        ),
-                        AppButton(
-                          text: 'Proceed',
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          borderRadius: 40,
-                          height: height * 0.01,
-                          textColor: Colors.white,
-                          bgColor: Colors.black,
-                          onTap: () {
-                            if (context.read<Cart>().carttotal() != 0.0) {
-                              Get.snackbar(
-                                'opps',
-                                'please add items to cart',
-                                backgroundColor: Colors.red.shade300,
-                                colorText: Colors.black,
-                                snackPosition: SnackPosition.TOP,
-                                duration: Duration(seconds: 5),
-                                icon: Icon(Icons.alarm),
-                                snackStyle: SnackStyle.FLOATING,
-                              );
-                            } else if (_init == Paymentmethod.mobile_money) {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return TransactionAlertDalog(
-                                      text: 'Mobile Money',
-                                      hint: 'phone number',
-                                      formkey: _formkey,
-                                      textcontroller: textcontroller,
-                                      validator: 'enter valid phone number',
-                                    );
-                                  });
-                            } else if (_init == Paymentmethod.master_card) {
-                              _read().then((value) {
-                                if (value != null) {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AcceptDialog();
-                                      });
-                                } else {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => StripePayment(
-                                            text: "text",
-                                            validator: "validator"),
-                                      ));
-                                }
-                              });
-                            }
-                          },
-                        )
-                      ]))
-                ])
-              ])));
-    }));
+                      ),
+                      SizedBox(
+                        height: size.height * 0.0003,
+                      ),
+                      AppButton(
+                        text: 'Proceed',
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        borderRadius: 40,
+                        height: size.height * 0.01,
+                        textColor: Colors.white,
+                        bgColor: Colors.black,
+                        onTap: () {
+                          if (context.read<Cart>().carttotal() != 0.0) {
+                            Get.snackbar(
+                              'opps',
+                              'please add items to cart',
+                              backgroundColor: Colors.red.shade300,
+                              colorText: Colors.black,
+                              snackPosition: SnackPosition.TOP,
+                              duration: Duration(seconds: 5),
+                              icon: Icon(Icons.alarm),
+                              snackStyle: SnackStyle.FLOATING,
+                            );
+                          } else if (_init == Paymentmethod.mobile_money) {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return TransactionAlertDalog(
+                                    text: 'Mobile Money',
+                                    hint: 'phone number',
+                                    formkey: _formkey,
+                                    textcontroller: textcontroller,
+                                    validator: 'enter valid phone number',
+                                  );
+                                });
+                          } else if (_init == Paymentmethod.master_card) {
+                            _read().then((value) {
+                              if (value != null) {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AcceptDialog();
+                                    });
+                              } else {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => StripePayment(
+                                          text: "text", validator: "validator"),
+                                    ));
+                              }
+                            });
+                          }
+                        },
+                      )
+                    ]))
+              ])
+            ])));
   }
 }
 
